@@ -49,12 +49,12 @@ defmodule Lexer do
     IO.inspect sanitized
     String.split(sanitized)
   end
-
   def tokensRemaining(sentence,token,char) do
     listTokens = [token]
     IO.inspect listTokens
-    partialSentence = String.replace(char,sentence,"")
+    partialSentence = Regex.replace(char,sentence,"")
     #Bug or something :(
+    IO.puts partialSentence
     listTokens = listTokens ++ getTokens(partialSentence)
     IO.inspect listTokens
     result = listTokens
@@ -62,26 +62,26 @@ defmodule Lexer do
   def getTokens(sentence) do
     cond do
       String.match?(sentence,~r/^{/) ->
-        tokensRemaining(sentence,Token.openBrace(),"{")
+        tokensRemaining(sentence,Token.openBrace(),~r/^{/)
       String.match?(sentence,~r/^}/) ->
-        tokensRemaining(sentence,Token.closeBrace(),"}")
+        tokensRemaining(sentence,Token.closeBrace(),~r/^}/)
       String.match?(sentence,~r/^[(]/) ->
-        tokensRemaining(sentence,Token.openParen(),"(")
+        tokensRemaining(sentence,Token.openParen(),~r/^[(]/)
       String.match?(sentence,~r/^[)]/) ->
-        tokensRemaining(sentence,Token.closeParen(),")")
+        tokensRemaining(sentence,Token.closeParen(),~r/^[)]/)
       String.match?(sentence,~r/^int/) ->
-        tokensRemaining(sentence,Token.intKeyword(),"int")
+        tokensRemaining(sentence,Token.intKeyword(),~r/^int/)
       String.match?(sentence,~r/^return/) ->
-        tokensRemaining(sentence,Token.returnKeyword(),"return")
+        tokensRemaining(sentence,Token.returnKeyword(),~r/^return/)
       String.match?(sentence,~r/^\d{1,}/) ->
         [number] = Regex.run(~r/^\d{1,}/,sentence)
         IO.inspect number
         value = String.to_integer(number)
-        tokensRemaining(sentence,Token.constant(value),"")
+        tokensRemaining(sentence,Token.constant(value),~r/^\d{1,}/)
       String.match?(sentence,~r/^main/) ->
-        tokensRemaining(sentence,Token.identifier("main"),"main")
+        tokensRemaining(sentence,Token.identifier("main"),~r/^main/)
       String.match?(sentence,~r/^;/) ->
-        tokensRemaining(sentence,Token.semicolon(),";")
+        tokensRemaining(sentence,Token.semicolon(),~r/^;/)
       sentence == "" -> []
       true -> raise "Syntax Error"
     end
