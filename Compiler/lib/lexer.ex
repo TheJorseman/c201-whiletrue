@@ -16,11 +16,17 @@ defmodule Token do
   @spec semicolon() :: token
   def semicolon(), do: {:semicolon, ""}
 
-  @spec returnKeyword(integer) :: token
-  def returnKeyword(value), do: {:returnKeyword, value}
+  @spec returnKeyword() :: token
+  def returnKeyword(), do: {:returnKeyword,""}
 
-  @spec intKeyword(String.t) :: token
-  def intKeyword(value), do: {:intKeyword, value}
+  @spec identifier(String.t) :: token
+  def identifier(value), do: {:identifier,value}
+
+  @spec constant(integer) :: token
+  def constant(value), do: {:constant,value}
+
+  @spec intKeyword() :: token
+  def intKeyword(), do: {:intKeyword,""}
 
 end
 
@@ -37,28 +43,58 @@ defmodule Lexer do
     }
 
     "
-    re = ~r/\n|\r|\t|\s{2,}/
+    re = ~r/\n|\r|\t/
     sanitized = Regex.replace(re,rawText,"")
+    sanitized = String.trim(sanitized)
+    IO.inspect sanitized
     String.split(sanitized)
   end
-
+  def tokensRemaining(sentence,token,char) do
+    listTokens = [token]
+    IO.inspect listTokens
+    partialSentence = Regex.replace(char,sentence,"")
+    #Bug or something :(
+    IO.puts partialSentence
+    listTokens = listTokens ++ getTokens(partialSentence)
+    IO.inspect listTokens
+    result = listTokens
+  end
   def getTokens(sentence) do
-
-    if sentence == "" do
-      []
-    end
-
     cond do
-      String.match?(sentence,~r/^{/) -> Token.openBrace()
-      String.match?(sentence,~r/^}/) -> Token.closeBrace()
-      true -> "buebos"
+      String.match?(sentence,~r/^{/) ->
+        tokensRemaining(sentence,Token.openBrace(),~r/^{/)
+      String.match?(sentence,~r/^}/) ->
+        tokensRemaining(sentence,Token.closeBrace(),~r/^}/)
+      String.match?(sentence,~r/^[(]/) ->
+        tokensRemaining(sentence,Token.openParen(),~r/^[(]/)
+      String.match?(sentence,~r/^[)]/) ->
+        tokensRemaining(sentence,Token.closeParen(),~r/^[)]/)
+      String.match?(sentence,~r/^int/) ->
+        tokensRemaining(sentence,Token.intKeyword(),~r/^int/)
+      String.match?(sentence,~r/^return/) ->
+        tokensRemaining(sentence,Token.returnKeyword(),~r/^return/)
+      String.match?(sentence,~r/^\d{1,}/) ->
+        [number] = Regex.run(~r/^\d{1,}/,sentence)
+        IO.inspect number
+        value = String.to_integer(number)
+        tokensRemaining(sentence,Token.constant(value),~r/^\d{1,}/)
+      String.match?(sentence,~r/^main/) ->
+        tokensRemaining(sentence,Token.identifier("main"),~r/^main/)
+      String.match?(sentence,~r/^;/) ->
+        tokensRemaining(sentence,Token.semicolon(),~r/^;/)
+      sentence == "" -> []
+      true -> raise "Syntax Error"
     end
   end
 
   def lexer() do
     listFormat = sanitize()
+    #IO.puts(listFormat)
+    IO.inspect listFormat
     listTokens = Enum.map(listFormat,&getTokens/1)
-    IO.puts(listTokens)
+    IO.inspect listTokens
+    #** (ArgumentError) argument error
+    #IO.puts listTokens
   end
 end
 
