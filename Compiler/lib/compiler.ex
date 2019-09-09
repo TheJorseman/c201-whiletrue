@@ -12,7 +12,18 @@ defmodule COMPILER do
       :world
 
   """
-  def hello do
-    :world
+  def start() do
+    IO.puts("Starting")
+    rawText = "
+
+
+
+    int main(){
+    return 60;
+    }
+
+    "
+    tokens = Lexer.lexer(rawText)
+    Parser.parseProgram(tokens)
   end
 end
