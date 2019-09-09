@@ -4,5 +4,4 @@
               {modules,['Elixir.COMPILER','Elixir.Lexer','Elixir.Nodo',
                         'Elixir.Parser','Elixir.Token']},
               {registered,[]},
-              {vsn,"0.1.0"},
-              {mod,{'Elixir.COMPILER',[]}}]}.
+              {vsn,"0.1.0"}]}.

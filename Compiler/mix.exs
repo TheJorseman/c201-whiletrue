@@ -1,6 +1,5 @@
 defmodule COMPILER.MixProject do
   use Mix.Project
-
   def project do
     [
       app: :compiler,
@@ -14,6 +13,7 @@ defmodule COMPILER.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
+      mod: {COMPILER, []},
       extra_applications: [:logger]
     ]
   end
