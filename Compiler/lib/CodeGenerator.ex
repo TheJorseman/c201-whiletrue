@@ -7,7 +7,6 @@ defmodule CodeGenerator do
             ast_nodo ->
                 code = posorder(ast_nodo.left)
                 #posorder(ast_nodo.right)
-                IO.inspect nodo.name
                 getCode(ast_nodo.name,ast_nodo.value,code)
         end 
     end
@@ -17,14 +16,14 @@ defmodule CodeGenerator do
     end
 
     def getCode(:return,_,code) do
-        "   movl #{code}, %eax
-           retq
+        "movl #{code}, %eax
+        ret
          "
     end
 
     def getCode(:function,value,code) do
         function_code = ".globl " <> elem(value,1) <> "
-        _"<> elem(value,1) <>"
+    _"<> elem(value,1) <>"
         "<> code
     end
 
@@ -40,6 +39,5 @@ defmodule CodeGenerator do
     def generateCode (root) do
         assembly_code = posorder(root)
         IO.puts assembly_code
-        IO.inspect assembly_code
     end
 end

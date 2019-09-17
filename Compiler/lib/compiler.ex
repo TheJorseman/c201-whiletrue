@@ -39,6 +39,10 @@ defmodule Compiler do
     print_ast(file_name)
   end
 
+  defp process_args({_, ["s", file_name], _}) do
+    print_assembler(file_name)
+  end
+
 
 
 #Función que imprime la lista de tokens
@@ -58,6 +62,16 @@ defmodule Compiler do
     |> Lexer.lexer()
     |> Parser.parseProgram()
     |> IO.inspect(label: "\nParser output")
+  end
+
+#Función que imprime el emsanblador
+  defp print_assembler(file_path) do
+    IO.puts("Compiling file: " <> file_path)
+
+    File.read!(file_path)
+    |> Lexer.lexer()
+    |> Parser.parseProgram()
+    |> CodeGenerator.generateCode()
   end
 
 #Función que muestra ayuda
