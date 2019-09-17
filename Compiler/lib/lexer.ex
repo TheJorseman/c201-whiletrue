@@ -3,12 +3,11 @@ defmodule Lexer do
     re = ~r/\n|\r|\t/
     sanitized = Regex.replace(re,rawText,"")
     sanitized = String.trim(sanitized)
-    IO.inspect sanitized
     String.split(sanitized)
+
   end
   def tokensRemaining(sentence,token,char) do
     listTokens = [token]
-    IO.inspect listTokens
     partialSentence = Regex.replace(char,sentence,"")
     listTokens = listTokens ++ getTokens(partialSentence)
   end
@@ -45,14 +44,13 @@ defmodule Lexer do
 
   def lexer(rawText) do
     listFormat = sanitize(rawText)
-    IO.inspect listFormat
     listTokens = Enum.map(listFormat,&getTokens/1)
     listTokens = Enum.concat(listTokens)
-    IO.inspect listTokens
     #** (ArgumentError) argument error
     #IO.puts listTokens
   end
 end
+
 
 
 

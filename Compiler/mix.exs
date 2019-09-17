@@ -1,10 +1,12 @@
-defmodule COMPILER.MixProject do
+defmodule Compiler.MixProject do
   use Mix.Project
+
   def project do
     [
-      app: :compiler,
+      app: :Compiler,
       version: "0.1.0",
       elixir: "~> 1.9",
+      escript: [main_module: Compiler],
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -13,7 +15,6 @@ defmodule COMPILER.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      mod: {COMPILER, []},
       extra_applications: [:logger]
     ]
   end
@@ -26,3 +27,4 @@ defmodule COMPILER.MixProject do
     ]
   end
 end
+
