@@ -1,7 +1,7 @@
 defmodule Parser do
 
 def parseProgram(tokens) do
-  root = %Nodo{value: "Program"}
+  root = %Nodo{name: :program }
   root = parseFunction(tokens,root)
   IO.inspect root
 end
@@ -18,7 +18,7 @@ def parseFunction(tokens,root) do
   if name != Token.identifier("main") do
     raise "Syntax Error main"
   end
-  function = %Nodo{value: name}
+  function = %Nodo{name: :function ,value: name}
   #Check (
   {nexTok,tokens }= List.pop_at(tokens,0)
   if nexTok != Token.openParen() do
@@ -42,7 +42,6 @@ def parseFunction(tokens,root) do
     raise "Syntax Error }"
   end
   root = %{root | left: function }
-  {root}
 end
 
 def parseStatement(tokens,root) do
@@ -50,7 +49,7 @@ def parseStatement(tokens,root) do
   if nexTok != Token.returnKeyword() do
     raise "Syntax Error return"
   end
-  statement = %Nodo{value: nexTok}
+  statement = %Nodo{name: :return, value: nexTok}
   #PARSE INT
   {tokens,statement} = parseInt(tokens,statement)
   {nexTok,tokens} = List.pop_at(tokens,0)
@@ -67,7 +66,7 @@ def parseInt(tokens,root) do
   if elem(nexTok,0) != :constant do
     raise "Syntax Error Constant"
   end
-  constant = %Nodo{value: nexTok}
+  constant = %Nodo{name: :constant, value: nexTok}
   root = %{root | left: constant}
   {tokens,root}
 end

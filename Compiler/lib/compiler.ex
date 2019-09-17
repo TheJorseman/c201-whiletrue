@@ -12,7 +12,7 @@ defmodule COMPILER do
       :world
 
   """
-  def start() do
+  def main() do
     IO.puts("Starting")
     rawText = "
 
@@ -24,6 +24,9 @@ defmodule COMPILER do
 
     "
     tokens = Lexer.lexer(rawText)
-    Parser.parseProgram(tokens)
+    root = Parser.parseProgram(tokens)
+    IO.inspect "Code Generator"
+    IO.inspect root
+    CodeGenerator.generateCode(root)
   end
 end
