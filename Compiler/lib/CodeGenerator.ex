@@ -8,11 +8,11 @@ defmodule CodeGenerator do
                 code = posorder(ast_nodo.left)
                 #posorder(ast_nodo.right)
                 getCode(ast_nodo.name,ast_nodo.value,code)
-        end 
+        end
     end
 
     def getCode(:constant,value,_) do
-        "%" <>  Integer.to_string( elem(value,1) )
+        "$" <>  Integer.to_string( elem(value,1) )
     end
 
     def getCode(:return,_,code) do
