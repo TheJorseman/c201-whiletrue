@@ -35,17 +35,29 @@ defmodule Compiler do
     print_token_list(file_name)
   end
 
+  defp process_args({_, ["a", file_name], _}) do
+    print_ast(file_name)
+  end
 
 
 
-
-
+#Función que imprime la lista de tokens
   defp print_token_list(file_path) do
     IO.puts("Compiling file: " <> file_path)
 
     File.read!(file_path)
     |> Lexer.lexer()
     |> IO.inspect(label: "\nLexer output")
+  end
+
+#Función que imprime el árbol AST
+  defp print_ast(file_path) do
+    IO.puts("Compiling file: " <> file_path)
+
+    File.read!(file_path)
+    |> Lexer.lexer()
+    |> Parser.parseProgram()
+    |> IO.inspect(label: "\nParser output")
   end
 
 #Función que muestra ayuda

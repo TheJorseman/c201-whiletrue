@@ -3,11 +3,10 @@ defmodule Parser do
 def parseProgram(tokens) do
   root = %Nodo{name: :program }
   root = parseFunction(tokens,root)
-  IO.inspect root
+
 end
 
 def parseFunction(tokens,root) do
-  IO.puts "parseFunction"
   #Check int
   {intKey,tokens} = List.pop_at(tokens,0)
   if intKey != Token.intKeyword() do
@@ -61,7 +60,6 @@ def parseStatement(tokens,root) do
 end
 
 def parseInt(tokens,root) do
-  IO.puts "parseINt"
   {nexTok,tokens}  = List.pop_at(tokens,0)
   if elem(nexTok,0) != :constant do
     raise "Syntax Error Constant"
@@ -72,3 +70,4 @@ def parseInt(tokens,root) do
 end
 
 end
+
