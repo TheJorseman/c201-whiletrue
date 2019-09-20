@@ -12,5 +12,6 @@ defmodule Linker do
     path = "#{destination} / #{asm_name}"
     File.write(path,asm_code)
     System.cmd("gcc",[asm_name,"-o#{bin_name}"],cd: destination)
+
   end
 end
