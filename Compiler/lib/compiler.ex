@@ -59,14 +59,9 @@ defmodule Compiler do
       |> Parser.parseProgram()
       |> IO.inspect(label: "\nParser output")
       |> CodeGenerator.generateCode())
-<<<<<<< HEAD
       |> Linker.final(assembly) 
     IO.puts("Compiled file\n\n")
 
-=======
-      |> Linker.final(assembly)
-      :successfulCompilation
->>>>>>> 90699133b2bd0eb3fdd93c55e27eb654b3d3e485
   end
 
 
