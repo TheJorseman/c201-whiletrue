@@ -29,7 +29,9 @@ defmodule Compiler do
     print_tutorial_message()
   end
 
-
+  defp process_args({_, [file_name], _}) do
+    compile_file(file_name)
+  end
 
   defp process_args({_, ["t", file_name], _}) do
     print_token_list(file_name)
@@ -43,6 +45,22 @@ defmodule Compiler do
     print_assembler(file_name)
   end
 
+#Función que genera todo el proceso de compilación
+  defp compile_file(file_path) do
+    IO.puts("Compiling file: " <> file_path)
+    assembly = String.replace_trailing(file_path, ".c", ".s")   
+  
+  
+      File.read!(file_path)
+      
+      File.write!(assembly,File.read!(file_path)
+      |> Lexer.lexer()
+      |> IO.inspect(label: "\nLexer output")
+      |> Parser.parseProgram()
+      |> IO.inspect(label: "\nParser output")
+      |> CodeGenerator.generateCode())
+      |> Linker.final(assembly) 
+  end
 
 
 #Función que imprime la lista de tokens
@@ -64,14 +82,20 @@ defmodule Compiler do
     |> IO.inspect(label: "\nParser output")
   end
 
-#Función que imprime el emsanblador
+#Función que imprime el ensamblador y genera el archivo
   defp print_assembler(file_path) do
     IO.puts("Compiling file: " <> file_path)
+    assembly = String.replace_trailing(file_path, ".c", ".s")   
+  
+  
+      File.read!(file_path)
+      
+      File.write!(assembly,File.read!(file_path)
+      |> Lexer.lexer()
+      |> Parser.parseProgram()
+      |> CodeGenerator.generateCode())
+        IO.puts ("Generated file\n\n")
 
-    File.read!(file_path)
-    |> Lexer.lexer()
-    |> Parser.parseProgram()
-    |> CodeGenerator.generateCode()
   end
 
 #Función que muestra ayuda
