@@ -3,12 +3,12 @@ defmodule Compiler do
   Documentation for Compilador
   """
   @commands %{
-    
-    "\thelp\t" => "Help",  
+
+    "\thelp\t" => "Help",
     "\ta\t" => "Print AST tree",
     "\ts\t" => "Generate Assembler",
     "\tt\t" => "Print Token List\n\n\n"
-    
+
   }
 
   def main(args) do
@@ -24,7 +24,7 @@ defmodule Compiler do
   defp process_args({_ ,["help"], _}) do
     print_help_message()
   end
-  
+
   defp process_args({_ ,["-"], _}) do
     print_tutorial_message()
   end
@@ -64,7 +64,7 @@ defmodule Compiler do
 
 
 #Función que imprime la lista de tokens
-  defp print_token_list(file_path) do
+  def print_token_list(file_path) do
     IO.puts("Compiling file: " <> file_path)
 
     File.read!(file_path)
@@ -106,7 +106,7 @@ defmodule Compiler do
     @commands
     |> Enum.map(fn {comman, description} -> IO.puts("  #{comman} - #{description}") end)
   end
-  
+
 #Función que muestra apoyo
 
   defp print_tutorial_message do

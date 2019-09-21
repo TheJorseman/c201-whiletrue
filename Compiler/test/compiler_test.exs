@@ -1,142 +1,142 @@
 defmodule COMPILERTest do
   use ExUnit.Case
-  doctest COMPILER
+  doctest Compiler
 
   setup_all do
-    {:ok, tok_ret2: [:intKeyword,
+    {:ok, tok_ret2: [{:intKeyword,""},
                   {:identifier, "main"},
-                  :openParen,
-                  :closeParen,
-                  :openBrace,
-                  :returnKeyword,
+                  {:openParen,""},
+                  {:closeParen,""},
+                  {:openBrace,""},
+                  {:returnKeyword,""},
                   {:constant, 2},
-                  :semicolon,
-                  :closeBrace
+                  {:semicolon,""},
+                  {:closeBrace,""}
     ]}
   end
 
   setup_all do
-    {:ok, tok_ret0: [:intKeyword,
+    {:ok, tok_ret0: [{:intKeyword,""},
                   {:identifier, "main"},
-                  :openParen,
-                  :closeParen,
-                  :openBrace,
-                  :returnKeyword,
+                  {:openParen,""},
+                  {:closeParen,""},
+                  {:openBrace,""},
+                  {:returnKeyword,""},
                   {:constant, 0},
-                  :semicolon,
-                  :closeBrace
+                  {:semicolon,""},
+                  {:closeBrace,""}
     ]}
   end
 
   setup_all do
-    {:ok, tok_multidig: [:intKeyword,
+    {:ok, tok_multidig: [{:intKeyword,""},
                   {:identifier, "main"},
-                  :openParen,
-                  :closeParen,
-                  :openBrace,
-                  :returnKeyword,
+                  {:openParen,""},
+                  {:closeParen,""},
+                  {:openBrace,""},
+                  {:returnKeyword,""},
                   {:constant, 100},
-                  :semicolon,
-                  :closeBrace
+                  {:semicolon,""},
+                  {:closeBrace,""}
     ]}
   end
 
   setup_all do
-    {:ok, tok_no semicolon: [:intKeyword,
+    {:ok, tok_no_semicolon: [{:intKeyword,""},
                   {:identifier, "main"},
-                  :openParen,
-                  :closeParen,
-                  :openBrace,
-                  :returnKeyword,
+                  {:openParen,""},
+                  {:closeParen,""},
+                  {:openBrace,""},
+                  {:returnKeyword,""},
                   {:constant, 0},
-                  :closeBrace
+                  {:closeBrace,""}
     ]}
   end
 
   setup_all do
-    {:ok, tok_miss_retval: [:intKeyword,
+    {:ok, tok_miss_retval: [{:intKeyword,""},
                   {:identifier, "main"},
-                  :openParen,
-                  :closeParen,
-                  :openBrace,
-                  :returnKeyword,
-                  :semicolon,
-                  :closeBrace
+                  {:openParen,""},
+                  {:closeParen,""},
+                  {:openBrace,""},
+                  {:returnKeyword,""},
+                  {:semicolon,""},
+                  {:closeBrace,""}
     ]}
   end
 
   setup_all do
-    {:ok, tok_miss_paren: [:intKeyword,
+    {:ok, tok_miss_paren: [{:intKeyword,""},
                   {:identifier, "main"},
-                  :openParen,
-                  :openBrace,
-                  :returnKeyword,
+                  {:openParen,""},
+                  {:openBrace,""},
+                  {:returnKeyword,""},
                   {:constant, 0},
-                  :semicolon,
-                  :closeBrace
+                  {:semicolon,""},
+                  {:closeBrace,""}
     ]}
   end
 
   setup_all do
-    {:ok, tok_no_brace: [:intKeyword,
+    {:ok, tok_no_brace: [{:intKeyword,""},
                   {:identifier, "main"},
-                  :openParen,
-                  :closeParen,
-                  :openBrace,
-                  :returnKeyword,
+                  {:openParen,""},
+                  {:closeParen,""},
+                  {:openBrace,""},
+                  {:returnKeyword,""},
                   {:constant, 0},
-                  :semicolon
+                  {:semicolon,""}
     ]}
   end
 
   # Valid tests
   test "Return 2", state do
-    assert Lexer.lexer([test/noraS_tests/valid/return_2.c]) == state[:tok_ret2]
+    assert Compiler.print_token_list("test/noraS_tests/valid/return_2.c") == state[:tok_ret2]
   end
 
   test "Return 0", state do
-    assert Lexer.lexer([test/noraS_tests/valid/return_0.c]) == state[:tok_ret0]
+    assert Compiler.print_token_list("test/noraS_tests/valid/return_0.c") == state[:tok_ret0]
   end
 
   test "Multidigit", state do
-    assert Lexer.lexer([test/noraS_tests/valid/multi_digit.c]) == state[:tok_multidig]
+    assert Compiler.print_token_list("test/noraS_tests/valid/multi_digit.c") == state[:tok_multidig]
   end
 
   test "Spaces", state do
-    assert Lexer.lexer([test/noraS_tests/valid/spaces.c]) == state[:tok_ret0]
+    assert Compiler.print_token_list("test/noraS_tests/valid/spaces.c") == state[:tok_ret0]
   end
 
   test "No new lines", state do
-    assert Lexer.lexer([test/noraS_tests/valid/no_newlines.c]) == state[:tok_ret0]
+    assert Compiler.print_token_list("test/noraS_tests/valid/no_newlines.c") == state[:tok_ret0]
   end
 
   test "New lines", state do
-    assert Lexer.lexer([test/noraS_tests/valid/newlines.c]) == state[:tok_ret0]
+    assert Compiler.print_token_list("test/noraS_tests/valid/newlines.c") == state[:tok_ret0]
   end
 
   # Invalid tests
   test "No semicolon", state do
-    assert Lexer.lexer([test/noraS_tests/invalid/no_semicolon.c]) == state[:tok_no_semicolon]
+    assert Compiler.print_token_list("test/noraS_tests/invalid/no_semicolon.c") == state[:tok_no_semicolon]
   end
 
   #test "Wrong case", state do
-  # assert Lexer.lexer([test/noraS_tests/invalid/wrong_case.c]) == state[:tok_wrong_case]
+  # assert Compiler.print_token_list("test/noraS_tests/invalid/wrong_case.c") == state[:tok_wrong_case]
   #end
 
   test "Missing return value", state do
-    assert Lexer.lexer([test/noraS_tests/invalid/missing_retval.c]) == state[:tok_miss_retval]
+    assert Compiler.print_token_list("test/noraS_tests/invalid/missing_retval.c") == state[:tok_miss_retval]
   end
 
   test "Missing parenthesis", state do
-    assert Lexer.lexer([test/noraS_tests/invalid/missing_paren.c]) == state[:tok_miss_paren]
+    assert Compiler.print_token_list("test/noraS_tests/invalid/missing_paren.c") == state[:tok_miss_paren]
   end
 
   test "No brace", state do
-    assert Lexer.lexer([test/noraS_tests/invalid/no_brace.c]) == state[:tok_no_brace]
+    assert Compiler.print_token_list("test/noraS_tests/invalid/no_brace.c") == state[:tok_no_brace]
   end
 
   #test "No space", state do
-  #  assert Lexer.lexer([test/noraS_tests/invalid/no_space.c]) == state[:tok_no_space]
+  #  assert Compiler.print_token_list("test/noraS_tests/invalid/no_space.c") == state[:tok_no_space]
   #end
 
 end
