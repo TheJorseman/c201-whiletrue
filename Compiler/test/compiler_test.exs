@@ -119,14 +119,6 @@ defmodule COMPILERTest do
     assert Compiler.print_token_list("test/noraS_tests/invalid/no_semicolon.c") == state[:tok_no_semicolon]
   end
 
-  #test "Wrong case", state do
-  # assert Compiler.print_token_list("test/noraS_tests/invalid/wrong_case.c") == state[:tok_wrong_case]
-  #end
-
-  test "Missing return value", state do
-    assert Compiler.print_token_list("test/noraS_tests/invalid/missing_retval.c") == state[:tok_miss_retval]
-  end
-
   test "Missing parenthesis", state do
     assert Compiler.print_token_list("test/noraS_tests/invalid/missing_paren.c") == state[:tok_miss_paren]
   end
@@ -134,10 +126,6 @@ defmodule COMPILERTest do
   test "No brace", state do
     assert Compiler.print_token_list("test/noraS_tests/invalid/no_brace.c") == state[:tok_no_brace]
   end
-
-  #test "No space", state do
-  #  assert Compiler.print_token_list("test/noraS_tests/invalid/no_space.c") == state[:tok_no_space]
-  #end
 
   # Valid Compiler test ---------------------------------------------------------------------------
 

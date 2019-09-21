@@ -1,8 +1,8 @@
 defmodule Lexer do
   def sanitize(rawText) do
     re = ~r/\n|\r|\t/
-    sanitized = Regex.replace(re,rawText,"")
-    sanitized = String.trim(sanitized)
+    #sanitized = Regex.replace(re,rawText,"")
+    sanitized = String.trim(rawText)
     String.split(sanitized)
 
   end
