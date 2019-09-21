@@ -9,6 +9,15 @@ defmodule Lexer do
   def tokensRemaining(sentence,token,char) do
     listTokens = [token]
     partialSentence = Regex.replace(char,sentence,"")
+    #Partial fix to intmain or return2
+    if String.first(partialSentence) do
+      if token == Token.returnKeyword or token == Token.intKeyword  do
+        IO.inspect partialSentence
+        if String.first(partialSentence) != " "  do
+          raise "Syntax Error " <> sentence
+        end
+      end
+    end
     listTokens = listTokens ++ getTokens(partialSentence)
   end
 
@@ -46,8 +55,6 @@ defmodule Lexer do
     listFormat = sanitize(rawText)
     listTokens = Enum.map(listFormat,&getTokens/1)
     listTokens = Enum.concat(listTokens)
-    #** (ArgumentError) argument error
-    #IO.puts listTokens
   end
 end
 
