@@ -46,22 +46,27 @@ defmodule Compiler do
   end
 
 #Función que genera todo el proceso de compilación
-  defp compile_file(file_path) do
+  def compile_file(file_path) do
     IO.puts("Compiling file: " <> file_path)
-    assembly = String.replace_trailing(file_path, ".c", ".s")   
-  
-  
+    assembly = String.replace_trailing(file_path, ".c", ".s")
+
+
       File.read!(file_path)
-      
+
       File.write!(assembly,File.read!(file_path)
       |> Lexer.lexer()
       |> IO.inspect(label: "\nLexer output")
       |> Parser.parseProgram()
       |> IO.inspect(label: "\nParser output")
       |> CodeGenerator.generateCode())
+<<<<<<< HEAD
       |> Linker.final(assembly) 
     IO.puts("Compiled file\n\n")
 
+=======
+      |> Linker.final(assembly)
+      :successfulCompilation
+>>>>>>> 90699133b2bd0eb3fdd93c55e27eb654b3d3e485
   end
 
 
@@ -87,11 +92,11 @@ defmodule Compiler do
 #Función que imprime el ensamblador y genera el archivo
   defp print_assembler(file_path) do
     IO.puts("Compiling file: " <> file_path)
-    assembly = String.replace_trailing(file_path, ".c", ".s")   
-  
-  
+    assembly = String.replace_trailing(file_path, ".c", ".s")
+
+
       File.read!(file_path)
-      
+
       File.write!(assembly,File.read!(file_path)
       |> Lexer.lexer()
       |> Parser.parseProgram()

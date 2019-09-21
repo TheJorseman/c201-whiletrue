@@ -89,7 +89,7 @@ defmodule COMPILERTest do
     ]}
   end
 
-  # Valid tests
+  # Valid lexer tests
   test "Return 2", state do
     assert Compiler.print_token_list("test/noraS_tests/valid/return_2.c") == state[:tok_ret2]
   end
@@ -114,7 +114,7 @@ defmodule COMPILERTest do
     assert Compiler.print_token_list("test/noraS_tests/valid/newlines.c") == state[:tok_ret0]
   end
 
-  # Invalid tests
+  # Invalid lexer tests
   test "No semicolon", state do
     assert Compiler.print_token_list("test/noraS_tests/invalid/no_semicolon.c") == state[:tok_no_semicolon]
   end
@@ -138,5 +138,32 @@ defmodule COMPILERTest do
   #test "No space", state do
   #  assert Compiler.print_token_list("test/noraS_tests/invalid/no_space.c") == state[:tok_no_space]
   #end
+
+  # Valid Compiler test ---------------------------------------------------------------------------
+
+  test "Return 2 - Complete test" do
+    assert Compiler.compile_file("test/noraS_tests/valid/return_2.c") == :successfulCompilation
+  end
+
+  test "Return 0 - Complete test" do
+    assert Compiler.compile_file("test/noraS_tests/valid/return_0.c") == :successfulCompilation
+  end
+
+  test "Multidigit - Complete test" do
+    assert Compiler.compile_file("test/noraS_tests/valid/multi_digit.c") == :successfulCompilation
+  end
+
+  test "Spaces - Complete test" do
+    assert Compiler.compile_file("test/noraS_tests/valid/spaces.c") == :successfulCompilation
+  end
+
+  test "No new lines - Complete test" do
+    assert Compiler.compile_file("test/noraS_tests/valid/no_newlines.c") == :successfulCompilation
+  end
+
+  test "New lines - Complete test" do
+    assert Compiler.compile_file("test/noraS_tests/valid/newlines.c") == :successfulCompilation
+  end
+
 
 end
