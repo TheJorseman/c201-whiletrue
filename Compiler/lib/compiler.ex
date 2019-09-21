@@ -60,6 +60,8 @@ defmodule Compiler do
       |> IO.inspect(label: "\nParser output")
       |> CodeGenerator.generateCode())
       |> Linker.final(assembly) 
+    IO.puts("Compiled file\n\n")
+
   end
 
 
