@@ -61,7 +61,7 @@ defmodule Compiler do
       |> CodeGenerator.generateCode())
       |> Linker.final(assembly) 
     IO.puts("Compiled file\n\n")
-
+    :successfulCompilation
   end
 
 
