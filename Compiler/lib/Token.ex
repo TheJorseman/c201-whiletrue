@@ -1,31 +1,31 @@
 defmodule Token do
-  @type token :: {atom, any()}
+  @type token :: {atom, any(),integer}
 
-  @spec openParen() :: token
-  def openParen(), do: {:openParen, ""}
+  @spec openParen(integer) :: token
+  def openParen(line), do: {:openParen, "",line}
 
-  @spec closeParen() :: token
-  def closeParen(), do: {:closeParen, ""}
+  @spec closeParen(integer) :: token
+  def closeParen(line), do: {:closeParen, "",line}
 
-  @spec openBrace() :: token
-  def openBrace(), do: {:openBrace, ""}
+  @spec openBrace(integer) :: token
+  def openBrace(line), do: {:openBrace, "",line}
 
-  @spec closeBrace() :: token
-  def closeBrace(), do: {:closeBrace, ""}
+  @spec closeBrace(integer) :: token
+  def closeBrace(line), do: {:closeBrace, "",line}
 
-  @spec semicolon() :: token
-  def semicolon(), do: {:semicolon, ""}
+  @spec semicolon(integer) :: token
+  def semicolon(line), do: {:semicolon, "",line}
 
-  @spec returnKeyword() :: token
-  def returnKeyword(), do: {:returnKeyword,""}
+  @spec returnKeyword(integer) :: token
+  def returnKeyword(line), do: {:returnKeyword,"",line}
 
-  @spec identifier(String.t) :: token
-  def identifier(value), do: {:identifier,value}
+  @spec identifier(String.t,integer) :: token
+  def identifier(value,line), do: {:identifier,value,line}
 
-  @spec constant(integer) :: token
-  def constant(value), do: {:constant,value}
+  @spec constant(integer,integer) :: token
+  def constant(value,line), do: {:constant,value,line}
 
-  @spec intKeyword() :: token
-  def intKeyword(), do: {:intKeyword,""}
+  @spec intKeyword(integer) :: token
+  def intKeyword(line), do: {:intKeyword,"",line}
 
 end
