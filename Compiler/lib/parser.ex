@@ -50,7 +50,7 @@ defmodule Parser do
     end
     statement = %Nodo{name: :return, value: nexTok}
     #PARSE INT
-    {tokens,statement} = parseInt(tokens,statement)
+    {tokens,statement} = parseExp(tokens,statement)
     {nexTok,tokens} = List.pop_at(tokens,0)
     if elem(nexTok,0) != :semicolon do
       raise "Syntax Error Semicolon"
@@ -59,14 +59,23 @@ defmodule Parser do
     {tokens,root}
   end
 
-  def parseInt(tokens,root) do
+  def parseExp(tokens,root) do
     {nexTok,tokens}  = List.pop_at(tokens,0)
-    if elem(nexTok,0) != :constant do
-      raise "Syntax Error Constant"
-    end
-    constant = %Nodo{name: :constant, value: nexTok}
-    root = %{root | left: constant}
-    {tokens,root}
-  end
+    currToken = elem(nexTok,0)
+    if currToken == :constant do
+      constant = %Nodo{name: :constant, value: nexTok}
+      root = %{root | left: constant}
+      {tokens,root}
+    else
+      if check_unary_op(currToken) do
 
+      end
+    end
+  def check_unary_op(currToken) do
+    if currToken == :negation or currToken == :bitwiseN or currToken == :logicalN do
+      True
+    else
+      False
+    end
   end
+end

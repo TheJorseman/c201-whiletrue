@@ -3,19 +3,15 @@ defmodule Lexer do
     str_list = String.split(rawText,"\n")
     list = Enum.with_index(str_list)
     list = Enum.filter(list,fn(x)-> elem(x,0) != "" end)
-    Enum.map(list,fn x -> {elem(x,0), elem(x,1) + 1} end)
+    Enum.map(list,fn x -> {Regex.replace(~r/^\t+|\n+|\r+/,elem(x,0),""), elem(x,1) + 1} end)
   end
   def tokensRemaining(data,token,char) do
     listTokens = [token]
     sentence = elem(data,0)
     partialSentence = Regex.replace(char,sentence,"")
     partialSentence = String.trim(partialSentence)
-    IO.puts("List Token")
-    IO.inspect(listTokens)
     listTokens ++ getTokens({partialSentence,elem(data,1)})
   end
-
-
   def getTokens(data) do
     IO.inspect(data)
     sentence = elem(data,0)
@@ -36,7 +32,6 @@ defmodule Lexer do
       String.match?(sentence,~r/^\d{1,}/) ->
         #Get the integer in String
         [number] = Regex.run(~r/^\d{1,}/,sentence)
-        #IO.inspect number
         #Try to cast the string into integer
         value = String.to_integer(number)
         tokensRemaining(data,Token.constant(value,number_line),~r/^\d{1,}/)
@@ -62,7 +57,7 @@ defmodule Lexer do
 
   def lexer(rawText) do
     listFormat = sanitize(rawText)
-    IO.inspect(listFormat)
+    #IO.inspect(listFormat)
     listTokens = Enum.flat_map(listFormat,&getTokens/1)
     IO.inspect(listTokens)
   end
