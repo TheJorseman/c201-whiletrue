@@ -49,9 +49,10 @@ defmodule Parser do
       raise "Syntax Error return"
     end
     statement = %Nodo{name: :return, value: nexTok}
-    #PARSE INT
+    #PARSE Exp
     {tokens,statement} = parseExp(tokens,statement)
     {nexTok,tokens} = List.pop_at(tokens,0)
+    IO.inspect(nexTok)
     if elem(nexTok,0) != :semicolon do
       raise "Syntax Error Semicolon"
     end
@@ -67,10 +68,16 @@ defmodule Parser do
       root = %{root | left: constant}
       {tokens,root}
     else
-      if check_unary_op(currToken) do
-
+      if check_unary_op(currToken) == True do
+        exp = %Nodo{name: currToken, value: nexTok}
+        {tokens,inner_exp} = parseExp(tokens,exp)
+        root = %{root | left: inner_exp}
+        {tokens,root}
+      else
+        raise "Syntax Error Unary operator expected"
       end
     end
+  end
   def check_unary_op(currToken) do
     if currToken == :negation or currToken == :bitwiseN or currToken == :logicalN do
       True
@@ -78,4 +85,5 @@ defmodule Parser do
       False
     end
   end
+
 end
