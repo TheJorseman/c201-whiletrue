@@ -50,7 +50,7 @@ defmodule Compiler do
     IO.puts("Compiling file: " <> file_path)
     assembly = String.replace_trailing(file_path, ".c", ".s")
 
-
+    try do
       File.read!(file_path)
 
       File.write!(assembly,File.read!(file_path)
@@ -59,9 +59,11 @@ defmodule Compiler do
       |> Parser.parseProgram()
       |> IO.inspect(label: "\nParser output")
       |> CodeGenerator.generateCode())
-      |> Linker.final(assembly) 
+      |> Linker.final(assembly)
     IO.puts("Compiled file\n\n")
-    :successfulCompilation
+    rescue
+      e in RuntimeError -> IO.puts("Error: " <> e.message )
+    end
   end
 
 
