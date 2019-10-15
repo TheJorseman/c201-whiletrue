@@ -1,60 +1,70 @@
 defmodule Lexer do
   def sanitize(rawText) do
-    re = ~r/\n|\r|\t/
-    #sanitized = Regex.replace(re,rawText,"")
-    sanitized = String.trim(rawText)
-    String.split(sanitized)
-
+    str_list = String.split(rawText,"\n")
+    list = Enum.with_index(str_list)
+    list = Enum.filter(list,fn(x)-> elem(x,0) != "" end)
+    Enum.map(list,fn x -> {elem(x,0), elem(x,1) + 1} end)
   end
-  def tokensRemaining(sentence,token,char) do
+  def tokensRemaining(data,token,char) do
     listTokens = [token]
+    sentence = elem(data,0)
     partialSentence = Regex.replace(char,sentence,"")
-    #Partial fix to intmain or return2
-    if String.first(partialSentence) do
-      if token == Token.returnKeyword or token == Token.intKeyword  do
-        IO.inspect partialSentence
-        if String.first(partialSentence) != " "  do
-          raise "Syntax Error " <> sentence
-        end
-      end
-    end
-    listTokens = listTokens ++ getTokens(partialSentence)
+    partialSentence = String.trim(partialSentence)
+    IO.puts("List Token")
+    IO.inspect(listTokens)
+    listTokens ++ getTokens({partialSentence,elem(data,1)})
   end
 
-  def getTokens(sentence) do
+
+  def getTokens(data) do
+    IO.inspect(data)
+    sentence = elem(data,0)
+    number_line = elem(data,1)
     cond do
       String.match?(sentence,~r/^{/) ->
-        tokensRemaining(sentence,Token.openBrace(),~r/^{/)
+        tokensRemaining(data,Token.openBrace(number_line),~r/^{/)
       String.match?(sentence,~r/^}/) ->
-        tokensRemaining(sentence,Token.closeBrace(),~r/^}/)
+        tokensRemaining(data,Token.closeBrace(number_line),~r/^}/)
       String.match?(sentence,~r/^[(]/) ->
-        tokensRemaining(sentence,Token.openParen(),~r/^[(]/)
+        tokensRemaining(data,Token.openParen(number_line),~r/^[(]/)
       String.match?(sentence,~r/^[)]/) ->
-        tokensRemaining(sentence,Token.closeParen(),~r/^[)]/)
-      String.match?(sentence,~r/^int/) ->
-        tokensRemaining(sentence,Token.intKeyword(),~r/^int/)
-      String.match?(sentence,~r/^return/) ->
-        tokensRemaining(sentence,Token.returnKeyword(),~r/^return/)
+        tokensRemaining(data,Token.closeParen(number_line),~r/^[)]/)
+      String.match?(sentence,~r/^int /) ->
+        tokensRemaining(data,Token.intKeyword(number_line),~r/^int /)
+      String.match?(sentence,~r/^return /) ->
+        tokensRemaining(data,Token.returnKeyword(number_line),~r/^return /)
       String.match?(sentence,~r/^\d{1,}/) ->
         #Get the integer in String
         [number] = Regex.run(~r/^\d{1,}/,sentence)
         #IO.inspect number
         #Try to cast the string into integer
         value = String.to_integer(number)
-        tokensRemaining(sentence,Token.constant(value),~r/^\d{1,}/)
+        tokensRemaining(data,Token.constant(value,number_line),~r/^\d{1,}/)
       String.match?(sentence,~r/^main/) ->
-        tokensRemaining(sentence,Token.identifier("main"),~r/^main/)
+        tokensRemaining(data,Token.identifier("main",number_line),~r/^main/)
       String.match?(sentence,~r/^;/) ->
-        tokensRemaining(sentence,Token.semicolon(),~r/^;/)
+        tokensRemaining(data,Token.semicolon(number_line),~r/^;/)
+      String.match?(sentence,~r/^-/) ->
+        tokensRemaining(data,Token.negation(number_line),~r/^-/)
+      String.match?(sentence,~r/^~/) ->
+        tokensRemaining(data,Token.bitwiseN(number_line),~r/^~/)
+      String.match?(sentence,~r/^!/) ->
+        tokensRemaining(data,Token.logicalN(number_line),~r/^!/)
       sentence == "" -> []
-      true -> raise "Syntax Error"
+      sentence == " "-> []
+      true ->
+        error = "Unexpected Token " <> sentence <> " at line " <> Integer.to_string(number_line)
+        raise error
+        #IO.inspect(sentence)
+        #[{:error,"Error 1: Unexpected Token" <> ssentence <> "at line " <> Integer.to_string(number_line) }]
     end
   end
 
   def lexer(rawText) do
     listFormat = sanitize(rawText)
-    listTokens = Enum.map(listFormat,&getTokens/1)
-    listTokens = Enum.concat(listTokens)
+    IO.inspect(listFormat)
+    listTokens = Enum.flat_map(listFormat,&getTokens/1)
+    IO.inspect(listTokens)
   end
 end
 
