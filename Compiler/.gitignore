@@ -2,3 +2,7 @@ Compiler
 prueba.c
 prueba.s
 prueba
+
+return_2.c
+return_2.s
+return_2
