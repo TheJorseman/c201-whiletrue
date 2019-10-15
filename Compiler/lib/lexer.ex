@@ -3,7 +3,7 @@ defmodule Lexer do
     str_list = String.split(rawText,"\n")
     list = Enum.with_index(str_list)
     list = Enum.filter(list,fn(x)-> elem(x,0) != "" end)
-    Enum.map(list,fn x -> {Regex.replace(~r/^\t+|\n+|\r+/,elem(x,0),""), elem(x,1) + 1} end)
+    Enum.map(list,fn x -> {String.trim(Regex.replace(~r/^\t+|\n+|\r+/,elem(x,0),"")), elem(x,1) + 1} end)
   end
   def tokensRemaining(data,token,char) do
     listTokens = [token]
@@ -16,6 +16,7 @@ defmodule Lexer do
     IO.inspect(data)
     sentence = elem(data,0)
     number_line = elem(data,1)
+
     cond do
       String.match?(sentence,~r/^{/) ->
         tokensRemaining(data,Token.openBrace(number_line),~r/^{/)
