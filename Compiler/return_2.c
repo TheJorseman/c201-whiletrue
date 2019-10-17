@@ -1,3 +1,6 @@
-int main() {
-    return 2;
+int main()
+{
+RETURN
+2
+;
 }
