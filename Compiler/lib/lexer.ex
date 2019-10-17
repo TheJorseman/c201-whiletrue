@@ -9,9 +9,23 @@ defmodule Lexer do
     listTokens = [token]
     sentence = elem(data,0)
     partialSentence = Regex.replace(char,sentence,"")
+    check_spaces(token,partialSentence)
     partialSentence = String.trim(partialSentence)
     listTokens ++ getTokens({partialSentence,elem(data,1)})
   end
+
+  def check_spaces(token,sentence) do
+    tokens_space = [:intKeyword,:returnKeyword]
+    valid = [nil," ","\n"]
+    {name,_,line} = token
+    if name in tokens_space do
+      check = String.first(sentence)
+      if not (check in valid) do
+        raise "Unexpected Token " <> Atom.to_string(name) <> " Token at line " <> Integer.to_string(line)
+      end
+    end
+  end
+
   def getTokens(data) do
     IO.inspect(data)
     sentence = elem(data,0)
@@ -26,10 +40,10 @@ defmodule Lexer do
         tokensRemaining(data,Token.openParen(number_line),~r/^[(]/)
       String.match?(sentence,~r/^[)]/) ->
         tokensRemaining(data,Token.closeParen(number_line),~r/^[)]/)
-      String.match?(sentence,~r/^int /) ->
-        tokensRemaining(data,Token.intKeyword(number_line),~r/^int /)
-      String.match?(sentence,~r/^return /) ->
-        tokensRemaining(data,Token.returnKeyword(number_line),~r/^return /)
+      String.match?(sentence,~r/^int/) ->
+        tokensRemaining(data,Token.intKeyword(number_line),~r/^int/)
+      String.match?(sentence,~r/^return/) ->
+        tokensRemaining(data,Token.returnKeyword(number_line),~r/^return/)
       String.match?(sentence,~r/^\d{1,}/) ->
         #Get the integer in String
         [number] = Regex.run(~r/^\d{1,}/,sentence)
@@ -57,6 +71,7 @@ defmodule Lexer do
   end
 
   def lexer(rawText) do
+    IO.inspect(rawText)
     listFormat = sanitize(rawText)
     #IO.inspect(listFormat)
     listTokens = Enum.flat_map(listFormat,&getTokens/1)
