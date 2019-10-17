@@ -29,11 +29,12 @@ defmodule Parser do
     end
     #Check {
     {nexTok,tokens}= List.pop_at(tokens,0)
-    if elem(nexTok,0) != :openBrace do
+    if nexTok == nil or elem(nexTok,0) != :openBrace do
       raise "Syntax Error: {" <> " keyword expected at line " <> Integer.to_string(elem(nexTok,2))
     end
     #Check Statement
     {tokens,function} = parseStatement(tokens,function)
+    IO.inspect(tokens)
     #Check }
     {nexTok,tokens}= List.pop_at(tokens,0)
     if elem(nexTok,0) != :closeBrace do
@@ -51,12 +52,14 @@ defmodule Parser do
     #PARSE Exp
     {tokens,statement} = parseExp(tokens,statement)
     {nexTok,tokens} = List.pop_at(tokens,0)
-    IO.inspect(nexTok)
     if elem(nexTok,0) != :semicolon do
       raise "Syntax Error Semicolon" <> " keyword expected at line " <> Integer.to_string(elem(nexTok,2))
     end
+    if tokens != [] do
       root = %{root | left: statement}
-    {tokens,root}
+      {tokens,root}
+    end
+    {[{:error,"",-1}],nil}
   end
 
   def parseExp(tokens,root) do
