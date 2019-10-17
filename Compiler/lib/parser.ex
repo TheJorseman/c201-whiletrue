@@ -59,7 +59,7 @@ defmodule Parser do
       root = %{root | left: statement}
       {tokens,root}
     end
-    {[{:error,"",-1}],nil}
+    {[{:error,"",elem(nexTok,2)}],nil}
   end
 
   def parseExp(tokens,root) do
