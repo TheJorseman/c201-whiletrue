@@ -9,35 +9,35 @@ defmodule Parser do
     #Check int
     {intKey,tokens} = List.pop_at(tokens,0)
     if elem(intKey,0) != :intKeyword do
-      raise "Syntax Error: int keyword expected at " <> Integer.to_string(elem(intKey,2)) <>" line."
+      raise "Syntax Error: int keyword expected at line " <> Integer.to_string(elem(intKey,2))
     end
     #Check main
     {name,tokens} = List.pop_at(tokens,0)
     if {elem(name,0), elem(name,1)} != {:identifier,"main"} do
-      raise "Syntax Error: main" <> " keyword expected at " <> Integer.to_string(elem(name,2))<>" line."
+      raise "Syntax Error: main" <> " keyword expected at line " <> Integer.to_string(elem(name,2))
     end
     function = %Nodo{name: :function ,value: name}
     #Check (
     {nexTok,tokens }= List.pop_at(tokens,0)
     if elem(nexTok,0) != :openParen do
-      raise "Syntax Error: (" <> " keyword expected at " <> Integer.to_string(elem(nexTok,2)) <>" line."
+      raise "Syntax Error: (" <> " keyword expected at line " <>  Integer.to_string(elem(nexTok,2))
     end
     #Check )
     {nexTok,tokens } = List.pop_at(tokens,0)
     if elem(nexTok,0) != :closeParen do
-      raise "Syntax Error: )" <> " keyword expected at " <> Integer.to_string(elem(nexTok,2)) <>" line."
+      raise "Syntax Error: )" <> " keyword expected at line " <> Integer.to_string(elem(nexTok,2))
     end
     #Check {
     {nexTok,tokens}= List.pop_at(tokens,0)
     if elem(nexTok,0) != :openBrace do
-      raise "Syntax Error: {" <> " keyword expected at " <> Integer.to_string(elem(nexTok,2)) <>" line."
+      raise "Syntax Error: {" <> " keyword expected at line " <> Integer.to_string(elem(nexTok,2))
     end
     #Check Statement
     {tokens,function} = parseStatement(tokens,function)
     #Check }
     {nexTok,tokens}= List.pop_at(tokens,0)
     if elem(nexTok,0) != :closeBrace do
-      raise "Syntax Error: }" <> " keyword expected at " <> Integer.to_string(elem(nexTok,2)) <>" line."
+      raise "Syntax Error: }" <> " keyword expected at line " <> Integer.to_string(elem(nexTok,2))
     end
     root = %{root | left: function }
   end
@@ -45,7 +45,7 @@ defmodule Parser do
   def parseStatement(tokens,root) do
     {nexTok,tokens } = List.pop_at(tokens,0)
     if elem(nexTok,0) != :returnKeyword do
-      raise "Syntax Error return" <> " keyword expected at " <> Integer.to_string(elem(nexTok,2)) <>" line."
+      raise "Syntax Error return" <> " keyword expected at line " <> Integer.to_string(elem(nexTok,2))
     end
     statement = %Nodo{name: :return, value: nexTok}
     #PARSE Exp
@@ -53,7 +53,7 @@ defmodule Parser do
     {nexTok,tokens} = List.pop_at(tokens,0)
     IO.inspect(nexTok)
     if elem(nexTok,0) != :semicolon do
-      raise "Syntax Error Semicolon" <> " keyword expected at " <> Integer.to_string(elem(nexTok,2)) <> " line"
+      raise "Syntax Error Semicolon" <> " keyword expected at line " <> Integer.to_string(elem(nexTok,2))
     end
       root = %{root | left: statement}
     {tokens,root}
@@ -73,7 +73,7 @@ defmodule Parser do
         root = %{root | left: inner_exp}
         {tokens,root}
       else
-        raise "Syntax Error Unary operator" <> " keyword expected at " <> Integer.to_string(elem(nexTok,2)) <>" line."
+        raise "Syntax Error Unary operator" <> " keyword expected at line " <> Integer.to_string(elem(nexTok,2))
       end
     end
   end
