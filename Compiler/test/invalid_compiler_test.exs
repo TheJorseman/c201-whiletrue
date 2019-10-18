@@ -1,10 +1,10 @@
-defmodule COMPILERTest do
+defmodule INVALIDCOMPILERTest do
   use ExUnit.Case
   doctest Compiler
 
   # Invalid tests - week 1
 
-  test "7. Missing parenthesis" do
+  test "1. Missing parenthesis" do
     source_code = """
                     int main( {
                       return 0;
@@ -13,7 +13,7 @@ defmodule COMPILERTest do
     assert Compiler.compiler_test(source_code) == {:error,"Syntax Error: ) keyword expected at line 1"}
   end
 
-  test "8. Missing return value" do
+  test "2. Missing return value" do
     source_code = """
                     int main() {
                       return;
@@ -22,7 +22,7 @@ defmodule COMPILERTest do
     assert Compiler.compiler_test(source_code) == {:error,"Unexpected returnKeyword Token at line 2"}
   end
 
-  test "9. No closing brace" do
+  test "3. No closing brace" do
     source_code = """
                     int main() {
                       return 0;
@@ -31,7 +31,7 @@ defmodule COMPILERTest do
     assert Compiler.compiler_test(source_code) == {:error,"Syntax Error: } keyword expected at line 2"}
   end
 
-  test "10. No semicolon" do
+  test "4. No semicolon" do
     source_code = """
                     int main() {
                       return 0
@@ -40,7 +40,7 @@ defmodule COMPILERTest do
     assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Semicolon keyword expected at line 3"}
   end
 
-  test "11. No space" do
+  test "5. No space" do
     source_code = """
                     int main() {
                       return0;
@@ -49,7 +49,7 @@ defmodule COMPILERTest do
     assert Compiler.compiler_test(source_code) == {:error,"Unexpected returnKeyword Token at line 2"}
   end
 
-  test "12. Wrong case" do
+  test "6. Wrong case" do
     source_code = """
                     int main() {
                       RETURN 0;
@@ -60,7 +60,7 @@ defmodule COMPILERTest do
 
   # Invalid tests - week 2
 
-  test "20. Missing constant" do
+  test "7. Missing constant" do
     source_code = """
                     int main() {
                       return !;
@@ -70,7 +70,7 @@ defmodule COMPILERTest do
   end
 
   # debería marcar error en la línea 2
-  test "21. Missing semicolon" do
+  test "8. Missing semicolon" do
     source_code = """
                     int main() {
                       return !5
@@ -79,7 +79,7 @@ defmodule COMPILERTest do
     assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Semicolon keyword expected at line 3"}
   end
 
-  test "22. Nested operators, missing constant" do
+  test "9. Nested operators, missing constant" do
     source_code = """
                     int main() {
                       return !~;
@@ -88,7 +88,7 @@ defmodule COMPILERTest do
     assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
   end
 
-  test "23. Wrong order" do
+  test "10. Wrong order" do
     source_code = """
                     int main() {
                       return 4-;
