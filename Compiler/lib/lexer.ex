@@ -21,7 +21,7 @@ defmodule Lexer do
     if name in tokens_space do
       check = String.first(sentence)
       if not (check in valid) do
-        raise "Unexpected Token " <> Atom.to_string(name) <> " Token at line " <> Integer.to_string(line)
+        raise "Unexpected " <> Atom.to_string(name) <> " Token at line " <> Integer.to_string(line)
       end
     end
   end

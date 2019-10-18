@@ -61,8 +61,10 @@ defmodule Compiler do
       |> CodeGenerator.generateCode())
       |> Linker.final(assembly)
     IO.puts("Compiled file\n\n")
+    :successfulComp
     rescue
       e in RuntimeError -> IO.puts("Error: " <> e.message )
+      {:error, e.message}
     end
   end
 
@@ -120,5 +122,22 @@ defmodule Compiler do
     |> Enum.map(fn {comman, description} -> IO.puts("  #{comman} - #{description}") end)
   end
 
+
+#Función que genera compilación para pruebas
+def compiler_test(string) do
+
+  try do
+    Lexer.lexer(string)
+    |> IO.inspect(label: "\nLexer output")
+    |> Parser.parseProgram()
+    |> IO.inspect(label: "\nParser output")
+    |> CodeGenerator.generateCode()
+  IO.puts("Compiled file\n\n")
+  :successfulComp
+  rescue
+    e in RuntimeError -> IO.puts("Error: " <> e.message )
+    {:error, e.message}
+  end
+end
 
 end

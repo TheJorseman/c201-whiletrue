@@ -76,7 +76,7 @@ defmodule Parser do
         root = %{root | left: inner_exp}
         {tokens,root}
       else
-        raise "Syntax Error Unary operator" <> " keyword expected at line " <> Integer.to_string(elem(nexTok,2))
+        raise "Syntax Error Unary operator or constant keyword expected at line " <> Integer.to_string(elem(nexTok,2))
       end
     end
   end
