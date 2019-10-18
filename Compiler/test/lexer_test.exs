@@ -58,7 +58,7 @@ defmodule LEXERTest do
 
   end
 
-  # Valid lexer tests week 1-----------------------------------
+  # Lexer valid tests week 1-----------------------------------
 
   test "1. Return 2", state do
     source_code = """
@@ -119,10 +119,7 @@ defmodule LEXERTest do
     assert Lexer.lexer(source_code) == state[:no_newlines]
   end
 
-  #valid test week 2 ---------------------------------------------
-
-  # not_five ok
-  # not_zero ok
+  # Lexer valid tests week 2 --------------------------------------------
 
   test "7. Bitwise zero", state do
     source_code = """
@@ -177,6 +174,26 @@ defmodule LEXERTest do
     assert Lexer.lexer(source_code) == nested
   end
 
+  test "12. Not five", state do
+    source_code = """
+                    int main() {
+                      return !5;
+                    }
+                  """
+    neg = List.update_at(state[:bitwise_0], 6, fn _ -> {:logicalN, "", 2} end)
+    not_5 = List.update_at(neg, 7, fn _ -> {:constant, 5, 2} end)
+    assert Lexer.lexer(source_code) == not_5
+  end
+
+  test "13. Not zero", state do
+    source_code = """
+                    int main() {
+                      return !0;
+                    }
+                  """
+    not_5 = List.update_at(state[:bitwise_0], 6, fn _ -> {:logicalN, "", 2} end)
+    assert Lexer.lexer(source_code) == not_5
+  end
 
 end
 
