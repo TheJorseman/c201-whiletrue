@@ -58,10 +58,10 @@ defmodule Parser do
     if tokens != [] do
       root = %{root | left: statement}
       {tokens,root}
+    else
+      {[{:error,"",elem(nexTok,2)}],nil}
     end
-    {[{:error,"",elem(nexTok,2)}],nil}
   end
-
   def parseExp(tokens,root) do
     {nexTok,tokens}  = List.pop_at(tokens,0)
     currToken = elem(nexTok,0)
