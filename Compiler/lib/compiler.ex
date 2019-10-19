@@ -4,45 +4,23 @@ defmodule Compiler do
   """
   @commands %{
 
-    "\thelp\t" => "Help",
-    "\ta\t" => "Print AST tree",
-    "\ts\t" => "Generate Assembler",
-    "\tt\t" => "Print Token List\n\n\n"
+    "\t-h\t" => "Help",
+    "\t-a\t" => "Print AST tree",
+    "\t-s\t" => "Generate Assembler",
+    "\t-t\t" => "Print Token List\n\n\n"
+    
 
   }
 
   def main(args) do
-    args
-    |> parse_args
-    |> process_args
-  end
+    case args do
+  ["-h"] ->    print_help_message()
+  ["-a",file_name] ->    print_ast(file_name)
+  ["-s",file_name] ->    print_assembler(file_name)
+  ["-t",file_name] ->    print_token_list(file_name)
+  [file_name]      ->     compile_file(file_name)
 
-  def parse_args(args) do
-    OptionParser.parse(args, switches: [help: :boolean])
-  end
-
-  defp process_args({_ ,["help"], _}) do
-    print_help_message()
-  end
-
-  defp process_args({_ ,["-"], _}) do
-    print_tutorial_message()
-  end
-
-  defp process_args({_, [file_name], _}) do
-    compile_file(file_name)
-  end
-
-  defp process_args({_, ["t", file_name], _}) do
-    print_token_list(file_name)
-  end
-
-  defp process_args({_, ["a", file_name], _}) do
-    print_ast(file_name)
-  end
-
-  defp process_args({_, ["s", file_name], _}) do
-    print_assembler(file_name)
+    end
   end
 
 #Función que genera todo el proceso de compilación
