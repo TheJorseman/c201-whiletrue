@@ -5,10 +5,10 @@ defmodule CodeGenerator do
             nil ->
                 nil
             ast_nodo ->
-                IO.inspect(ast_nodo)
+              # IO.inspect(ast_nodo)
                 code = posorder(ast_nodo.left)
                 #posorder(ast_nodo.right)
-                IO.inspect(ast_nodo)
+              # IO.inspect(ast_nodo)
                 getCode(ast_nodo.name,ast_nodo.value,code)
         end
     end
@@ -57,7 +57,6 @@ defmodule CodeGenerator do
         "
 
         #{code}
-
         "
     end
 

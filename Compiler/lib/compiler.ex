@@ -6,15 +6,15 @@ defmodule Compiler do
 
     "\t-h\t" => "Help",
     "\t-a\t" => "Print AST tree",
+    "\t->\t" => "Tutorial",
     "\t-s\t" => "Generate Assembler",
     "\t-t\t" => "Print Token List\n\n\n"
-    
-
   }
 
   def main(args) do
     case args do
   ["-h"] ->    print_help_message()
+  ["->"] ->    print_tutorial_message()
   ["-a",file_name] ->    print_ast(file_name)
   ["-s",file_name] ->    print_assembler(file_name)
   ["-t",file_name] ->    print_token_list(file_name)
@@ -50,20 +50,32 @@ defmodule Compiler do
 #Función que imprime la lista de tokens
   def print_token_list(file_path) do
     IO.puts("Compiling file: " <> file_path)
-
+   try do
     File.read!(file_path)
     |> Lexer.lexer()
     |> IO.inspect(label: "\nLexer output")
+   IO.puts("\n")
+  :successfulComp
+    rescue
+      e in RuntimeError -> IO.puts("Error: " <> e.message )
+      {:error, e.message}
+    end
   end
 
 #Función que imprime el árbol AST
   defp print_ast(file_path) do
     IO.puts("Compiling file: " <> file_path)
-
+   try do
     File.read!(file_path)
     |> Lexer.lexer()
     |> Parser.parseProgram()
     |> IO.inspect(label: "\nParser output")
+   IO.puts("\n")
+  :successfulComp
+    rescue
+      e in RuntimeError -> IO.puts("Error: " <> e.message )
+      {:error, e.message}
+    end
   end
 
 #Función que imprime el ensamblador y genera el archivo
@@ -71,15 +83,19 @@ defmodule Compiler do
     IO.puts("Compiling file: " <> file_path)
     assembly = String.replace_trailing(file_path, ".c", ".s")
 
-
+     try do
       File.read!(file_path)
-
       File.write!(assembly,File.read!(file_path)
       |> Lexer.lexer()
       |> Parser.parseProgram()
       |> CodeGenerator.generateCode())
         IO.puts ("Generated file\n\n")
-
+     IO.puts("\n")
+    :successfulComp
+     rescue
+      e in RuntimeError -> IO.puts("Error: " <> e.message )
+      {:error, e.message}
+     end
   end
 
 #Función que muestra ayuda
