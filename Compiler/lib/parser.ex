@@ -1,7 +1,7 @@
 defmodule Parser do
 
   def parseProgram(tokens) do
-    root = %Nodo{name: :program, value: :program }
+    root = %Nodo{name: :program}
     function = parseFunction(tokens)
     %{root | left: function }
     #IO.inspect(root)
@@ -112,7 +112,8 @@ defmodule Parser do
     currToken = elem(nexTok,0)
     #IO.inspect(currToken)
     cond do
-      currToken == :openParen ->
+      currToken == :openParen ->            print = sep <> Atom.to_string(ast_nodo.value)
+      IO.puts(print)
         # ( <exp> )
         composed = %Nodo{name: currToken, value: nexTok}
         #{tokens,exp} = parseExp(tokens,composed)
