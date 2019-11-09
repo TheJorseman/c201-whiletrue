@@ -18,7 +18,7 @@ defmodule Parser do
     if {elem(name,0), elem(name,1)} != {:identifier,"main"} do
       raise "Syntax Error: main" <> " keyword expected at line " <> Integer.to_string(elem(name,2))
     end
-    function = %Nodo{name: :function , value: name}
+    function = %Nodo{name: :function ,value: name}
     #Check (
     {nexTok,tokens }= List.pop_at(tokens,0)
     if elem(nexTok,0) != :openParen do
@@ -112,8 +112,7 @@ defmodule Parser do
     currToken = elem(nexTok,0)
     #IO.inspect(currToken)
     cond do
-      currToken == :openParen ->            print = sep <> Atom.to_string(ast_nodo.value)
-      IO.puts(print)
+      currToken == :openParen ->
         # ( <exp> )
         composed = %Nodo{name: currToken, value: nexTok}
         #{tokens,exp} = parseExp(tokens,composed)
