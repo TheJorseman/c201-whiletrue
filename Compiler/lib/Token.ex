@@ -28,12 +28,22 @@ defmodule Token do
   @spec intKeyword(integer) :: token
   def intKeyword(line), do: {:intKeyword,"",line}
 
-  @spec negation(integer) :: token
-  def negation(line), do: {:negation,"",line}
+  @spec negation_minus(integer) :: token
+  def negation_minus(line), do: {:negation_minus,"",line}
 
   @spec bitwiseN(integer) :: token
   def bitwiseN(line), do: {:bitwiseN,"",line}
 
   @spec logicalN(integer) :: token
   def logicalN(line), do: {:logicalN,"",line}
+
+  @spec addition(integer) :: token
+  def addition(line), do: {:addition,"",line}
+
+  @spec multiplication(integer) :: token
+  def multiplication(line), do: {:multiplication,"",line}
+
+  @spec division(integer) :: token
+  def division(line), do: {:division,"",line}
+
 end
