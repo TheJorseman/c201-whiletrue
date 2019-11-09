@@ -26,24 +26,24 @@ defmodule Token do
   def constant(value,line), do: {:constant,value,line}
 
   @spec intKeyword(integer) :: token
-  def intKeyword(line), do: {:intKeyword,"",line}
+  def intKeyword(line), do: {:intKeyword,"int",line}
 
   @spec negation_minus(integer) :: token
-  def negation_minus(line), do: {:negation_minus,"",line}
+  def negation_minus(line), do: {:negation_minus,"-",line}
 
   @spec bitwiseN(integer) :: token
-  def bitwiseN(line), do: {:bitwiseN,"",line}
+  def bitwiseN(line), do: {:bitwiseN,"~",line}
 
   @spec logicalN(integer) :: token
-  def logicalN(line), do: {:logicalN,"",line}
+  def logicalN(line), do: {:logicalN,"!",line}
 
   @spec addition(integer) :: token
-  def addition(line), do: {:addition,"",line}
+  def addition(line), do: {:addition,"+",line}
 
   @spec multiplication(integer) :: token
-  def multiplication(line), do: {:multiplication,"",line}
+  def multiplication(line), do: {:multiplication,"*",line}
 
   @spec division(integer) :: token
-  def division(line), do: {:division,"",line}
+  def division(line), do: {:division,"/",line}
 
 end
