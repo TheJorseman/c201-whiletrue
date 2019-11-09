@@ -1,11 +1,13 @@
 defmodule Parser do
 
   def parseProgram(tokens) do
-    root = %Nodo{name: :program }
-    root = parseFunction(tokens,root)
+    root = %Nodo{name: :program, value: :program }
+    function = parseFunction(tokens)
+    %{root | left: function }
+    #IO.inspect(root)
   end
 
-  def parseFunction(tokens,root) do
+  def parseFunction(tokens) do
     #Check int
     {intKey,tokens} = List.pop_at(tokens,0)
     if elem(intKey,0) != :intKeyword do
@@ -16,7 +18,7 @@ defmodule Parser do
     if {elem(name,0), elem(name,1)} != {:identifier,"main"} do
       raise "Syntax Error: main" <> " keyword expected at line " <> Integer.to_string(elem(name,2))
     end
-    function = %Nodo{name: :function ,value: name}
+    function = %Nodo{name: :function , value: name}
     #Check (
     {nexTok,tokens }= List.pop_at(tokens,0)
     if elem(nexTok,0) != :openParen do
@@ -27,65 +29,118 @@ defmodule Parser do
     if elem(nexTok,0) != :closeParen do
       raise "Syntax Error: )" <> " keyword expected at line " <> Integer.to_string(elem(nexTok,2))
     end
-    #Check {
+    #Check {      #{_,tokens}  = List.pop_at(tokens,0)
     {nexTok,tokens}= List.pop_at(tokens,0)
     if nexTok == nil or elem(nexTok,0) != :openBrace do
       raise "Syntax Error: {" <> " keyword expected at line " <> Integer.to_string(elem(nexTok,2))
     end
     #Check Statement
-    {tokens,function} = parseStatement(tokens,function)
+    {tokens,statement} = parseStatement(tokens)
+    function = %{function | left: statement}
     #IO.inspect(tokens)
     #Check }
-    {nexTok,tokens}= List.pop_at(tokens,0)
+    {nexTok,_}= List.pop_at(tokens,0)
     if elem(nexTok,0) != :closeBrace do
       raise "Syntax Error: }" <> " keyword expected at line " <> Integer.to_string(elem(nexTok,2))
     end
-    root = %{root | left: function }
+    function
   end
 
-  def parseStatement(tokens,root) do
+  def parseStatement(tokens) do
     {nexTok,tokens } = List.pop_at(tokens,0)
     if elem(nexTok,0) != :returnKeyword do
       raise "Syntax Error return" <> " keyword expected at line " <> Integer.to_string(elem(nexTok,2))
     end
     statement = %Nodo{name: :return, value: nexTok}
     #PARSE Exp
-    {tokens,statement} = parseExp(tokens,statement)
+    {tokens,exp} = parseExp(tokens)
+    statement = %{statement | left: exp}
     {nexTok,tokens} = List.pop_at(tokens,0)
     if elem(nexTok,0) != :semicolon do
       raise "Syntax Error Semicolon" <> " keyword expected at line " <> Integer.to_string(elem(nexTok,2))
     end
     if tokens != [] do
-      root = %{root | left: statement}
-      {tokens,root}
+      {tokens,statement}
     else
       {[{:error,"",elem(nexTok,2)}],nil}
     end
   end
-  def parseExp(tokens,root) do
+
+
+  def parseExp(tokens) do
+    IO.puts("ParseExp")
+    # <term> { (+ | - ) <term> }
+    {tokens,term} = parseTerm(tokens);
+    while_parse(tokens,term,[:addition,:negation_minus],:parseTerm)
+  end
+
+  def while_parse(tokens,term,list,function) when tokens != [] do
+    [head | tail ] = tokens
+    nextToken = elem(head,0)
+    if nextToken in list do
+      tokens = tail
+      cond do
+        function == :parseTerm ->
+          {tokens,nextTerm} = parseTerm(tokens)
+          binary_op = %Nodo{name: nextToken, value: head, left: term, right: nextTerm}
+          #IO.inspect(binary_op)
+          while_parse(tokens,binary_op,list,function)
+        function == :parseFactor ->
+          {tokens,nextTerm} = parseFactor(tokens)
+          binary_op = %Nodo{name: nextToken, value: head, left: term, right: nextTerm}
+          #IO.inspect(binary_op)
+          while_parse(tokens,binary_op,list,function)
+        true ->
+          raise "Error: el programador puso mal la funcion :("
+      end
+    else
+      {tokens,term}
+    end
+  end
+
+  def parseTerm(tokens) do
+    IO.puts("ParseTerm")
+    #<factor> {( * | / )  <factor>}
+    {tokens,factor} = parseFactor(tokens);
+    while_parse(tokens,factor,[:multiplication,:division],:parseFactor)
+  end
+
+  def parseFactor(tokens) do
+    #IO.puts("ParseFactor")
+    # ( <exp> ) | <unary_op> <factor> | <int>
     {nexTok,tokens}  = List.pop_at(tokens,0)
     currToken = elem(nexTok,0)
-    if currToken == :constant do
-      constant = %Nodo{name: :constant, value: nexTok}
-      root = %{root | left: constant}
-      {tokens,root}
-    else
-      if check_unary_op(currToken) == True do
-        exp = %Nodo{name: currToken, value: nexTok}
-        {tokens,inner_exp} = parseExp(tokens,exp)
-        root = %{root | left: inner_exp}
-        {tokens,root}
-      else
+    #IO.inspect(currToken)
+    cond do
+      currToken == :openParen ->
+        # ( <exp> )
+        composed = %Nodo{name: currToken, value: nexTok}
+        #{tokens,exp} = parseExp(tokens,composed)
+        #Ccheck if ")"
+        {nexTok,tokens}  = List.pop_at(tokens,0)
+        currToken = elem(nexTok,0)
+        if currToken != :closeParen do
+          raise "Syntax Error close paren"
+        end
+        {tokens,composed}
+      check_unary_op(currToken) == True ->
+        unary = %Nodo{name: currToken, value: nexTok}
+        {tokens,inner_exp} = parseFactor(tokens)
+        unary = %{unary | left: inner_exp}
+        {tokens,unary}
+      currToken == :constant ->
+        constant = %Nodo{name: :constant, value: nexTok}
+        {tokens,constant}
+      true ->
         raise "Syntax Error Unary operator or constant keyword expected at line " <> Integer.to_string(elem(nexTok,2))
-      end
     end
   end
   def check_unary_op(currToken) do
-    if currToken == :negation or currToken == :bitwiseN or currToken == :logicalN do
+    if currToken == :negation_minus or currToken == :bitwiseN or currToken == :logicalN do
       True
     else
       False
     end
   end
-
 end
+
