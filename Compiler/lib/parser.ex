@@ -114,15 +114,16 @@ defmodule Parser do
     cond do
       currToken == :openParen ->
         # ( <exp> )
-        composed = %Nodo{name: currToken, value: nexTok}
-        #{tokens,exp} = parseExp(tokens,composed)
+        #composed = %Nodo{name: currToken, value: nexTok}
+        {tokens,exp} = parseExp(tokens)
+        #composed = %{composed | left: exp}
         #Ccheck if ")"
         {nexTok,tokens}  = List.pop_at(tokens,0)
         currToken = elem(nexTok,0)
         if currToken != :closeParen do
           raise "Syntax Error close paren"
         end
-        {tokens,composed}
+        {tokens,exp}
       check_unary_op(currToken) == True ->
         unary = %Nodo{name: currToken, value: nexTok}
         {tokens,inner_exp} = parseFactor(tokens)
