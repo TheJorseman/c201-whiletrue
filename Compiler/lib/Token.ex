@@ -36,4 +36,13 @@ defmodule Token do
 
   @spec logicalN(integer) :: token
   def logicalN(line), do: {:logicalN,"",line}
+
+  @spec addition(integer) :: token
+  def addition(line), do: {:addition,"",line}
+
+  @spec multiplication(integer) :: token
+  def multiplication(line), do: {:multiplication,"",line}
+
+  @spec division(integer) :: token
+  def division(line), do: {:division,"",line}
 end

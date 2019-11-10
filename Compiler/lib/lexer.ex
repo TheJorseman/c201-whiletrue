@@ -60,6 +60,12 @@ defmodule Lexer do
         tokensRemaining(data,Token.bitwiseN(number_line),~r/^~/)
       String.match?(sentence,~r/^!/) ->
         tokensRemaining(data,Token.logicalN(number_line),~r/^!/)
+      String.match?(sentence,~r/^\+/) ->
+          tokensRemaining(data,Token.addition(number_line),~r/^\+/)
+      String.match?(sentence,~r/^\*/) ->
+          tokensRemaining(data,Token.multiplication(number_line),~r/^\*/)
+      String.match?(sentence,~r/^\//) ->
+          tokensRemaining(data,Token.division(number_line),~r/^\//)
       sentence == "" -> []
       sentence == " "-> []
       true ->
