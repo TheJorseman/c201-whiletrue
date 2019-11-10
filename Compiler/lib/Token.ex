@@ -55,11 +55,11 @@ defmodule Token do
   @spec equal(integer) :: token
   def equal(line), do: {:equal,"==",line}
 
-  @spec notequal(integer) :: token
-  def notequal(line), do: {:notequal,"!=",line}
+  @spec notEqual(integer) :: token
+  def notEqual(line), do: {:notEqual,"!=",line}
 
-  @spec lessthan(integer) :: token
-  def lessthan(line), do: {:lessthan,"<",line}
+  @spec lessThan(integer) :: token
+  def lessThan(line), do: {:lessThan,"<",line}
 
   @spec lessThanEq(integer) :: token
   def lessThanEq(line), do: {:lessThanEq,"!=",line}
