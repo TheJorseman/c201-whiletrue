@@ -170,7 +170,7 @@ defmodule Parser do
         {nexTok,tokens}  = List.pop_at(tokens,0)
         currToken = elem(nexTok,0)
         if currToken != :closeParen do
-          raise "Syntax Error close paren"
+          raise "Syntax Error '(' keyword expected at line " <> Integer.to_string(elem(nexTok,2))
         end
         {tokens,exp}
       check_unary_op(currToken) == True ->
