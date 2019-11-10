@@ -82,6 +82,8 @@ defmodule Lexer do
         tokensRemaining(data,Token.greaterThanEq(number_line),~r/^>=/)
       String.match?(sentence,~r/^>/) ->
         tokensRemaining(data,Token.greaterThan(number_line),~r/^>/)
+      String.match?(sentence,~r/^=/) ->
+        tokensRemaining(data,Token.greaterThan(number_line),~r/^=/)
       sentence == "" -> []
       sentence == " "-> []
       true ->

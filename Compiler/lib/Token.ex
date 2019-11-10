@@ -62,13 +62,13 @@ defmodule Token do
   def lessThan(line), do: {:lessThan,"<",line}
 
   @spec lessThanEq(integer) :: token
-  def lessThanEq(line), do: {:lessThanEq,"!=",line}
+  def lessThanEq(line), do: {:lessThanEq,"<=",line}
 
   @spec greaterThan(integer) :: token
-  def greaterThan(line), do: {:greaterThan,"!=",line}
+  def greaterThan(line), do: {:greaterThan,">",line}
 
   @spec greaterThanEq(integer) :: token
-  def greaterThanEq(line), do: {:greaterThanEq,"!=",line}
+  def greaterThanEq(line), do: {:greaterThanEq,">=",line}
 
   @spec assignment(integer) :: token
   def assignment(line), do: {:assignment,"=",line}
