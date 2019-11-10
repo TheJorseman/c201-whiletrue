@@ -69,22 +69,20 @@ defmodule Parser do
   end
 
   def parseExp(tokens) do
-    IO.puts("ParseExp")
-    # <relational-exp> { != | == <relational-exp>}
+    #IO.puts("ParseExp")
+    # <parseLogicalAndExp> { || <parseLogicalAndExp>}
     {tokens,term} = parseLogicalAndExp(tokens);
     while_parse(tokens,term,[:orT],:parseLogicalAndExp)
   end
 
   def parseLogicalAndExp(tokens) do
-    IO.puts("ParseExp")
-    # <relational-exp> { != | == <relational-exp>}
+    # <parseEqualityExp> { && <parseEqualityExp>}
     {tokens,term} = parseEqualityExp(tokens);
     while_parse(tokens,term,[:andT],:parseEqualityExp)
   end
 
 
   def parseEqualityExp(tokens) do
-    IO.puts("ParseExp")
     # <relational-exp> { != | == <relational-exp>}
     {tokens,term} = parseRelationalExp(tokens);
     while_parse(tokens,term,[:equal, :notEqual],:parseRelationalExp)
@@ -92,7 +90,6 @@ defmodule Parser do
 
 
   def parseRelationalExp(tokens) do
-    IO.puts("ParseExp")
     # <additive-exp> { <|>|>=|<= <additive-exp>}
     {tokens,term} = parseAdditiveExp(tokens);
     while_parse(tokens,term,[:lessThan, :greaterThan, :greaterThanEq, :lessThanEq],:parseAdditiveExp)
@@ -121,7 +118,10 @@ defmodule Parser do
           #IO.inspect(binary_op)
           while_parse(tokens,binary_op,list,function)
         function == :parseRelationalExp ->
+          IO.inspect(head)
+          IO.inspect(nextToken)
           {tokens,nextTerm} = parseRelationalExp(tokens)
+          IO.inspect(nextTerm)
           binary_op = %Nodo{name: nextToken, value: head, left: term, right: nextTerm}
           #IO.inspect(binary_op)
           while_parse(tokens,binary_op,list,function)
@@ -149,7 +149,6 @@ defmodule Parser do
   end
 
   def parseTerm(tokens) do
-    IO.puts("ParseTerm")
     #<factor> {( * | / )  <factor>}
     {tokens,factor} = parseFactor(tokens);
     while_parse(tokens,factor,[:multiplication,:division],:parseFactor)
