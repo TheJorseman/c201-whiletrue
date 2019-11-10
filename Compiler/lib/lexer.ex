@@ -27,7 +27,7 @@ defmodule Lexer do
   end
 
   def getTokens(data) do
-    IO.inspect(data)
+    #IO.inspect(data)
     sentence = elem(data,0)
     number_line = elem(data,1)
 
@@ -71,14 +71,10 @@ defmodule Lexer do
   end
 
   def lexer(rawText) do
-    IO.inspect(rawText)
+    #IO.inspect(rawText)
     listFormat = sanitize(rawText)
     #IO.inspect(listFormat)
     listTokens = Enum.flat_map(listFormat,&getTokens/1)
-    IO.inspect(listTokens)
+    #IO.inspect(listTokens)
   end
 end
-
-
-
-

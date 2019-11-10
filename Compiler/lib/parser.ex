@@ -34,7 +34,7 @@ defmodule Parser do
     end
     #Check Statement
     {tokens,function} = parseStatement(tokens,function)
-    IO.inspect(tokens)
+    #IO.inspect(tokens)
     #Check }
     {nexTok,tokens}= List.pop_at(tokens,0)
     if elem(nexTok,0) != :closeBrace do
