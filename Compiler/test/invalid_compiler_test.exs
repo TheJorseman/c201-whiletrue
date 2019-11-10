@@ -93,7 +93,7 @@ defmodule INVALIDCOMPILERTest do
                       return 4-;
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Semicolon keyword expected at line 2"}
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
   end
 
   # Invalid tests - week 3
@@ -113,7 +113,7 @@ defmodule INVALIDCOMPILERTest do
                       return /3;
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Semicolon keyword expected at line 2"}
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
   end
 
   test "13. Missing second op" do
@@ -122,7 +122,7 @@ defmodule INVALIDCOMPILERTest do
                       return 1 + ;
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Semicolon keyword expected at line 2"}
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
   end
 
   test "14. No semicolon" do
