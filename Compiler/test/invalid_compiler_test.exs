@@ -69,7 +69,6 @@ defmodule INVALIDCOMPILERTest do
     assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
   end
 
-  # debería marcar error en la línea 2
   test "8. Missing semicolon" do
     source_code = """
                     int main() {
@@ -94,9 +93,46 @@ defmodule INVALIDCOMPILERTest do
                       return 4-;
                     }
                   """
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
+  end
+
+  # Invalid tests - week 3
+
+  test "11. Malformed paren" do
+    source_code = """
+                    int main() {
+                      return 2 (- 3);
+                    }
+                  """
     assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Semicolon keyword expected at line 2"}
   end
 
+  test "12. Missing first op" do
+    source_code = """
+                    int main() {
+                      return /3;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
+  end
+
+  test "13. Missing second op" do
+    source_code = """
+                    int main() {
+                      return 1 + ;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
+  end
+
+  test "14. No semicolon" do
+    source_code = """
+                    int main() {
+                      return 2*2
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Semicolon keyword expected at line 2"}
+  end
 end
 
 

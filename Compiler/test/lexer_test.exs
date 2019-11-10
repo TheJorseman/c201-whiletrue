@@ -7,7 +7,7 @@ defmodule LEXERTest do
 
     # week 1
 
-    tok_ret_2: [{:intKeyword, "", 1},
+    tok_ret_2: [{:intKeyword, "int", 1},
                 {:identifier, "main", 1},
                 {:openParen, "", 1},
                 {:closeParen, "", 1},
@@ -18,7 +18,7 @@ defmodule LEXERTest do
                 {:closeBrace, "", 3}
     ],
 
-    no_newlines: [{:intKeyword, "", 1},
+    no_newlines: [{:intKeyword, "int", 1},
                 {:identifier, "main", 1},
                 {:openParen, "", 1},
                 {:closeParen, "", 1},
@@ -29,7 +29,7 @@ defmodule LEXERTest do
                 {:closeBrace, "", 1}
     ],
 
-    newlines: [{:intKeyword, "", 2},
+    newlines: [{:intKeyword, "int", 2},
                 {:identifier, "main", 3},
                 {:openParen, "", 4},
                 {:closeParen, "", 5},
@@ -42,13 +42,13 @@ defmodule LEXERTest do
 
     # week 2
 
-    bitwise_0: [{:intKeyword, "", 1},
+    bitwise_0: [{:intKeyword, "int", 1},
                 {:identifier, "main", 1},
                 {:openParen, "", 1},
                 {:closeParen, "", 1},
                 {:openBrace, "", 1},
                 {:returnKeyword, "", 2},
-                {:bitwiseN, "", 2},
+                {:bitwiseN, "~", 2},
                 {:constant, 0, 2},
                 {:semicolon, "", 2},
                 {:closeBrace, "", 3}
@@ -136,7 +136,7 @@ defmodule LEXERTest do
                       return !12;
                     }
                   """
-    bitwise = List.update_at(state[:bitwise_0], 6, fn _ -> {:logicalN, "", 2} end)
+    bitwise = List.update_at(state[:bitwise_0], 6, fn _ -> {:logicalN, "!", 2} end)
     bitwise_12 = List.update_at(bitwise, 7, fn _ -> {:constant, 12, 2} end)
     assert Lexer.lexer(source_code) == bitwise_12
   end
@@ -147,7 +147,7 @@ defmodule LEXERTest do
                       return -5;
                     }
                   """
-    neg = List.update_at(state[:bitwise_0], 6, fn _ -> {:negation, "", 2} end)
+    neg = List.update_at(state[:bitwise_0], 6, fn _ -> {:negation_minus, "-", 2} end)
     neg_5 = List.update_at(neg, 7, fn _ -> {:constant, 5, 2} end)
     assert Lexer.lexer(source_code) == neg_5
   end
@@ -158,8 +158,8 @@ defmodule LEXERTest do
                       return !-3;
                     }
                   """
-    log = List.update_at(state[:bitwise_0], 6, fn _ -> {:logicalN, "", 2} end)
-    neg = List.insert_at(log, 7, {:negation, "", 2})
+    log = List.update_at(state[:bitwise_0], 6, fn _ -> {:logicalN, "!", 2} end)
+    neg = List.insert_at(log, 7, {:negation_minus, "-", 2})
     nested_3 = List.update_at(neg, 8, fn _ -> {:constant, 3, 2} end)
     assert Lexer.lexer(source_code) == nested_3
   end
@@ -170,7 +170,7 @@ defmodule LEXERTest do
                       return -~0;
                     }
                   """
-    nested = List.insert_at(state[:bitwise_0], 6, {:negation, "", 2})
+    nested = List.insert_at(state[:bitwise_0], 6, {:negation_minus, "-", 2})
     assert Lexer.lexer(source_code) == nested
   end
 
@@ -180,7 +180,7 @@ defmodule LEXERTest do
                       return !5;
                     }
                   """
-    neg = List.update_at(state[:bitwise_0], 6, fn _ -> {:logicalN, "", 2} end)
+    neg = List.update_at(state[:bitwise_0], 6, fn _ -> {:logicalN, "!", 2} end)
     not_5 = List.update_at(neg, 7, fn _ -> {:constant, 5, 2} end)
     assert Lexer.lexer(source_code) == not_5
   end
@@ -191,7 +191,7 @@ defmodule LEXERTest do
                       return !0;
                     }
                   """
-    not_5 = List.update_at(state[:bitwise_0], 6, fn _ -> {:logicalN, "", 2} end)
+    not_5 = List.update_at(state[:bitwise_0], 6, fn _ -> {:logicalN, "!", 2} end)
     assert Lexer.lexer(source_code) == not_5
   end
 
