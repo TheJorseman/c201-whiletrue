@@ -50,8 +50,9 @@ defmodule Lexer do
         #Try to cast the string into integer
         value = String.to_integer(number)
         tokensRemaining(data,Token.constant(value,number_line),~r/^\d{1,}/)
-      String.match?(sentence,~r/^main/) ->
-        tokensRemaining(data,Token.identifier("main",number_line),~r/^main/)
+      String.match?(sentence,~r/^[a-zA-Z]\w*/)->
+        [[name]] = Regex.scan(~r/^[a-zA-Z]\w*/,sentence)
+        tokensRemaining(data,Token.identifier(name,number_line),~r/^[a-zA-Z]\w*/)
       String.match?(sentence,~r/^;/) ->
         tokensRemaining(data,Token.semicolon(number_line),~r/^;/)
       String.match?(sentence,~r/^!=/) ->
@@ -83,7 +84,7 @@ defmodule Lexer do
       String.match?(sentence,~r/^>/) ->
         tokensRemaining(data,Token.greaterThan(number_line),~r/^>/)
       String.match?(sentence,~r/^=/) ->
-        tokensRemaining(data,Token.greaterThan(number_line),~r/^=/)
+        tokensRemaining(data,Token.assignment(number_line),~r/^=/)
       sentence == "" -> []
       sentence == " "-> []
       true ->
