@@ -55,11 +55,18 @@ defmodule Lexer do
       String.match?(sentence,~r/^;/) ->
         tokensRemaining(data,Token.semicolon(number_line),~r/^;/)
       String.match?(sentence,~r/^-/) ->
-        tokensRemaining(data,Token.negation(number_line),~r/^-/)
+        tokensRemaining(data,Token.negation_minus(number_line),~r/^-/)
       String.match?(sentence,~r/^~/) ->
         tokensRemaining(data,Token.bitwiseN(number_line),~r/^~/)
       String.match?(sentence,~r/^!/) ->
         tokensRemaining(data,Token.logicalN(number_line),~r/^!/)
+      String.match?(sentence,~r/^\+/) ->
+        tokensRemaining(data,Token.addition(number_line),~r/^\+/)
+      String.match?(sentence,~r/^\*/) ->
+        tokensRemaining(data,Token.multiplication(number_line),~r/\*/)
+      String.match?(sentence,~r/^\//) ->
+        tokensRemaining(data,Token.division(number_line),~r/^\//)
+
       sentence == "" -> []
       sentence == " "-> []
       true ->
@@ -74,7 +81,7 @@ defmodule Lexer do
     #IO.inspect(rawText)
     listFormat = sanitize(rawText)
     #IO.inspect(listFormat)
-    listTokens = Enum.flat_map(listFormat,&getTokens/1)
+    Enum.flat_map(listFormat,&getTokens/1)
     #IO.inspect(listTokens)
   end
 end
