@@ -70,4 +70,6 @@ defmodule Token do
   @spec greaterThanEq(integer) :: token
   def greaterThanEq(line), do: {:greaterThanEq,"!=",line}
 
+  @spec assignment(integer) :: token
+  def assignment(line), do: {:assignment,"=",line}
 end
