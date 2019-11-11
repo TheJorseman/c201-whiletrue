@@ -490,59 +490,76 @@ defmodule LEXERTest do
     assert Lexer.lexer(source_code) == le3
   end
 
-  # test "35. Le true" do
-  #   source_code = """
-  #                   int main() {
-  #                     return 0 <= 2;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) ==
-  # end
+  test "35. Le true", state do
+    source_code = """
+                    int main() {
+                      return 0 <= 2;
+                    }
+                  """
+    le1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:lessThanEq, "!=", 2} end)
+    le2 = List.update_at(le1, 6, fn _ -> {:constant, 0, 2} end)
+    assert Lexer.lexer(source_code) == le2
+  end
 
-  # test "36. Lt false" do
-  #   source_code = """
-  #                   int main() {
-  #                     return 2 < 1;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) ==
-  # end
+  test "36. Lt false", state do
+    source_code = """
+                    int main() {
+                      return 2 < 1;
+                    }
+                  """
+    lt1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:lessThan, "<", 2} end)
+    lt2 = List.update_at(lt1, 6, fn _ -> {:constant, 2, 2} end)
+    lt3 = List.update_at(lt2, 8, fn _ -> {:constant, 1, 2} end)
+    assert Lexer.lexer(source_code) == lt3
+  end
 
-  # test "37. Lt true" do
-  #   source_code = """
-  #                   int main() {
-  #                     return 1 < 2;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) ==
-  # end
+  test "37. Lt true", state do
+    source_code = """
+                    int main() {
+                      return 1 < 2;
+                    }
+                  """
+    lt1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:lessThan, "<", 2} end)
+    assert Lexer.lexer(source_code) == lt1
+  end
 
-  # test "38. Ne false" do
-  #   source_code = """
-  #                   int main() {
-  #                     return 0 != 0;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) ==
-  # end
+  test "38. Ne false", state do
+    source_code = """
+                    int main() {
+                      return 0 != 0;
+                    }
+                  """
+    ne1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:notEqual, "!=", 2} end)
+    ne2 = List.update_at(ne1, 6, fn _ -> {:constant, 0, 2} end)
+    ne3 = List.update_at(ne2, 8, fn _ -> {:constant, 0, 2} end)
+    assert Lexer.lexer(source_code) == ne3
+  end
 
-  # test "39. Ne true" do
-  #   source_code = """
-  #                   int main() {
-  #                     return -1 != -2;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) ==
-  # end
+  test "39. Ne true", state do
+    source_code = """
+                    int main() {
+                      return -1 != -2;
+                    }
+                  """
+    ne1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:notEqual, "!=", 2} end)
+    ne2 = List.update_at(ne1, 6, fn _ -> {:constant, 1, 2} end)
+    ne3 = List.update_at(ne2, 8, fn _ -> {:constant, 2, 2} end)
+    ne4 = List.insert_at(ne3, 6, {:negation_minus, "-", 2})
+    ne5 = List.insert_at(ne4, 9, {:negation_minus, "-", 2})
+    assert Lexer.lexer(source_code) == ne5
+  end
 
-  # test "40. Or false" do
-  #   source_code = """
-  #                   int main() {
-  #                     return 0 || 0;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) ==
-  # end
+  test "40. Or false", state do
+    source_code = """
+                    int main() {
+                      return 0 || 0;
+                    }
+                  """
+    or1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:orT, "||", 2} end)
+    or2 = List.update_at(or1, 6, fn _ -> {:constant, 0, 2} end)
+    or3 = List.update_at(or2, 8, fn _ -> {:constant, 0, 2} end)
+    assert Lexer.lexer(source_code) == or3
+  end
 
   # test "41. Or true" do
   #   source_code = """
