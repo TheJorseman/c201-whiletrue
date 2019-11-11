@@ -392,185 +392,193 @@ defmodule LEXERTest do
 
   # Valid tests week 4  --------------------------------------------
 
-  test "26. And false" do
+  test "26. And false", state do
     source_code = """
                     int main() {
                       return 1 && 0;
                     }
                   """
-    assert Lexer.lexer ==
+    and1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:andT, "&&", 2} end)
+    and2 = List.update_at(and1, 8, fn _ -> {:constant, 0, 2} end)
+    assert Lexer.lexer(source_code) == and2
   end
 
-  test "27. And true" do
+  test "27. And true", state do
     source_code = """
                     int main() {
                       return 1 && -1;
                     }
                   """
-    assert Lexer.lexer ==
+    and1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:andT, "&&", 2} end)
+    and2 = List.update_at(and1, 8, fn _ -> {:constant, 1, 2} end)
+    and3 = List.insert_at(and2, 8, {:negation_minus, "-", 2})
+    assert Lexer.lexer(source_code) == and3
   end
 
-  test "28. Eq false" do
+  test "28. Eq false", state do
     source_code = """
                     int main() {
                       return 1 == 2;
                     }
                   """
-    assert Lexer.lexer ==
+    eq1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:equal, "==", 2} end)
+    assert Lexer.lexer(source_code) == eq1
   end
 
-  test "29. Eq true" do
+  test "29. Eq true", state do
     source_code = """
                     int main() {
                       return 1 == 1;
                     }
                   """
-    assert Lexer.lexer ==
+    eq1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:equal, "==", 2} end)
+    eq2 = List.update_at(eq1, 8, fn _ -> {:constant, 1, 2} end)
+    assert Lexer.lexer(source_code) == eq2
   end
 
-  test "30. Ge false" do
-    source_code = """
-                    int main() {
-                      return 1 >= 2;
-                    }
-                  """
-    assert Lexer.lexer ==
-  end
+  # test "30. Ge false" do
+  #   source_code = """
+  #                   int main() {
+  #                     return 1 >= 2;
+  #                   }
+  #                 """
+  #   assert Lexer.lexer(source_code) ==
+  # end
 
-  test "31. Ge true" do
-    source_code = """
-                    int main() {
-                      return 1 >= 1;
-                    }
-                  """
-    assert Lexer.lexer ==
-  end
+  # test "31. Ge true" do
+  #   source_code = """
+  #                   int main() {
+  #                     return 1 >= 1;
+  #                   }
+  #                 """
+  #   assert Lexer.lexer(source_code) ==
+  # end
 
-  test "32. Gt false" do
-    source_code = """
-                    int main() {
-                      return 1 > 2;
-                    }
-                  """
-    assert Lexer.lexer ==
-  end
+  # test "32. Gt false" do
+  #   source_code = """
+  #                   int main() {
+  #                     return 1 > 2;
+  #                   }
+  #                 """
+  #   assert Lexer.lexer(source_code) ==
+  # end
 
-  test "33. Gt true" do
-    source_code = """
-                    int main() {
-                      return 1 > 0;
-                    }
-                  """
-    assert Lexer.lexer ==
-  end
+  # test "33. Gt true" do
+  #   source_code = """
+  #                   int main() {
+  #                     return 1 > 0;
+  #                   }
+  #                 """
+  #   assert Lexer.lexer(source_code) ==
+  # end
 
-  test "34. Le false" do
-    source_code = """
-                    int main() {
-                      return 1 <= -1;
-                    }
-                  """
-    assert Lexer.lexer ==
-  end
+  # test "34. Le false" do
+  #   source_code = """
+  #                   int main() {
+  #                     return 1 <= -1;
+  #                   }
+  #                 """
+  #   assert Lexer.lexer(source_code) ==
+  # end
 
-  test "35. Le true" do
-    source_code = """
-                    int main() {
-                      return 0 <= 2;
-                    }
-                  """
-    assert Lexer.lexer ==
-  end
+  # test "35. Le true" do
+  #   source_code = """
+  #                   int main() {
+  #                     return 0 <= 2;
+  #                   }
+  #                 """
+  #   assert Lexer.lexer(source_code) ==
+  # end
 
-  test "36. Lt false" do
-    source_code = """
-                    int main() {
-                      return 2 < 1;
-                    }
-                  """
-    assert Lexer.lexer ==
-  end
+  # test "36. Lt false" do
+  #   source_code = """
+  #                   int main() {
+  #                     return 2 < 1;
+  #                   }
+  #                 """
+  #   assert Lexer.lexer(source_code) ==
+  # end
 
-  test "37. Lt true" do
-    source_code = """
-                    int main() {
-                      return 1 < 2;
-                    }
-                  """
-    assert Lexer.lexer ==
-  end
+  # test "37. Lt true" do
+  #   source_code = """
+  #                   int main() {
+  #                     return 1 < 2;
+  #                   }
+  #                 """
+  #   assert Lexer.lexer(source_code) ==
+  # end
 
-  test "38. Ne false" do
-    source_code = """
-                    int main() {
-                      return 0 != 0;
-                    }
-                  """
-    assert Lexer.lexer ==
-  end
+  # test "38. Ne false" do
+  #   source_code = """
+  #                   int main() {
+  #                     return 0 != 0;
+  #                   }
+  #                 """
+  #   assert Lexer.lexer(source_code) ==
+  # end
 
-  test "39. Ne true" do
-    source_code = """
-                    int main() {
-                      return -1 != -2;
-                    }
-                  """
-    assert Lexer.lexer ==
-  end
+  # test "39. Ne true" do
+  #   source_code = """
+  #                   int main() {
+  #                     return -1 != -2;
+  #                   }
+  #                 """
+  #   assert Lexer.lexer(source_code) ==
+  # end
 
-  test "40. Or false" do
-    source_code = """
-                    int main() {
-                      return 0 || 0;
-                    }
-                  """
-    assert Lexer.lexer ==
-  end
+  # test "40. Or false" do
+  #   source_code = """
+  #                   int main() {
+  #                     return 0 || 0;
+  #                   }
+  #                 """
+  #   assert Lexer.lexer(source_code) ==
+  # end
 
-  test "41. Or true" do
-    source_code = """
-                    int main() {
-                      return 1 || 0;
-                    }
-                  """
-    assert Lexer.lexer ==
-  end
+  # test "41. Or true" do
+  #   source_code = """
+  #                   int main() {
+  #                     return 1 || 0;
+  #                   }
+  #                 """
+  #   assert Lexer.lexer(source_code) ==
+  # end
 
-  test "42. Precedence" do
-    source_code = """
-                    int main() {
-                      return 1 || 0 && 2;
-                    }
-                  """
-    assert Lexer.lexer ==
-  end
+  # test "42. Precedence" do
+  #   source_code = """
+  #                   int main() {
+  #                     return 1 || 0 && 2;
+  #                   }
+  #                 """
+  #   assert Lexer.lexer(source_code) ==
+  # end
 
-  test "43. Precedence 2" do
-    source_code = """
-                    int main() {
-                      return (1 || 0) && 0;
-                    }
-                  """
-    assert Lexer.lexer ==
-  end
+  # test "43. Precedence 2" do
+  #   source_code = """
+  #                   int main() {
+  #                     return (1 || 0) && 0;
+  #                   }
+  #                 """
+  #   assert Lexer.lexer(source_code) ==
+  # end
 
-  test "44. Precedence 3" do
-    source_code = """
-                    int main() {
-                      return 2 == 2 > 0;
-                    }
-                  """
-    assert Lexer.lexer ==
-  end
+  # test "44. Precedence 3" do
+  #   source_code = """
+  #                   int main() {
+  #                     return 2 == 2 > 0;
+  #                   }
+  #                 """
+  #   assert Lexer.lexer(source_code) ==
+  # end
 
-  test "45. Precedence 4" do
-    source_code = """
-                    int main() {
-                      return 2 == 2 || 0;
-                    }
-                  """
-    assert Lexer.lexer ==
-  end
+  # test "45. Precedence 4" do
+  #   source_code = """
+  #                   int main() {
+  #                     return 2 == 2 || 0;
+  #                   }
+  #                 """
+  #   assert Lexer.lexer(source_code) ==
+  # end
 
   # test "46. Skip on failure multi short circuit" do
   #   source_code = """
@@ -580,7 +588,7 @@ defmodule LEXERTest do
   #                     return a;
   #                   }
   #                 """
-  #   assert Lexer.lexer ==
+  #   assert Lexer.lexer(source_code) ==
   # end
 
   # test "47. Skip on failure short circuit and" do
@@ -592,7 +600,7 @@ defmodule LEXERTest do
   #                     return b;
   #                   }
   #                 """
-  #   assert Lexer.lexer ==
+  #   assert Lexer.lexer(source_code) ==
   # end
 
   # test "48. Skip on failure short circuit or" do
@@ -604,7 +612,7 @@ defmodule LEXERTest do
   #                     return b;
   #                   }
   #                 """
-  #   assert Lexer.lexer ==
+  #   assert Lexer.lexer(source_code) ==
   # end
 
 
