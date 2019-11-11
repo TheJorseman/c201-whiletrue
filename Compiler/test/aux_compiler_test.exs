@@ -418,41 +418,6 @@ defmodule AUXCOMPILERTest do
     assert Compiler.compiler_test(source_code) == :successfulComp
   end
 
-  # test "46. Skip on failure multi short circuit" do
-  #   source_code = """
-  #                   int main() {
-  #                     int a = 0;
-  #                     a || (a = 3) || (a = 4);
-  #                     return a;
-  #                   }
-  #                 """
-  #   assert Compiler.compiler_test(source_code) == :successfulComp
-  # end
-
-  # test "47. Skip on failure short circuit and" do
-  #   source_code = """
-  #                   int main() {
-  #                     int a = 0;
-  #                     int b = 0;
-  #                     a && (b = 5);
-  #                     return b;
-  #                   }
-  #                 """
-  #   assert Compiler.compiler_test(source_code) == :successfulComp
-  # end
-
-  # test "48. Skip on failure short circuit or" do
-  #   source_code = """
-  #                   int main() {
-  #                     int a = 1;
-  #                     int b = 0;
-  #                     a || (b = 5);
-  #                     return b;
-  #                   }
-  #                 """
-  #   assert Compiler.compiler_test(source_code) == :successfulComp
-  # end
-
 end
 
 
