@@ -235,6 +235,224 @@ defmodule AUXCOMPILERTest do
                   """
     assert Compiler.compiler_test(source_code) == :successfulComp
   end
+
+  # Valid tests week 4  --------------------------------------------
+
+  test "26. And false" do
+    source_code = """
+                    int main() {
+                      return 1 && 0;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "27. And true" do
+    source_code = """
+                    int main() {
+                      return 1 && -1;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "28. Eq false" do
+    source_code = """
+                    int main() {
+                      return 1 == 2;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "29. Eq true" do
+    source_code = """
+                    int main() {
+                      return 1 == 1;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "30. Ge false" do
+    source_code = """
+                    int main() {
+                      return 1 >= 2;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "31. Ge true" do
+    source_code = """
+                    int main() {
+                      return 1 >= 1;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "32. Gt false" do
+    source_code = """
+                    int main() {
+                      return 1 > 2;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "33. Gt true" do
+    source_code = """
+                    int main() {
+                      return 1 > 0;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "34. Le false" do
+    source_code = """
+                    int main() {
+                      return 1 <= -1;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "35. Le true" do
+    source_code = """
+                    int main() {
+                      return 0 <= 2;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "36. Lt false" do
+    source_code = """
+                    int main() {
+                      return 2 < 1;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "37. Lt true" do
+    source_code = """
+                    int main() {
+                      return 1 < 2;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "38. Ne false" do
+    source_code = """
+                    int main() {
+                      return 0 != 0;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "39. Ne true" do
+    source_code = """
+                    int main() {
+                      return -1 != -2;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "40. Or false" do
+    source_code = """
+                    int main() {
+                      return 0 || 0;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "41. Or true" do
+    source_code = """
+                    int main() {
+                      return 1 || 0;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "42. Precedence" do
+    source_code = """
+                    int main() {
+                      return 1 || 0 && 2;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "43. Precedence 2" do
+    source_code = """
+                    int main() {
+                      return (1 || 0) && 0;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "44. Precedence 3" do
+    source_code = """
+                    int main() {
+                      return 2 == 2 > 0;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  test "45. Precedence 4" do
+    source_code = """
+                    int main() {
+                      return 2 == 2 || 0;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == :successfulComp
+  end
+
+  # test "46. Skip on failure multi short circuit" do
+  #   source_code = """
+  #                   int main() {
+  #                     int a = 0;
+  #                     a || (a = 3) || (a = 4);
+  #                     return a;
+  #                   }
+  #                 """
+  #   assert Compiler.compiler_test(source_code) == :successfulComp
+  # end
+
+  # test "47. Skip on failure short circuit and" do
+  #   source_code = """
+  #                   int main() {
+  #                     int a = 0;
+  #                     int b = 0;
+  #                     a && (b = 5);
+  #                     return b;
+  #                   }
+  #                 """
+  #   assert Compiler.compiler_test(source_code) == :successfulComp
+  # end
+
+  # test "48. Skip on failure short circuit or" do
+  #   source_code = """
+  #                   int main() {
+  #                     int a = 1;
+  #                     int b = 0;
+  #                     a || (b = 5);
+  #                     return b;
+  #                   }
+  #                 """
+  #   assert Compiler.compiler_test(source_code) == :successfulComp
+  # end
+
 end
 
 
