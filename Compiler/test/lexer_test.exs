@@ -97,6 +97,23 @@ defmodule LEXERTest do
                 {:constant, 4, 2},
                 {:semicolon, "", 2},#11
                 {:closeBrace, "", 3}
+    ],
+
+    # week 4
+
+    prec: [{:intKeyword, "int", 1},
+            {:identifier, "main", 1},#1
+            {:openParen, "", 1},
+            {:closeParen, "", 1},#3
+            {:openBrace, "", 1},
+            {:returnKeyword, "", 2},#5
+            {:constant, 1, 2},
+            {:orT, "||", 2},#7
+            {:constant, 0, 2},
+            {:andT, "&&", 2},#9
+            {:constant, 2, 2},
+            {:semicolon, "", 2},
+            {:closeBrace, "", 3}
     ]
     }
 
@@ -442,7 +459,7 @@ defmodule LEXERTest do
                       return 1 >= 2;
                     }
                   """
-    ge1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:greaterThanEq, "!=", 2} end)
+    ge1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:greaterThanEq, ">=", 2} end)
     assert Lexer.lexer(source_code) == ge1
   end
 
@@ -452,7 +469,7 @@ defmodule LEXERTest do
                       return 1 >= 1;
                     }
                   """
-    ge1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:greaterThanEq, "!=", 2} end)
+    ge1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:greaterThanEq, ">=", 2} end)
     ge2 = List.update_at(ge1, 8, fn _ -> {:constant, 1, 2} end)
     assert Lexer.lexer(source_code) == ge2
   end
@@ -463,7 +480,7 @@ defmodule LEXERTest do
                       return 1 > 2;
                     }
                   """
-    gt1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:greaterThan, "!=", 2} end)
+    gt1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:greaterThan, ">", 2} end)
     assert Lexer.lexer(source_code) == gt1
   end
 
@@ -473,7 +490,7 @@ defmodule LEXERTest do
                       return 1 > 0;
                     }
                   """
-    gt1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:greaterThan, "!=", 2} end)
+    gt1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:greaterThan, ">", 2} end)
     gt2 = List.update_at(gt1, 8, fn _ -> {:constant, 0, 2} end)
     assert Lexer.lexer(source_code) == gt2
   end
@@ -484,7 +501,7 @@ defmodule LEXERTest do
                       return 1 <= -1;
                     }
                   """
-    le1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:lessThanEq, "!=", 2} end)
+    le1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:lessThanEq, "<=", 2} end)
     le2 = List.update_at(le1, 8, fn _ -> {:constant, 1, 2} end)
     le3 = List.insert_at(le2, 8, {:negation_minus, "-", 2})
     assert Lexer.lexer(source_code) == le3
@@ -496,7 +513,7 @@ defmodule LEXERTest do
                       return 0 <= 2;
                     }
                   """
-    le1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:lessThanEq, "!=", 2} end)
+    le1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:lessThanEq, "<=", 2} end)
     le2 = List.update_at(le1, 6, fn _ -> {:constant, 0, 2} end)
     assert Lexer.lexer(source_code) == le2
   end
@@ -561,23 +578,25 @@ defmodule LEXERTest do
     assert Lexer.lexer(source_code) == or3
   end
 
-  # test "41. Or true" do
-  #   source_code = """
-  #                   int main() {
-  #                     return 1 || 0;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) ==
-  # end
+  test "41. Or true", state do
+    source_code = """
+                    int main() {
+                      return 1 || 0;
+                    }
+                  """
+    or1 = List.update_at(state[:bin_op_1], 7, fn _ -> {:orT, "||", 2} end)
+    or2 = List.update_at(or1, 8, fn _ -> {:constant, 0, 2} end)
+    assert Lexer.lexer(source_code) == or2
+  end
 
-  # test "42. Precedence" do
-  #   source_code = """
-  #                   int main() {
-  #                     return 1 || 0 && 2;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) ==
-  # end
+  test "42. Precedence", state do
+    source_code = """
+                    int main() {
+                      return 1 || 0 && 2;
+                    }
+                  """
+    assert Lexer.lexer(source_code) == state[:prec]
+  end
 
   # test "43. Precedence 2" do
   #   source_code = """
@@ -588,14 +607,19 @@ defmodule LEXERTest do
   #   assert Lexer.lexer(source_code) ==
   # end
 
-  # test "44. Precedence 3" do
-  #   source_code = """
-  #                   int main() {
-  #                     return 2 == 2 > 0;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) ==
-  # end
+  test "44. Precedence 3", state do
+    source_code = """
+                    int main() {
+                      return 2 == 2 > 0;
+                    }
+                  """
+    prec1 = List.update_at(state[:prec], 6, fn _ -> {:constant, 2, 2} end)
+    prec2 = List.update_at(prec1, 8, fn _ -> {:constant, 2, 2} end)
+    prec3 = List.update_at(prec2, 10, fn _ -> {:constant, 0, 2} end)
+    prec4 = List.update_at(prec3, 7, fn _ -> {:equal, "==", 2} end)
+    prec5 = List.update_at(prec4, 9, fn _ -> {:greaterThan, "!=", 2} end)
+    assert Lexer.lexer(source_code) == prec5
+  end
 
   # test "45. Precedence 4" do
   #   source_code = """
@@ -605,42 +629,6 @@ defmodule LEXERTest do
   #                 """
   #   assert Lexer.lexer(source_code) ==
   # end
-
-  # test "46. Skip on failure multi short circuit" do
-  #   source_code = """
-  #                   int main() {
-  #                     int a = 0;
-  #                     a || (a = 3) || (a = 4);
-  #                     return a;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) ==
-  # end
-
-  # test "47. Skip on failure short circuit and" do
-  #   source_code = """
-  #                   int main() {
-  #                     int a = 0;
-  #                     int b = 0;
-  #                     a && (b = 5);
-  #                     return b;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) ==
-  # end
-
-  # test "48. Skip on failure short circuit or" do
-  #   source_code = """
-  #                   int main() {
-  #                     int a = 1;
-  #                     int b = 0;
-  #                     a || (b = 5);
-  #                     return b;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) ==
-  # end
-
 
 end
 
