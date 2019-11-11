@@ -236,23 +236,6 @@ defmodule AUXCOMPILERTest do
     assert Compiler.compiler_test(source_code) == :successfulComp
   end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   # Valid tests week 4  --------------------------------------------
 
   test "26. And false" do
