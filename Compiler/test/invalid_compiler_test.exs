@@ -55,7 +55,7 @@ defmodule INVALIDCOMPILERTest do
                       RETURN 0;
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error,"Unexpected Token RETURN 0; at line 2"}
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error return keyword expected at line 2"}
   end
 
   # Invalid tests - week 2

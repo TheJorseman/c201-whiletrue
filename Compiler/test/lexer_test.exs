@@ -598,14 +598,17 @@ defmodule LEXERTest do
     assert Lexer.lexer(source_code) == state[:prec]
   end
 
-  # test "43. Precedence 2" do
-  #   source_code = """
-  #                   int main() {
-  #                     return (1 || 0) && 0;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) ==
-  # end
+  test "43. Precedence 2", state do
+    source_code = """
+                    int main() {
+                      return (1 || 0) && 0;
+                    }
+                  """
+    prec1 = List.update_at(state[:prec], 10, fn _ -> {:constant, 0, 2} end)
+    prec2 = List.insert_at(prec1, 6, {:openParen, "", 2})
+    prec3 = List.insert_at(prec2, 10, {:closeParen, "", 2})
+    assert Lexer.lexer(source_code) == prec3
+  end
 
   test "44. Precedence 3", state do
     source_code = """
@@ -617,18 +620,23 @@ defmodule LEXERTest do
     prec2 = List.update_at(prec1, 8, fn _ -> {:constant, 2, 2} end)
     prec3 = List.update_at(prec2, 10, fn _ -> {:constant, 0, 2} end)
     prec4 = List.update_at(prec3, 7, fn _ -> {:equal, "==", 2} end)
-    prec5 = List.update_at(prec4, 9, fn _ -> {:greaterThan, "!=", 2} end)
+    prec5 = List.update_at(prec4, 9, fn _ -> {:greaterThan, ">", 2} end)
     assert Lexer.lexer(source_code) == prec5
   end
 
-  # test "45. Precedence 4" do
-  #   source_code = """
-  #                   int main() {
-  #                     return 2 == 2 || 0;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) ==
-  # end
+  test "45. Precedence 4", state do
+    source_code = """
+                    int main() {
+                      return 2 == 2 || 0;
+                    }
+                  """
+    prec1 = List.update_at(state[:prec], 6, fn _ -> {:constant, 2, 2} end)
+    prec2 = List.update_at(prec1, 8, fn _ -> {:constant, 2, 2} end)
+    prec3 = List.update_at(prec2, 10, fn _ -> {:constant, 0, 2} end)
+    prec4 = List.update_at(prec3, 7, fn _ -> {:equal, "==", 2} end)
+    prec5 = List.update_at(prec4, 9, fn _ -> {:orT, "||", 2} end)
+    assert Lexer.lexer(source_code) == prec5
+  end
 
 end
 
