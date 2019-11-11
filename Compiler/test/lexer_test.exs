@@ -52,8 +52,52 @@ defmodule LEXERTest do
                 {:constant, 0, 2},
                 {:semicolon, "", 2},
                 {:closeBrace, "", 3}
-    ]
+    ],
 
+    # week 3
+
+    bin_op_1: [{:intKeyword, "int", 1},#0
+                {:identifier, "main", 1},#1
+                {:openParen, "", 1},#2
+                {:closeParen, "", 1},#3
+                {:openBrace, "", 1},#4
+                {:returnKeyword, "", 2},#5
+                {:constant, 1, 2},#6
+                {:addition, "+", 2},#7
+                {:constant, 2, 2},#8
+                {:semicolon, "", 2},#9
+                {:closeBrace, "", 3}#10
+    ],
+
+    bin_op_2: [{:intKeyword, "int", 1},#0
+                {:identifier, "main", 1},#1
+                {:openParen, "", 1},#2
+                {:closeParen, "", 1},#3
+                {:openBrace, "", 1},#4
+                {:returnKeyword, "", 2},#5
+                {:constant, 1, 2},#6
+                {:negation_minus, "-", 2},#7
+                {:constant, 2, 2},#8
+                {:negation_minus, "-", 2},#9
+                {:constant, 3, 2},#10
+                {:semicolon, "", 2},#11
+                {:closeBrace, "", 3}#12
+    ],
+
+    bin_op_3: [{:intKeyword, "int", 1},
+                {:identifier, "main", 1},#1
+                {:openParen, "", 1},
+                {:closeParen, "", 1},#3
+                {:openBrace, "", 1},
+                {:returnKeyword, "", 2},#5
+                {:constant, 2, 2},
+                {:addition, "+", 2},#7
+                {:constant, 3, 2},
+                {:multiplication, "*", 2},#9
+                {:constant, 4, 2},
+                {:semicolon, "", 2},#11
+                {:closeBrace, "", 3}
+    ]
     }
 
   end
@@ -193,6 +237,149 @@ defmodule LEXERTest do
                   """
     not_5 = List.update_at(state[:bitwise_0], 6, fn _ -> {:logicalN, "!", 2} end)
     assert Lexer.lexer(source_code) == not_5
+  end
+
+  # Lexer valid tests week 3 --------------------------------------------
+
+  test "14. Add", state do
+    source_code = """
+                    int main() {
+                      return 1 + 2;
+                    }
+                  """
+    assert Lexer.lexer(source_code) == state[:bin_op_1]
+  end
+
+  test "15. Associativity", state do
+    source_code = """
+                    int main() {
+                      return 1 - 2 - 3;
+                    }
+                  """
+    assert Lexer.lexer(source_code) == state[:bin_op_2]
+  end
+
+  test "16. Associativity 2", state do
+    source_code = """
+                    int main() {
+                      return 6 / 3 / 2;
+                    }
+                  """
+    assoc1 = List.update_at(state[:bin_op_2], 6, fn _ -> {:constant, 6, 2} end)
+    assoc2 = List.update_at(assoc1, 7, fn _ -> {:division, "/", 2} end)
+    assoc3 = List.update_at(assoc2, 8, fn _ -> {:constant, 3, 2} end)
+    assoc4 = List.update_at(assoc3, 9, fn _ -> {:division, "/", 2} end)
+    assoc5 = List.update_at(assoc4, 10, fn _ -> {:constant, 2, 2} end)
+    assert Lexer.lexer(source_code) == assoc5
+  end
+
+  test "17. Div neg", state do
+    source_code = """
+                    int main() {
+                      return (-12) / 5;
+                    }
+                  """
+    div1 = List.update_at(state[:bin_op_2], 6, fn _ -> {:openParen, "", 2} end)
+    div2 = List.update_at(div1, 8, fn _ -> {:constant, 12, 2} end)
+    div3 = List.update_at(div2, 9, fn _ -> {:closeParen, "", 2} end)
+    div4 = List.update_at(div3, 10, fn _ -> {:division, "/", 2} end)
+    div5 = List.insert_at(div4, 11, {:constant, 5, 2})
+    assert Lexer.lexer(source_code) == div5
+  end
+
+  test "18. Div", state do
+    source_code = """
+                    int main() {
+                      return 4 / 2;
+                    }
+                  """
+    div1 = List.update_at(state[:bin_op_1], 6, fn _ -> {:constant, 4, 2} end)
+    div2 = List.update_at(div1, 7, fn _ -> {:division, "/", 2} end)
+    div3 = List.update_at(div2, 8, fn _ -> {:constant, 2, 2} end)
+    assert Lexer.lexer(source_code) == div3
+  end
+
+  test "19. Mult", state do
+    source_code = """
+                    int main() {
+                      return 2 * 3;
+                    }
+                  """
+    mul1 = List.update_at(state[:bin_op_1], 6, fn _ -> {:constant, 2, 2} end)
+    mul2 = List.update_at(mul1, 7, fn _ -> {:multiplication, "*", 2} end)
+    mul3 = List.update_at(mul2, 8, fn _ -> {:constant, 3, 2} end)
+    assert Lexer.lexer(source_code) == mul3
+  end
+
+  test "20. Parens", state do
+    source_code = """
+                    int main() {
+                      return 2 * (3 + 4);
+                    }
+                  """
+    par1 = List.update_at(state[:bin_op_3], 7, fn _ -> {:multiplication, "*", 2} end)
+    par2 = List.update_at(par1, 9, fn _ -> {:addition, "+", 2} end)
+    par3 = List.insert_at(par2, 8, {:openParen, "", 2})
+    par4 = List.insert_at(par3, 12, {:closeParen, "", 2})
+    assert Lexer.lexer(source_code) == par4
+  end
+
+  test "21. Precedence", state do
+    source_code = """
+                    int main() {
+                      return 2 + 3 * 4;
+                    }
+                  """
+    assert Lexer.lexer(source_code) == state[:bin_op_3]
+  end
+
+  test "22. Sub neg", state do
+    source_code = """
+                    int main() {
+                      return 2- -1;
+                    }
+                  """
+    sub1 = List.update_at(state[:bin_op_1], 6, fn _ -> {:constant, 2, 2} end)
+    sub2 = List.update_at(sub1, 7, fn _ -> {:negation_minus, "-", 2} end)
+    sub3 = List.update_at(sub2, 8, fn _ -> {:constant, 1, 2} end)
+    sub4 = List.insert_at(sub3, 8, {:negation_minus, "-", 2})
+    assert Lexer.lexer(source_code) == sub4
+  end
+
+  test "23. Sub", state do
+    source_code = """
+                    int main() {
+                      return 1 - 2;
+                    }
+                  """
+    sub = List.update_at(state[:bin_op_1], 7, fn _ -> {:negation_minus, "-", 2} end)
+    assert Lexer.lexer(source_code) == sub
+  end
+
+  test "24. Un op add", state do
+    source_code = """
+                    int main() {
+                      return ~2 + 3;
+                    }
+                  """
+    un_op1 = List.update_at(state[:bin_op_1], 6, fn _ -> {:constant, 2, 2} end)
+    un_op2 = List.update_at(un_op1, 8, fn _ -> {:constant, 3, 2} end)
+    un_op3 = List.insert_at(un_op2, 6, {:bitwiseN, "~", 2})
+    assert Lexer.lexer(source_code) == un_op3
+  end
+
+  test "25. Un op parens", state do
+    source_code = """
+                    int main() {
+                      return ~(1 + 1);
+                    }
+                  """
+    un_op1 = List.insert_at(state[:bin_op_1], 6, {:bitwiseN, "~", 2})
+    un_op2 = List.update_at(un_op1, 7, fn _ -> {:constant, 1, 2} end)
+    un_op3 = List.update_at(un_op2, 9, fn _ -> {:constant, 1, 2} end)
+    un_op4 = List.insert_at(un_op3, 7, {:openParen, "", 2})
+    un_op5 = List.insert_at(un_op4, 11, {:closeParen, "", 2})
+    assert Lexer.lexer(source_code) == un_op5
   end
 
 end
