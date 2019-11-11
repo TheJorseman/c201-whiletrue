@@ -1,4 +1,5 @@
 defmodule Compiler do
+  #import Printex
   @moduledoc """
   Documentation for Compilador
   """
@@ -41,10 +42,11 @@ defmodule Compiler do
     IO.puts("Compiled file\n\n")
     :successfulComp
     rescue
-      e in RuntimeError -> IO.puts("Error: " <> e.message )
+      e in RuntimeError -> IO.puts(IO.ANSI.red() <> "Error: " <> e.message)
       {:error, e.message}
     end
   end
+
 
 
 #Función que imprime la lista de tokens
