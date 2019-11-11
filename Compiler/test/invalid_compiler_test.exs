@@ -133,6 +133,45 @@ defmodule INVALIDCOMPILERTest do
                   """
     assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Semicolon keyword expected at line 2"}
   end
+
+  # Invalid tests - week 4
+
+  test "15. Missing first operator" do
+    source_code = """
+                    int main() {
+                      return <= 2;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
+  end
+
+  test "16. Missing mid operator" do
+    source_code = """
+                    int main() {
+                      return 1 < > 3;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
+  end
+
+  test "17. Missing second operator" do
+    source_code = """
+                    int main() {
+                      return 2 &&
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 3"}
+  end
+
+  test "18. Missing semicolon" do
+    source_code = """
+                    int main() {
+                      return 1 || 2
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Semicolon keyword expected at line 2"}
+  end
+
 end
 
 
