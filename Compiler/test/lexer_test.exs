@@ -333,43 +333,54 @@ defmodule LEXERTest do
     assert Lexer.lexer(source_code) == state[:bin_op_3]
   end
 
-  # test "22. Sub neg" do
-  #   source_code = """
-  #                   int main() {
-  #                     return 2- -1;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) == :successfulComp
-  # end
+  test "22. Sub neg", state do
+    source_code = """
+                    int main() {
+                      return 2- -1;
+                    }
+                  """
+    sub1 = List.update_at(state[:bin_op_1], 6, fn _ -> {:constant, 2, 2} end)
+    sub2 = List.update_at(sub1, 7, fn _ -> {:negation_minus, "-", 2} end)
+    sub3 = List.update_at(sub2, 8, fn _ -> {:constant, 1, 2} end)
+    sub4 = List.insert_at(sub3, 8, {:negation_minus, "-", 2})
+    assert Lexer.lexer(source_code) == sub4
+  end
 
-  # test "23. Sub" do
-  #   source_code = """
-  #                   int main() {
-  #                     return 1 - 2;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) == :successfulComp
-  # end
+  test "23. Sub", state do
+    source_code = """
+                    int main() {
+                      return 1 - 2;
+                    }
+                  """
+    sub = List.update_at(state[:bin_op_1], 7, fn _ -> {:negation_minus, "-", 2} end)
+    assert Lexer.lexer(source_code) == sub
+  end
 
-  # test "24. Un op add" do
-  #   source_code = """
-  #                   int main() {
-  #                     return ~2 + 3;
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) == :successfulComp
-  # end
+  test "24. Un op add", state do
+    source_code = """
+                    int main() {
+                      return ~2 + 3;
+                    }
+                  """
+    un_op1 = List.update_at(state[:bin_op_1], 6, fn _ -> {:constant, 2, 2} end)
+    un_op2 = List.update_at(un_op1, 8, fn _ -> {:constant, 3, 2} end)
+    un_op3 = List.insert_at(un_op2, 6, {:bitwiseN, "~", 2})
+    assert Lexer.lexer(source_code) == un_op3
+  end
 
-  # test "25. Un op parens" do
-  #   source_code = """
-  #                   int main() {
-  #                     return ~(1 + 1);
-  #                   }
-  #                 """
-  #   assert Lexer.lexer(source_code) == :successfulComp
-  # end
-
-
+  test "25. Un op parens", state do
+    source_code = """
+                    int main() {
+                      return ~(1 + 1);
+                    }
+                  """
+    un_op1 = List.insert_at(state[:bin_op_1], 6, {:bitwiseN, "~", 2})
+    un_op2 = List.update_at(un_op1, 7, fn _ -> {:constant, 1, 2} end)
+    un_op3 = List.update_at(un_op2, 9, fn _ -> {:constant, 1, 2} end)
+    un_op4 = List.insert_at(un_op3, 7, {:openParen, "", 2})
+    un_op5 = List.insert_at(un_op4, 11, {:closeParen, "", 2})
+    assert Lexer.lexer(source_code) == un_op5
+  end
 
 end
 
