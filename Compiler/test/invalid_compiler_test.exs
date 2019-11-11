@@ -37,7 +37,7 @@ defmodule INVALIDCOMPILERTest do
                       return 0
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Semicolon keyword expected at line 3"}
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Semicolon keyword expected at line 2"}
   end
 
   test "5. No space" do
@@ -75,7 +75,7 @@ defmodule INVALIDCOMPILERTest do
                       return !5
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Semicolon keyword expected at line 3"}
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Semicolon keyword expected at line 2"}
   end
 
   test "9. Nested operators, missing constant" do

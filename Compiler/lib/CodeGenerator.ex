@@ -67,6 +67,108 @@ defmodule CodeGenerator do
         """
     end
 
+    def getCode(:equal,_,code,code_r) do
+        """
+                        #{code}
+                        push %rax
+                        #{code_r}
+                        pop %rbx
+                        cmp %rax, %rbx
+                        mov $0, %rax
+                        sete %al
+        """
+    end
+
+    def getCode(:notEqual,_,code,code_r) do
+        """
+                        #{code}
+                        push %rax
+                        #{code_r}
+                        pop %rbx
+                        cmp %rax, %rbx
+                        mov $0, %rax
+                        setne %al
+        """
+    end
+
+    def getCode(:greaterThanEq,_,code,code_r) do
+        """
+                        #{code}
+                        push %rax
+                        #{code_r}
+                        pop %rbx
+                        cmp %rax, %rbx
+                        mov $0, %rax
+                        setge %al
+        """
+    end
+
+    def getCode(:greaterThan,_,code,code_r) do
+        """
+                        #{code}
+                        push %rax
+                        #{code_r}
+                        pop %rbx
+                        cmp %rax, %rbx
+                        mov $0, %rax
+                        setg %al
+        """
+    end
+
+    def getCode(:lessThan,_,code,code_r) do
+        """
+                        #{code}
+                        push %rax
+                        #{code_r}
+                        pop %rbx
+                        cmp %rax, %rbx
+                        mov $0, %rax
+                        setl %al
+        """
+    end
+
+    def getCode(:lessThanEq,_,code,code_r) do
+        """
+                        #{code}
+                        push %rax
+                        #{code_r}
+                        pop %rbx
+                        cmp %rax, %rbx
+                        mov $0, %rax
+                        setle %al
+        """
+    end
+
+    def getCode(:orT,_,code,code_r) do
+        """
+                        #{code}
+                        cmp $0, %rax
+                        je _clause2
+                        mov $1,%rax
+                        jmp _end
+                    _clause2:
+                        #{code_r}
+                        cmp $0, %rax
+                        mov $0, %rax
+                        setne %al
+                    _end:
+        """
+    end
+
+    def getCode(:andT,_,code,code_r) do
+        """
+                        #{code}
+                        cmp $0, %rax
+                        jne _clause2
+                        jmp _end
+                    _clause2:
+                        #{code_r}
+                        cmp $0, %rax
+                        mov $0, %rax
+                        setne %al
+                    _end:
+        """
+    end
 
     def getCode(:division,_,code,code_r) do
         """

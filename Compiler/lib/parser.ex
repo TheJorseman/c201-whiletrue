@@ -56,8 +56,10 @@ defmodule Parser do
     {tokens,exp} = parseExp(tokens)
     statement = %{statement | left: exp}
     {nexTok,tokens} = List.pop_at(tokens,0)
+    IO.inspect(nexTok)
+    IO.inspect(tokens)
     if elem(nexTok,0) != :semicolon do
-      raise "Syntax Error Semicolon" <> " keyword expected at line " <> Integer.to_string(elem(nexTok,2))
+      raise "Syntax Error Semicolon" <> " keyword expected at line " <> Integer.to_string(elem(statement.left.value,2))
     end
     if tokens != [] do
       {tokens,statement}
@@ -66,9 +68,34 @@ defmodule Parser do
     end
   end
 
-
   def parseExp(tokens) do
-    IO.puts("ParseExp")
+    #IO.puts("ParseExp")
+    # <parseLogicalAndExp> { || <parseLogicalAndExp>}
+    {tokens,term} = parseLogicalAndExp(tokens);
+    while_parse(tokens,term,[:orT],:parseLogicalAndExp)
+  end
+
+  def parseLogicalAndExp(tokens) do
+    # <parseEqualityExp> { && <parseEqualityExp>}
+    {tokens,term} = parseEqualityExp(tokens);
+    while_parse(tokens,term,[:andT],:parseEqualityExp)
+  end
+
+
+  def parseEqualityExp(tokens) do
+    # <relational-exp> { != | == <relational-exp>}
+    {tokens,term} = parseRelationalExp(tokens);
+    while_parse(tokens,term,[:equal, :notEqual],:parseRelationalExp)
+  end
+
+
+  def parseRelationalExp(tokens) do
+    # <additive-exp> { <|>|>=|<= <additive-exp>}
+    {tokens,term} = parseAdditiveExp(tokens);
+    while_parse(tokens,term,[:lessThan, :greaterThan, :greaterThanEq, :lessThanEq],:parseAdditiveExp)
+  end
+
+  def parseAdditiveExp(tokens) do
     # <term> { (+ | - ) <term> }
     {tokens,term} = parseTerm(tokens);
     while_parse(tokens,term,[:addition,:negation_minus],:parseTerm)
@@ -80,6 +107,29 @@ defmodule Parser do
     if nextToken in list do
       tokens = tail
       cond do
+        function == :parseLogicalAndExp ->
+          {tokens,nextTerm} = parseLogicalAndExp(tokens)
+          binary_op = %Nodo{name: nextToken, value: head, left: term, right: nextTerm}
+          #IO.inspect(binary_op)
+          while_parse(tokens,binary_op,list,function)
+        function == :parseEqualityExp ->
+          {tokens,nextTerm} = parseEqualityExp(tokens)
+          binary_op = %Nodo{name: nextToken, value: head, left: term, right: nextTerm}
+          #IO.inspect(binary_op)
+          while_parse(tokens,binary_op,list,function)
+        function == :parseRelationalExp ->
+          IO.inspect(head)
+          IO.inspect(nextToken)
+          {tokens,nextTerm} = parseRelationalExp(tokens)
+          IO.inspect(nextTerm)
+          binary_op = %Nodo{name: nextToken, value: head, left: term, right: nextTerm}
+          #IO.inspect(binary_op)
+          while_parse(tokens,binary_op,list,function)
+        function == :parseAdditiveExp ->
+          {tokens,nextTerm} = parseAdditiveExp(tokens)
+          binary_op = %Nodo{name: nextToken, value: head, left: term, right: nextTerm}
+          #IO.inspect(binary_op)
+          while_parse(tokens,binary_op,list,function)
         function == :parseTerm ->
           {tokens,nextTerm} = parseTerm(tokens)
           binary_op = %Nodo{name: nextToken, value: head, left: term, right: nextTerm}
@@ -99,7 +149,6 @@ defmodule Parser do
   end
 
   def parseTerm(tokens) do
-    IO.puts("ParseTerm")
     #<factor> {( * | / )  <factor>}
     {tokens,factor} = parseFactor(tokens);
     while_parse(tokens,factor,[:multiplication,:division],:parseFactor)
@@ -121,7 +170,7 @@ defmodule Parser do
         {nexTok,tokens}  = List.pop_at(tokens,0)
         currToken = elem(nexTok,0)
         if currToken != :closeParen do
-          raise "Syntax Error close paren"
+          raise "Syntax Error '(' keyword expected at line " <> Integer.to_string(elem(nexTok,2))
         end
         {tokens,exp}
       check_unary_op(currToken) == True ->

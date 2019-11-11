@@ -46,4 +46,28 @@ defmodule Token do
   @spec division(integer) :: token
   def division(line), do: {:division,"/",line}
 
+  @spec andT(integer) :: token
+  def andT(line), do: {:andT,"&&",line}
+
+  @spec orT(integer) :: token
+  def orT(line), do: {:orT,"||",line}
+
+  @spec equal(integer) :: token
+  def equal(line), do: {:equal,"==",line}
+
+  @spec notEqual(integer) :: token
+  def notEqual(line), do: {:notEqual,"!=",line}
+
+  @spec lessThan(integer) :: token
+  def lessThan(line), do: {:lessThan,"<",line}
+
+  @spec lessThanEq(integer) :: token
+  def lessThanEq(line), do: {:lessThanEq,"!=",line}
+
+  @spec greaterThan(integer) :: token
+  def greaterThan(line), do: {:greaterThan,"!=",line}
+
+  @spec greaterThanEq(integer) :: token
+  def greaterThanEq(line), do: {:greaterThanEq,"!=",line}
+
 end

@@ -54,6 +54,8 @@ defmodule Lexer do
         tokensRemaining(data,Token.identifier("main",number_line),~r/^main/)
       String.match?(sentence,~r/^;/) ->
         tokensRemaining(data,Token.semicolon(number_line),~r/^;/)
+      String.match?(sentence,~r/^!=/) ->
+        tokensRemaining(data,Token.notEqual(number_line),~r/^!=/)
       String.match?(sentence,~r/^-/) ->
         tokensRemaining(data,Token.negation_minus(number_line),~r/^-/)
       String.match?(sentence,~r/^~/) ->
@@ -66,7 +68,20 @@ defmodule Lexer do
         tokensRemaining(data,Token.multiplication(number_line),~r/\*/)
       String.match?(sentence,~r/^\//) ->
         tokensRemaining(data,Token.division(number_line),~r/^\//)
-
+      String.match?(sentence,~r/^&&/) ->
+        tokensRemaining(data,Token.andT(number_line),~r/^&&/)
+      String.match?(sentence,~r/^\|\|/) ->
+        tokensRemaining(data,Token.orT(number_line),~r/^\|\|/)
+      String.match?(sentence,~r/^==/) ->
+        tokensRemaining(data,Token.equal(number_line),~r/^==/)
+      String.match?(sentence,~r/^<=/) ->
+        tokensRemaining(data,Token.lessThanEq(number_line),~r/^<=/)
+      String.match?(sentence,~r/^</) ->
+        tokensRemaining(data,Token.lessThan(number_line),~r/^</)
+      String.match?(sentence,~r/^>=/) ->
+        tokensRemaining(data,Token.greaterThanEq(number_line),~r/^>=/)
+      String.match?(sentence,~r/^>/) ->
+        tokensRemaining(data,Token.greaterThan(number_line),~r/^>/)
       sentence == "" -> []
       sentence == " "-> []
       true ->
