@@ -44,7 +44,7 @@ defmodule CodeGenerator do
     end
 
     def getCode(:constant,value,_,_) do
-        "mov "<>"$" <>  Integer.to_string( elem(value,1) ) <> ", %rax"
+        "\n\t\tmov "<>"$" <>  Integer.to_string( elem(value,1) ) <> ", %rax"
     end
 
     def getCode(:multiplication,_,code,code_r) do
@@ -140,33 +140,40 @@ defmodule CodeGenerator do
     end
 
     def getCode(:orT,_,code,code_r) do
+        lista_1 = Regex.scan(~r/clause_or\d{1,}/,code)
+        lista_2 = Regex.scan(~r/clause_or\d{1,}/,code_r)
+        num = Integer.to_string( length(lista_1) + length(lista_2) + 1 )
+
         """
                         #{code}
                         cmp $0, %rax
-                        je _clause2
+                        je clause_or#{num}
                         mov $1,%rax
-                        jmp _end
-                    _clause2:
+                        jmp end_or#{num}
+                    clause_or#{num}:
                         #{code_r}
                         cmp $0, %rax
                         mov $0, %rax
                         setne %al
-                    _end:
+                    end_or#{num}:
         """
     end
 
     def getCode(:andT,_,code,code_r) do
+        lista_1 = Regex.scan(~r/clause_and\d{1,}/,code)
+        lista_2 = Regex.scan(~r/clause_and\d{1,}/,code_r)
+        num = Integer.to_string( length(lista_1) + length(lista_2) + 1 )
         """
                         #{code}
                         cmp $0, %rax
-                        jne _clause2
-                        jmp _end
-                    _clause2:
+                        jne clause_and#{num}
+                        jmp end_and#{num}
+                    clause_and#{num}:
                         #{code_r}
                         cmp $0, %rax
                         mov $0, %rax
                         setne %al
-                    _end:
+                    end_and#{num}:
         """
     end
 
