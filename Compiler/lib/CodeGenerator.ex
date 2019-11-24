@@ -189,7 +189,7 @@ defmodule CodeGenerator do
         """
     end
     def getCode(:negation_minus,_,code,code_r) do
-        IO.puts(code_r)
+        # IO.puts(code_r)
         if code_r == nil do
             """
             #{code}
@@ -243,10 +243,17 @@ defmodule CodeGenerator do
     end
 
     def generateCode (root) do
+        IO.puts("\nAST Tree:")
         pretty_printing(root,"")
         assembly_code = posorder(root)
         IO.puts("\nCode generator Output:")
         IO.puts(assembly_code)
+        assembly_code
+    end
+
+    # genera código sin imprimir
+    def generateCodeNoP (root) do
+        assembly_code = posorder(root)
         assembly_code
     end
 end

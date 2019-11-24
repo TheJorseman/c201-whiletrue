@@ -56,8 +56,8 @@ defmodule Parser do
     {tokens,exp} = parseExp(tokens)
     statement = %{statement | left: exp}
     {nexTok,tokens} = List.pop_at(tokens,0)
-    IO.inspect(nexTok)
-    IO.inspect(tokens)
+    # IO.inspect(nexTok)
+    #   IO.inspect(tokens)
     if elem(nexTok,0) != :semicolon do
       raise "Syntax Error Semicolon" <> " keyword expected at line " <> Integer.to_string(elem(statement.left.value,2))
     end
@@ -118,10 +118,10 @@ defmodule Parser do
           #IO.inspect(binary_op)
           while_parse(tokens,binary_op,list,function)
         function == :parseRelationalExp ->
-          IO.inspect(head)
-          IO.inspect(nextToken)
+          #IO.inspect(head)
+          #IO.inspect(nextToken)
           {tokens,nextTerm} = parseRelationalExp(tokens)
-          IO.inspect(nextTerm)
+          #IO.inspect(nextTerm)
           binary_op = %Nodo{name: nextToken, value: head, left: term, right: nextTerm}
           #IO.inspect(binary_op)
           while_parse(tokens,binary_op,list,function)

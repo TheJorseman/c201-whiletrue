@@ -124,12 +124,22 @@ def compiler_test(string) do
 
   try do
     Lexer.lexer(string)
-    |> IO.inspect(label: "\nLexer output")
     |> Parser.parseProgram()
-    |> IO.inspect(label: "\nParser output")
-    |> CodeGenerator.generateCode()
-  IO.puts("Compiled file\n\n")
+    |> CodeGenerator.generateCodeNoP()
   :successfulComp
+  rescue
+    e in RuntimeError -> IO.puts("Error: " <> e.message )
+    {:error, e.message}
+  end
+end
+
+# Función que genera compilación para pruebas del optimizador
+def optimizer_test(string) do
+
+  try do
+    Lexer.lexer(string)
+    |> Parser.parseProgram()
+    |> CodeGenerator.generateCodeNoP()
   rescue
     e in RuntimeError -> IO.puts("Error: " <> e.message )
     {:error, e.message}
