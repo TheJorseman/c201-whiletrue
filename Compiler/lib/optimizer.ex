@@ -39,8 +39,13 @@ defmodule Optimizer do
     end
   end
   def optimizer_neg(ast_nodo,left,right) do
-    if left.name == :negation_minus and ast_nodo.name != :return and right == nil do
-      left.left
+    if ast_nodo.name == :negation_minus do
+      if left.name == :negation_minus do
+        left.left
+      else
+        ast_nodo = %{ast_nodo | left: left}
+        %{ast_nodo | right: right}
+      end
     else
       ast_nodo = %{ast_nodo | left: left}
       %{ast_nodo | right: right}
