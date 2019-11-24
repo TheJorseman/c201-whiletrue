@@ -243,10 +243,17 @@ defmodule CodeGenerator do
     end
 
     def generateCode (root) do
-        # pretty_printing(root,"")
+        IO.puts("\nAST Tree:")
+        pretty_printing(root,"")
         assembly_code = posorder(root)
-        # IO.puts("\nCode generator Output:")
-        # IO.puts(assembly_code)
+        IO.puts("\nCode generator Output:")
+        IO.puts(assembly_code)
+        assembly_code
+    end
+
+    # genera código sin imprimir
+    def generateCodeNoP (root) do
+        assembly_code = posorder(root)
         assembly_code
     end
 end
