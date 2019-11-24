@@ -1,4 +1,16 @@
 defmodule Token do
+  @moduledoc """
+  Este módulo es para definir los tokens que se van a utilizar en todo
+  el proceso.
+  """
+  @moduledoc since: "1.5.0"
+  @doc """
+  Define los tokens que se van a utilizar dando un entero que se refiere a
+  la linea donde se encuentra dicha expresion para ser utilizada posteriormente}
+  en el manejo de errores.
+
+  """
+
   @type token :: {atom, any(),integer}
 
   @spec openParen(integer) :: token
