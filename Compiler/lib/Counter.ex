@@ -1,6 +1,9 @@
 defmodule Counter do
   use Agent
-
+  @moduledoc """
+  Este modulo sirve como contador para las etiquetas de salto en las operaciones binarias
+  lógicas. Tiene funciones para inicializar, obtener el valor actual e incrementarlo.
+  """
   def start_link(initial_value) do
     Agent.start_link(fn -> initial_value end, name: __MODULE__)
     __MODULE__
