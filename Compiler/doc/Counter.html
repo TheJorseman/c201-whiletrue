@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.21.2">
     <meta name="project" content="Compiler v0.1.0">
-    <title>Linker — Compiler v0.1.0</title>
+    <title>Counter — Compiler v0.1.0</title>
     <link rel="stylesheet" href="dist/html-de2388dc2f8074b0a4db.css" />
     <script src="dist/sidebar_items-583e29bb41.js"></script>
       <script src="docs_config.js"></script>
@@ -65,9 +65,13 @@ Compiler      </a>
 
       <h1>
         <small class="app-vsn">Compiler v0.1.0</small>
-Linker      </h1>
+Counter      </h1>
 
 
+        <section id="moduledoc">
+<p>Este modulo sirve como contador para las etiquetas de salto en las operaciones binarias
+lógicas. Tiene funciones para inicializar, obtener el valor actual e incrementarlo.</p>
+        </section>
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -83,7 +87,23 @@ Linker      </h1>
     </h2>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#final/2">final(asm_code, path)</a>
+    <a href="#child_spec/1">child_spec(arg)</a>
+  </div>
+    <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#increment/0">increment()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#start_link/1">start_link(initial_value)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#value/0">value()</a>
   </div>
 </div>
   </div>
@@ -97,13 +117,48 @@ Linker      </h1>
             </a>
 Functions          </h1>
           <div class="functions-list">
-<section class="detail" id="final/2">
+<section class="detail" id="child_spec/1">
   <div class="detail-header">
-    <a href="#final/2" class="detail-link" title="Link to this function">
+    <a href="#child_spec/1" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">final(asm_code, path)</h1>
+    <h1 class="signature">child_spec(arg)</h1>
+  </div>
+  <section class="docstring">
+<p>Returns a specification to start this module under a supervisor.</p>
+<p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="increment/0">
+  <div class="detail-header">
+    <a href="#increment/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">increment()</h1>
+  </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="start_link/1">
+  <div class="detail-header">
+    <a href="#start_link/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">start_link(initial_value)</h1>
+  </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="value/0">
+  <div class="detail-header">
+    <a href="#value/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">value()</h1>
   </div>
   <section class="docstring">
   </section>
