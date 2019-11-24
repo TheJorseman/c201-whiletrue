@@ -10,7 +10,8 @@ defmodule Optimizer do
             cond do
               left != nil ->
                 ast_opt_neg = optimizer_neg(ast_nodo,left,right)
-                optimizer_log_neg(ast_opt_neg,ast_opt_neg.left,ast_opt_neg.right)
+                ast_opt_ln = optimizer_log_neg(ast_opt_neg,ast_opt_neg.left,ast_opt_neg.right)
+                optimizer_bitwiseN(ast_opt_ln,ast_opt_ln.left,ast_opt_ln.right)
               true ->
                 ast_nodo = %{ast_nodo | left: left}
                 %{ast_nodo | right: right}
@@ -52,6 +53,19 @@ defmodule Optimizer do
     end
   end
 
+  def optimizer_bitwiseN(ast_nodo,left,right) do
+    if ast_nodo.name == :bitwiseN do
+      if left.name == :bitwiseN do
+        left.left
+      else
+        ast_nodo = %{ast_nodo | left: left}
+        %{ast_nodo | right: right}
+      end
+    else
+      ast_nodo = %{ast_nodo | left: left}
+      %{ast_nodo | right: right}
+    end
+  end
 
   def optimizer_0(root) do
     IO.puts("=========Optimizer===========")
