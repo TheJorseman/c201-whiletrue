@@ -124,11 +124,8 @@ def compiler_test(string) do
 
   try do
     Lexer.lexer(string)
-    |> IO.inspect(label: "\nLexer output")
     |> Parser.parseProgram()
-    |> IO.inspect(label: "\nParser output")
     |> CodeGenerator.generateCode()
-  IO.puts("Compiled file\n\n")
   :successfulComp
   rescue
     e in RuntimeError -> IO.puts("Error: " <> e.message )
