@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.21.2">
+    <meta name="project" content="Compiler v0.1.0">
+    <title>Lexer — Compiler v0.1.0</title>
+    <link rel="stylesheet" href="dist/html-de2388dc2f8074b0a4db.css" />
+    <script src="dist/sidebar_items-a67ccf230d.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/html-de2388dc2f8074b0a4db.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button">
+      <span class="icon-cross" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="api-reference.html" class="sidebar-projectName">
+Compiler      </a>
+      <h2 class="sidebar-projectVersion">
+        v0.1.0
+      </h2>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+        <small class="app-vsn">Compiler v0.1.0</small>
+Lexer      </h1>
+
+
+        <section id="moduledoc">
+<p>Este modulo convierte un string a una lista de tokens para el
+proceso de compilacion de un archivo en C.</p>
+        </section>
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#check_spaces/2">check_spaces(token, sentence)</a>
+  </div>
+    <div class="summary-synopsis"><p>check_spaces
+Esta funcion revisa los espacios del string entrante y correspondiente
+a los tokens int y return para evitar errores como intmain o return2</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#getTokens/1">getTokens(data)</a>
+  </div>
+    <div class="summary-synopsis"><p>getTokens</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#lexer/1">lexer(rawText)</a>
+  </div>
+    <div class="summary-synopsis"><p>lexer
+Recibe el texto sin formato y devuelve una lista con tokens reconocidos. Es la funcion
+principal del Lexer.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#sanitize/1">sanitize(rawText)</a>
+  </div>
+    <div class="summary-synopsis"><p>sanitize</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#tokensRemaining/3">tokensRemaining(data, token, char)</a>
+  </div>
+    <div class="summary-synopsis"><p>def tokensRemaining
+Esta funcion sirve para agregar a una lista el token reconocido
+y posteriormente mandar de manera recursiva los otros elementos
+del string por ejemplo int main() reconoce int y manda a llamar a la funcion
+para que reconozca main() etc.</p></div>
+</div>
+  </div>
+        </section>
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions          </h1>
+          <div class="functions-list">
+<section class="detail" id="check_spaces/2">
+  <div class="detail-header">
+    <a href="#check_spaces/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">check_spaces(token, sentence)</h1>
+  </div>
+  <section class="docstring">
+<p>check_spaces
+Esta funcion revisa los espacios del string entrante y correspondiente
+a los tokens int y return para evitar errores como intmain o return2</p>
+<h2 id="check_spaces/2-parámetros" class="section-heading">
+  <a href="#check_spaces/2-parámetros" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parámetros
+</h2>
+
+<p>  -token    : Corresponde al token previamente reconocido.
+  -sentence : Es el string sin el token reconocido.</p>
+  </section>
+</section>
+<section class="detail" id="getTokens/1">
+  <div class="detail-header">
+    <a href="#getTokens/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">getTokens(data)</h1>
+  </div>
+  <section class="docstring">
+<p>getTokens</p>
+<p>Esta funcion recibe una tuplacon la sentencia y el numero de linea y regresa un error
+o una lista de tokens que reconocio.</p>
+<h2 id="getTokens/1-parámetros" class="section-heading">
+  <a href="#getTokens/1-parámetros" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parámetros
+</h2>
+
+<p>  -data : Tupla con el siguiente formato {linea,numero de linea}</p>
+<pre><code class="nohighlight makeup elixir"><span class="w">      </span><span class="n">donde</span><span class="w"> </span><span class="n">linea</span><span class="w"> </span><span class="n">corresponde</span><span class="w"> </span><span class="n">por</span><span class="w"> </span><span class="n">ejemplo</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">int</span><span class="w"> </span><span class="n">main</span><span class="p" data-group-id="5916181982-1">(</span><span class="p" data-group-id="5916181982-1">)</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">linea</span><span class="w"> </span><span class="n">es</span><span class="w"> </span><span class="mi">2</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="lexer/1">
+  <div class="detail-header">
+    <a href="#lexer/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">lexer(rawText)</h1>
+  </div>
+  <section class="docstring">
+<p>lexer
+Recibe el texto sin formato y devuelve una lista con tokens reconocidos. Es la funcion
+principal del Lexer.</p>
+<h2 id="lexer/1-parámetros" class="section-heading">
+  <a href="#lexer/1-parámetros" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parámetros
+</h2>
+
+<p>  -rawText : Corresponde con el texto que se obtiene de un archivo.</p>
+  </section>
+</section>
+<section class="detail" id="sanitize/1">
+  <div class="detail-header">
+    <a href="#sanitize/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">sanitize(rawText)</h1>
+  </div>
+  <section class="docstring">
+<p>sanitize</p>
+<p>Elimina saltos de linea y obtiene la linea en la cual está.</p>
+<h2 id="sanitize/1-parameters" class="section-heading">
+  <a href="#sanitize/1-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parameters:
+</h2>
+
+<p>  rawText : Texto sin formatear.</p>
+  </section>
+</section>
+<section class="detail" id="tokensRemaining/3">
+  <div class="detail-header">
+    <a href="#tokensRemaining/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">tokensRemaining(data, token, char)</h1>
+  </div>
+  <section class="docstring">
+<p>def tokensRemaining
+Esta funcion sirve para agregar a una lista el token reconocido
+y posteriormente mandar de manera recursiva los otros elementos
+del string por ejemplo int main() reconoce int y manda a llamar a la funcion
+para que reconozca main() etc.</p>
+<h2 id="tokensRemaining/3-parametros" class="section-heading">
+  <a href="#tokensRemaining/3-parametros" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parametros:
+</h2>
+
+<p>  -data: Es el string entrante
+  -token: Corresponde al token con el que se hizo match
+  -char: Corresponde a la expresion regular para reemplazar con la cadena original</p>
+  </section>
+</section>
+          </div>
+        </section>
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.21.2),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>
