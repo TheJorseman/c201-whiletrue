@@ -36,7 +36,6 @@ defmodule CodeGenerator do
             nil ->
                 nil
             ast_nodo ->
-
                 pretty_printing(ast_nodo.right,sep <> "\t")
                 print_ast(ast_nodo,sep)
                 pretty_printing(ast_nodo.left, sep <> "\t")
@@ -245,9 +244,11 @@ defmodule CodeGenerator do
     def generateCode (root) do
         IO.puts("\nAST Tree:")
         pretty_printing(root,"")
+        #assembly_code = Optimizer.optimizer_2(root)
+        #pretty_printing(ast,"")
         assembly_code = posorder(root)
         IO.puts("\nCode generator Output:")
-        IO.puts(assembly_code)
+        #IO.puts(assembly_code)
         assembly_code
     end
 
