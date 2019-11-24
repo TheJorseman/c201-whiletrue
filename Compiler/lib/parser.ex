@@ -229,7 +229,8 @@ defmodule Parser do
         constant = %Nodo{name: :constant, value: nexTok}
         {tokens,constant}
       true ->
-        raise "Syntax Error Unary operator or constant keyword expected at line " <> Integer.to_string(elem(nexTok,2))
+        #IO.inspect(nexTok)
+        raise "Syntax Error before '"<>elem(nexTok,1)<>"' Unary operator or constant keyword expected at line " <> Integer.to_string(elem(nexTok,2))
     end
   end
   @doc """

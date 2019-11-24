@@ -14,22 +14,22 @@ defmodule Token do
   @type token :: {atom, any(),integer}
 
   @spec openParen(integer) :: token
-  def openParen(line), do: {:openParen, "",line}
+  def openParen(line), do: {:openParen, "(",line}
 
   @spec closeParen(integer) :: token
-  def closeParen(line), do: {:closeParen, "",line}
+  def closeParen(line), do: {:closeParen, ")",line}
 
   @spec openBrace(integer) :: token
-  def openBrace(line), do: {:openBrace, "",line}
+  def openBrace(line), do: {:openBrace, "{",line}
 
   @spec closeBrace(integer) :: token
-  def closeBrace(line), do: {:closeBrace, "",line}
+  def closeBrace(line), do: {:closeBrace, "}",line}
 
   @spec semicolon(integer) :: token
-  def semicolon(line), do: {:semicolon, "",line}
+  def semicolon(line), do: {:semicolon, ";",line}
 
   @spec returnKeyword(integer) :: token
-  def returnKeyword(line), do: {:returnKeyword,"",line}
+  def returnKeyword(line), do: {:returnKeyword,"return",line}
 
   @spec identifier(String.t,integer) :: token
   def identifier(value,line), do: {:identifier,value,line}
