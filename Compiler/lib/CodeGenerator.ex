@@ -8,6 +8,9 @@ defmodule CodeGenerator do
   ## Parámetros
     -nodo : corresponde con el nodo actual y el que va a ser navegado.
   """
+  @andC Counter
+  @orC  Counter
+
     def posorder(nodo) do
         case nodo do
             nil ->
@@ -15,6 +18,7 @@ defmodule CodeGenerator do
             ast_nodo ->
                 code = posorder(ast_nodo.left)
                 code_r = posorder(ast_nodo.right)
+                #IO.inspect(ast_nodo.name)
                 getCode(ast_nodo.name,ast_nodo.value,code,code_r)
         end
     end
@@ -168,42 +172,47 @@ defmodule CodeGenerator do
     Funcion que regresa el código ensamblador de or ó || .
     """
     def getCode(:orT,_,code,code_r) do
-        lista_1 = Regex.scan(~r/clause_or\d{1,}/,code)
-        lista_2 = Regex.scan(~r/clause_or\d{1,}/,code_r)
-        num = Integer.to_string( length(lista_1) + length(lista_2) + 1 )
-
+        #IO.inspect(@orC)
+        #lista_1 = Regex.scan(~r/clause_or_\d{1,}/,code)
+        #lista_2 = Regex.scan(~r/clause_or_\d{1,}/,code_r)
+        #num = Integer.to_string( length(lista_1) + length(lista_2) + 1 )
+        num = @orC.value()
+        @orC.increment()
         """
                         #{code}
                         cmp $0, %rax
-                        je clause_or#{num}
+                        je clause_or_#{num}
                         mov $1,%rax
-                        jmp end_or#{num}
-                    clause_or#{num}:
+                        jmp end_or_#{num}
+                    clause_or_#{num}:
                         #{code_r}
                         cmp $0, %rax
                         mov $0, %rax
                         setne %al
-                    end_or#{num}:
+                    end_or_#{num}:
         """
+
     end
     @doc """
     Funcion que regresa el código ensamblador de and ó &&.
     """
     def getCode(:andT,_,code,code_r) do
-        lista_1 = Regex.scan(~r/clause_and\d{1,}/,code)
-        lista_2 = Regex.scan(~r/clause_and\d{1,}/,code_r)
-        num = Integer.to_string( length(lista_1) + length(lista_2) + 1 )
+        #lista_1 = Regex.scan(~r/clause_and_\d{1,}/,code)
+        #lista_2 = Regex.scan(~r/clause_and_\d{1,}/,code_r)
+        #num = Integer.to_string( length(lista_1) + length(lista_2) + 1 )
+        num = @andC.value()
+        @andC.increment()
         """
                         #{code}
                         cmp $0, %rax
-                        jne clause_and#{num}
-                        jmp end_and#{num}
-                    clause_and#{num}:
+                        jne clause_and_#{num}
+                        jmp end_and_#{num}
+                    clause_and_#{num}:
                         #{code_r}
                         cmp $0, %rax
                         mov $0, %rax
                         setne %al
-                    end_and#{num}:
+                    end_and_#{num}:
         """
     end
     @doc """
@@ -290,6 +299,8 @@ defmodule CodeGenerator do
     Funcion que genera el código ensabmblador a partir de un nodo.
     """
     def generateCode (root) do
+        @andC.start_link(0)
+        @orC.start_link(0)
         IO.puts("\nAST Tree:")
         pretty_printing(root,"")
         assembly_code = posorder(root)
@@ -299,7 +310,10 @@ defmodule CodeGenerator do
     Funcion que regresa el codigo ensamblador sin imprimir el arbol.
     """
     def generateCodeNoP (root) do
+        @andC.start_link(0)
+        @orC.start_link(0)
         assembly_code = posorder(root)
         assembly_code
     end
 end
+

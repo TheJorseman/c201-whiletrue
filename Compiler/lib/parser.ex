@@ -1,7 +1,7 @@
 defmodule Parser do
   @moduledoc """
   Este modulo recibe una lista de tokens y regresa un arbol ast con la gramatica:
-
+  '
   <program> ::= <function>
   <function> ::= "int" <id> "(" ")" "{" <statement> "}"
   <statement> ::= "return" <exp> ";"
@@ -13,6 +13,7 @@ defmodule Parser do
   <term> ::= <factor> { ("*" | "/") <factor> }
   <factor> ::= "(" <exp> ")" | <unary_op> <factor> | <int>
   <unary_op> ::= "!" | "~" | "-"
+  '
   """
   @moduledoc since: "1.5.0"
 
