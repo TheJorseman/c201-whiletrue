@@ -9,7 +9,8 @@ defmodule Optimizer do
             right = o_posorder(ast_nodo.right)
             cond do
               left != nil ->
-                optimizer_neg(ast_nodo,left,right)
+                ast_opt_neg = optimizer_neg(ast_nodo,left,right)
+                optimizer_log_neg(ast_opt_neg,ast_opt_neg.left,ast_opt_neg.right)
               true ->
                 ast_nodo = %{ast_nodo | left: left}
                 %{ast_nodo | right: right}
@@ -17,6 +18,26 @@ defmodule Optimizer do
     end
   end
 
+  def optimizer_log_neg(ast_nodo,left,right) do
+    if ast_nodo.name == :logicalN do
+      if left != nil and left.name == :logicalN do
+        left_1 = left.left
+        if left_1 != nil and left_1.name == :logicalN do
+          ast_nodo = %{ast_nodo | left: left_1.left}
+          %{ast_nodo | right: right}
+        else
+          ast_nodo = %{ast_nodo | left: left}
+          %{ast_nodo | right: right}
+        end
+      else
+        ast_nodo = %{ast_nodo | left: left}
+        %{ast_nodo | right: right}
+      end
+    else
+      ast_nodo = %{ast_nodo | left: left}
+      %{ast_nodo | right: right}
+    end
+  end
   def optimizer_neg(ast_nodo,left,right) do
     if left.name == :negation_minus and ast_nodo.name != :return and right == nil do
       left.left
