@@ -4,7 +4,7 @@ Guia para terminar la documentacion del Compilador
 
 1. Introduccion ✓
 	Complementar mejor la intro ya puesta, con algo de historia del primer compilador
-	y como estos ayudan a los sistemas
+	y como estos ayudan a los sistemas ✓
 	Colocar el porque elegimos elixir
 
 2.Project Plan ✓
