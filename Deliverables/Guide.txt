@@ -1,14 +1,14 @@
 Guia para terminar la documentacion del Compilador
 
-0. Portada
+0. Portada ✓
 
-1. Introduccion
+1. Introduccion ✓
 	Complementar mejor la intro ya puesta, con algo de historia del primer compilador
 	y como estos ayudan a los sistemas
 	Colocar el porque elegimos elixir
 
-2.Project Plan
-	Unir el Road Map y el WorkPlan
+2.Project Plan ✓
+	Unir el Road Map y el WorkPlan 
 	Poner graficas del rendimiento del equipo
 
 3. Arquitecura del compilador
