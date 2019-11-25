@@ -21,7 +21,7 @@ Guia para terminar la documentacion del Compilador
 	
 
 
-6. Apendice
+6. Apendice ✓
 
 	6.1 Git link ✓
 	6.2 WBS ✓
