@@ -66,7 +66,7 @@ defmodule INVALIDCOMPILERTest do
                       return !;
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error before ';' Unary operator or constant keyword expected at line 2"}
   end
 
   test "8. Missing semicolon" do
@@ -84,7 +84,7 @@ defmodule INVALIDCOMPILERTest do
                       return !~;
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error before ';' Unary operator or constant keyword expected at line 2"}
   end
 
   test "10. Wrong order" do
@@ -93,7 +93,7 @@ defmodule INVALIDCOMPILERTest do
                       return 4-;
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error before ';' Unary operator or constant keyword expected at line 2"}
   end
 
   # Invalid tests - week 3
@@ -113,7 +113,7 @@ defmodule INVALIDCOMPILERTest do
                       return /3;
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error before '/' Unary operator or constant keyword expected at line 2"}
   end
 
   test "13. Missing second op" do
@@ -122,7 +122,7 @@ defmodule INVALIDCOMPILERTest do
                       return 1 + ;
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error before ';' Unary operator or constant keyword expected at line 2"}
   end
 
   test "14. No semicolon" do
@@ -142,7 +142,7 @@ defmodule INVALIDCOMPILERTest do
                       return <= 2;
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error before '<=' Unary operator or constant keyword expected at line 2"}
   end
 
   test "16. Missing mid operator" do
@@ -151,7 +151,7 @@ defmodule INVALIDCOMPILERTest do
                       return 1 < > 3;
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 2"}
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error before '>' Unary operator or constant keyword expected at line 2"}
   end
 
   test "17. Missing second operator" do
@@ -160,7 +160,7 @@ defmodule INVALIDCOMPILERTest do
                       return 2 &&
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Unary operator or constant keyword expected at line 3"}
+    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error before '}' Unary operator or constant keyword expected at line 3"}
   end
 
   test "18. Missing semicolon" do
