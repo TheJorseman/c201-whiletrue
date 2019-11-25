@@ -1,10 +1,35 @@
 defmodule Lexer do
+  @moduledoc """
+  Este modulo convierte un string a una lista de tokens para el
+  proceso de compilacion de un archivo en C.
+  """
+  @moduledoc since: "1.5.0"
+  @doc """
+  sanitize
+
+  Elimina saltos de linea y obtiene la linea en la cual está.
+  ## Parameters:
+    rawText : Texto sin formatear.
+  """
   def sanitize(rawText) do
     str_list = String.split(rawText,"\n")
     list = Enum.with_index(str_list)
     list = Enum.filter(list,fn(x)-> elem(x,0) != "" end)
     Enum.map(list,fn x -> {String.trim(Regex.replace(~r/^\t+|\n+|\r+/,elem(x,0),"")), elem(x,1) + 1} end)
   end
+  @doc """
+  def tokensRemaining
+  Esta funcion sirve para agregar a una lista el token reconocido
+  y posteriormente mandar de manera recursiva los otros elementos
+  del string por ejemplo int main() reconoce int y manda a llamar a la funcion
+  para que reconozca main() etc.
+
+  ## Parametros:
+    -data: Es el string entrante
+    -token: Corresponde al token con el que se hizo match
+    -char: Corresponde a la expresion regular para reemplazar con la cadena original
+
+  """
   def tokensRemaining(data,token,char) do
     listTokens = [token]
     sentence = elem(data,0)
@@ -13,7 +38,14 @@ defmodule Lexer do
     partialSentence = String.trim(partialSentence)
     listTokens ++ getTokens({partialSentence,elem(data,1)})
   end
-
+  @doc """
+  check_spaces
+  Esta funcion revisa los espacios del string entrante y correspondiente
+  a los tokens int y return para evitar errores como intmain o return2
+  ## Parámetros
+    -token    : Corresponde al token previamente reconocido.
+    -sentence : Es el string sin el token reconocido.
+  """
   def check_spaces(token,sentence) do
     tokens_space = [:intKeyword,:returnKeyword]
     valid = [nil," ","\n"]
@@ -25,7 +57,16 @@ defmodule Lexer do
       end
     end
   end
+  @doc """
+  getTokens
 
+  Esta funcion recibe una tuplacon la sentencia y el numero de linea y regresa un error
+  o una lista de tokens que reconocio.
+
+  ## Parámetros
+    -data : Tupla con el siguiente formato {linea,numero de linea}
+            donde linea corresponde por ejemplo a int main() y linea es 2
+  """
   def getTokens(data) do
     #IO.inspect(data)
     sentence = elem(data,0)
@@ -94,12 +135,16 @@ defmodule Lexer do
         #[{:error,"Error 1: Unexpected Token" <> ssentence <> "at line " <> Integer.to_string(number_line) }]
     end
   end
+  @doc """
+  lexer
+  Recibe el texto sin formato y devuelve una lista con tokens reconocidos. Es la funcion
+  principal del Lexer.
 
+  ## Parámetros
+    -rawText : Corresponde con el texto que se obtiene de un archivo.
+  """
   def lexer(rawText) do
-    #IO.inspect(rawText)
     listFormat = sanitize(rawText)
-    #IO.inspect(listFormat)
     Enum.flat_map(listFormat,&getTokens/1)
-    #IO.inspect(listTokens)
   end
 end

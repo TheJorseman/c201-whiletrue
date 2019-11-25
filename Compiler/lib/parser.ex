@@ -1,12 +1,34 @@
 defmodule Parser do
+  @moduledoc """
+  Este modulo recibe una lista de tokens y regresa un arbol ast con la gramatica:
+  '
+  <program> ::= <function>
+  <function> ::= "int" <id> "(" ")" "{" <statement> "}"
+  <statement> ::= "return" <exp> ";"
+  <exp> ::= <logical-and-exp> { "||" <logical-and-exp> }
+  <logical-and-exp> ::= <equality-exp> { "&&" <equality-exp> }
+  <equality-exp> ::= <relational-exp> { ("!=" | "==") <relational-exp> }
+  <relational-exp> ::= <additive-exp> { ("<" | ">" | "<=" | ">=") <additive-exp> }
+  <additive-exp> ::= <term> { ("+" | "-") <term> }
+  <term> ::= <factor> { ("*" | "/") <factor> }
+  <factor> ::= "(" <exp> ")" | <unary_op> <factor> | <int>
+  <unary_op> ::= "!" | "~" | "-"
+  '
+  """
+  @moduledoc since: "1.5.0"
 
+  @doc """
+  Corresponde a la funcion que hace el parse de program
+  """
   def parseProgram(tokens) do
     root = %Nodo{name: :program}
     function = parseFunction(tokens)
     %{root | left: function }
     #IO.inspect(root)
   end
-
+  @doc """
+  Corresponde a la funcion que hace el parse de Function
+  """
   def parseFunction(tokens) do
     #Check int
     {intKey,tokens} = List.pop_at(tokens,0)
@@ -45,7 +67,9 @@ defmodule Parser do
     end
     function
   end
-
+  @doc """
+  Corresponde a la funcion que hace el parse de statement
+  """
   def parseStatement(tokens) do
     {nexTok,tokens } = List.pop_at(tokens,0)
     if elem(nexTok,0) != :returnKeyword do
@@ -67,40 +91,59 @@ defmodule Parser do
       {[{:error,"",elem(nexTok,2)}],nil}
     end
   end
-
+  @doc """
+  Corresponde a la funcion que hace el parse de expression
+  """
   def parseExp(tokens) do
     #IO.puts("ParseExp")
     # <parseLogicalAndExp> { || <parseLogicalAndExp>}
     {tokens,term} = parseLogicalAndExp(tokens);
     while_parse(tokens,term,[:orT],:parseLogicalAndExp)
   end
-
+  @doc """
+  Corresponde a la funcion que hace el parse de logical and exp
+  """
   def parseLogicalAndExp(tokens) do
     # <parseEqualityExp> { && <parseEqualityExp>}
     {tokens,term} = parseEqualityExp(tokens);
     while_parse(tokens,term,[:andT],:parseEqualityExp)
   end
 
-
+  @doc """
+  Corresponde a la funcion que hace el parse de equality exp
+  """
   def parseEqualityExp(tokens) do
     # <relational-exp> { != | == <relational-exp>}
     {tokens,term} = parseRelationalExp(tokens);
     while_parse(tokens,term,[:equal, :notEqual],:parseRelationalExp)
   end
 
-
+  @doc """
+  Corresponde a la funcion que hace el parse de relational exp
+  """
   def parseRelationalExp(tokens) do
     # <additive-exp> { <|>|>=|<= <additive-exp>}
     {tokens,term} = parseAdditiveExp(tokens);
     while_parse(tokens,term,[:lessThan, :greaterThan, :greaterThanEq, :lessThanEq],:parseAdditiveExp)
   end
-
+  @doc """
+  Corresponde a la funcion que hace el parse de additive exp
+  """
   def parseAdditiveExp(tokens) do
     # <term> { (+ | - ) <term> }
     {tokens,term} = parseTerm(tokens);
     while_parse(tokens,term,[:addition,:negation_minus],:parseTerm)
   end
-
+  @doc """
+  Esta funcion hace el papel de un while recursivo el cual dependiendo de los
+  parametros va a hacer una busqueda hacia adelante en busca de mas expresiones
+  del tipo de los parámetros y como se indica en la gramática.
+  ## Parámetros
+    -tokens   : Corresponde a la lista de tokens reconocidos en procesos previos como el lexer.
+    -term     : Corresponde a una parte del arbol ast para añadir mas elementos al arbol como padre.
+    -list     : Corresponde a la lista de tokens en la que debe de estar el siguiente token a ser evaluado.
+    -function : Corresponde a la funcion que se va a evaluar recursivamente.
+  """
   def while_parse(tokens,term,list,function) when tokens != [] do
     [head | tail ] = tokens
     nextToken = elem(head,0)
@@ -147,13 +190,17 @@ defmodule Parser do
       {tokens,term}
     end
   end
-
+  @doc """
+  Corresponde a la funcion que hace el parse de term
+  """
   def parseTerm(tokens) do
     #<factor> {( * | / )  <factor>}
     {tokens,factor} = parseFactor(tokens);
     while_parse(tokens,factor,[:multiplication,:division],:parseFactor)
   end
-
+  @doc """
+  Corresponde a la funcion que hace el parse de factor
+  """
   def parseFactor(tokens) do
     #IO.puts("ParseFactor")
     # ( <exp> ) | <unary_op> <factor> | <int>
@@ -182,9 +229,13 @@ defmodule Parser do
         constant = %Nodo{name: :constant, value: nexTok}
         {tokens,constant}
       true ->
-        raise "Syntax Error Unary operator or constant keyword expected at line " <> Integer.to_string(elem(nexTok,2))
+        #IO.inspect(nexTok)
+        raise "Syntax Error before '"<>elem(nexTok,1)<>"' Unary operator or constant keyword expected at line " <> Integer.to_string(elem(nexTok,2))
     end
   end
+  @doc """
+  Funcion que recibe un atomo de un token y revuelve True o False si es que es un operador unario
+  """
   def check_unary_op(currToken) do
     if currToken == :negation_minus or currToken == :bitwiseN or currToken == :logicalN do
       True
