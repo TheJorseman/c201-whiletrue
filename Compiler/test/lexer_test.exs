@@ -9,111 +9,111 @@ defmodule LEXERTest do
 
     tok_ret_2: [{:intKeyword, "int", 1},
                 {:identifier, "main", 1},
-                {:openParen, "", 1},
-                {:closeParen, "", 1},
-                {:openBrace, "", 1},
-                {:returnKeyword, "", 2},
+                {:openParen, "(", 1},
+                {:closeParen, ")", 1},
+                {:openBrace, "{", 1},
+                {:returnKeyword, "return", 2},
                 {:constant, 2, 2},
-                {:semicolon, "", 2},
-                {:closeBrace, "", 3}
+                {:semicolon, ";", 2},
+                {:closeBrace, "}", 3}
     ],
 
     no_newlines: [{:intKeyword, "int", 1},
                 {:identifier, "main", 1},
-                {:openParen, "", 1},
-                {:closeParen, "", 1},
-                {:openBrace, "", 1},
-                {:returnKeyword, "", 1},
+                {:openParen, "(", 1},
+                {:closeParen, ")", 1},
+                {:openBrace, "{", 1},
+                {:returnKeyword, "return", 1},
                 {:constant, 0, 1},
-                {:semicolon, "", 1},
-                {:closeBrace, "", 1}
+                {:semicolon, ";", 1},
+                {:closeBrace, "}", 1}
     ],
 
     newlines: [{:intKeyword, "int", 2},
                 {:identifier, "main", 3},
-                {:openParen, "", 4},
-                {:closeParen, "", 5},
-                {:openBrace, "", 6},
-                {:returnKeyword, "", 7},
+                {:openParen, "(", 4},
+                {:closeParen, ")", 5},
+                {:openBrace, "{", 6},
+                {:returnKeyword, "return", 7},
                 {:constant, 0, 8},
-                {:semicolon, "", 9},
-                {:closeBrace, "", 10}
+                {:semicolon, ";", 9},
+                {:closeBrace, "}", 10}
     ],
 
     # week 2
 
     bitwise_0: [{:intKeyword, "int", 1},
                 {:identifier, "main", 1},
-                {:openParen, "", 1},
-                {:closeParen, "", 1},
-                {:openBrace, "", 1},
-                {:returnKeyword, "", 2},
+                {:openParen, "(", 1},
+                {:closeParen, ")", 1},
+                {:openBrace, "{", 1},
+                {:returnKeyword, "return", 2},
                 {:bitwiseN, "~", 2},
                 {:constant, 0, 2},
-                {:semicolon, "", 2},
-                {:closeBrace, "", 3}
+                {:semicolon, ";", 2},
+                {:closeBrace, "}", 3}
     ],
 
     # week 3
 
     bin_op_1: [{:intKeyword, "int", 1},#0
                 {:identifier, "main", 1},#1
-                {:openParen, "", 1},#2
-                {:closeParen, "", 1},#3
-                {:openBrace, "", 1},#4
-                {:returnKeyword, "", 2},#5
+                {:openParen, "(", 1},#2
+                {:closeParen, ")", 1},#3
+                {:openBrace, "{", 1},#4
+                {:returnKeyword, "return", 2},#5
                 {:constant, 1, 2},#6
                 {:addition, "+", 2},#7
                 {:constant, 2, 2},#8
-                {:semicolon, "", 2},#9
-                {:closeBrace, "", 3}#10
+                {:semicolon, ";", 2},#9
+                {:closeBrace, "}", 3}#10
     ],
 
     bin_op_2: [{:intKeyword, "int", 1},#0
                 {:identifier, "main", 1},#1
-                {:openParen, "", 1},#2
-                {:closeParen, "", 1},#3
-                {:openBrace, "", 1},#4
-                {:returnKeyword, "", 2},#5
+                {:openParen, "(", 1},#2
+                {:closeParen, ")", 1},#3
+                {:openBrace, "{", 1},#4
+                {:returnKeyword, "return", 2},#5
                 {:constant, 1, 2},#6
                 {:negation_minus, "-", 2},#7
                 {:constant, 2, 2},#8
                 {:negation_minus, "-", 2},#9
                 {:constant, 3, 2},#10
-                {:semicolon, "", 2},#11
-                {:closeBrace, "", 3}#12
+                {:semicolon, ";", 2},#11
+                {:closeBrace, "}", 3}#12
     ],
 
     bin_op_3: [{:intKeyword, "int", 1},
                 {:identifier, "main", 1},#1
-                {:openParen, "", 1},
-                {:closeParen, "", 1},#3
-                {:openBrace, "", 1},
-                {:returnKeyword, "", 2},#5
+                {:openParen, "(", 1},
+                {:closeParen, ")", 1},#3
+                {:openBrace, "{", 1},
+                {:returnKeyword, "return", 2},#5
                 {:constant, 2, 2},
                 {:addition, "+", 2},#7
                 {:constant, 3, 2},
                 {:multiplication, "*", 2},#9
                 {:constant, 4, 2},
-                {:semicolon, "", 2},#11
-                {:closeBrace, "", 3}
+                {:semicolon, ";", 2},#11
+                {:closeBrace, "}", 3}
     ],
 
     # week 4
 
     prec: [{:intKeyword, "int", 1},
             {:identifier, "main", 1},#1
-            {:openParen, "", 1},
-            {:closeParen, "", 1},#3
-            {:openBrace, "", 1},
-            {:returnKeyword, "", 2},#5
+            {:openParen, "(", 1},
+            {:closeParen, ")", 1},#3
+            {:openBrace, "{", 1},
+            {:returnKeyword, "return", 2},#5
             {:constant, 1, 2},
             {:orT, "||", 2},#7
             {:constant, 0, 2},
             {:andT, "&&", 2},#9
             {:constant, 2, 2},
-            {:semicolon, "", 2},
-            {:closeBrace, "", 3}
+            {:semicolon, ";", 2},
+            {:closeBrace, "}", 3}
     ]
     }
 
@@ -296,9 +296,9 @@ defmodule LEXERTest do
                       return (-12) / 5;
                     }
                   """
-    div1 = List.update_at(state[:bin_op_2], 6, fn _ -> {:openParen, "", 2} end)
+    div1 = List.update_at(state[:bin_op_2], 6, fn _ -> {:openParen, "(", 2} end)
     div2 = List.update_at(div1, 8, fn _ -> {:constant, 12, 2} end)
-    div3 = List.update_at(div2, 9, fn _ -> {:closeParen, "", 2} end)
+    div3 = List.update_at(div2, 9, fn _ -> {:closeParen, ")", 2} end)
     div4 = List.update_at(div3, 10, fn _ -> {:division, "/", 2} end)
     div5 = List.insert_at(div4, 11, {:constant, 5, 2})
     assert Lexer.lexer(source_code) == div5
@@ -336,8 +336,8 @@ defmodule LEXERTest do
                   """
     par1 = List.update_at(state[:bin_op_3], 7, fn _ -> {:multiplication, "*", 2} end)
     par2 = List.update_at(par1, 9, fn _ -> {:addition, "+", 2} end)
-    par3 = List.insert_at(par2, 8, {:openParen, "", 2})
-    par4 = List.insert_at(par3, 12, {:closeParen, "", 2})
+    par3 = List.insert_at(par2, 8, {:openParen, "(", 2})
+    par4 = List.insert_at(par3, 12, {:closeParen, ")", 2})
     assert Lexer.lexer(source_code) == par4
   end
 
@@ -394,8 +394,8 @@ defmodule LEXERTest do
     un_op1 = List.insert_at(state[:bin_op_1], 6, {:bitwiseN, "~", 2})
     un_op2 = List.update_at(un_op1, 7, fn _ -> {:constant, 1, 2} end)
     un_op3 = List.update_at(un_op2, 9, fn _ -> {:constant, 1, 2} end)
-    un_op4 = List.insert_at(un_op3, 7, {:openParen, "", 2})
-    un_op5 = List.insert_at(un_op4, 11, {:closeParen, "", 2})
+    un_op4 = List.insert_at(un_op3, 7, {:openParen, "(", 2})
+    un_op5 = List.insert_at(un_op4, 11, {:closeParen, ")", 2})
     assert Lexer.lexer(source_code) == un_op5
   end
 
@@ -605,8 +605,8 @@ defmodule LEXERTest do
                     }
                   """
     prec1 = List.update_at(state[:prec], 10, fn _ -> {:constant, 0, 2} end)
-    prec2 = List.insert_at(prec1, 6, {:openParen, "", 2})
-    prec3 = List.insert_at(prec2, 10, {:closeParen, "", 2})
+    prec2 = List.insert_at(prec1, 6, {:openParen, "(", 2})
+    prec3 = List.insert_at(prec2, 10, {:closeParen, ")", 2})
     assert Lexer.lexer(source_code) == prec3
   end
 
