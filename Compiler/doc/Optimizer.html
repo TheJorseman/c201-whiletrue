@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.21.2">
+    <meta name="project" content="Compiler v0.1.0">
+    <title>Optimizer — Compiler v0.1.0</title>
+    <link rel="stylesheet" href="dist/html-de2388dc2f8074b0a4db.css" />
+    <script src="dist/sidebar_items-583e29bb41.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/html-de2388dc2f8074b0a4db.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button">
+      <span class="icon-cross" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="api-reference.html" class="sidebar-projectName">
+Compiler      </a>
+      <h2 class="sidebar-projectVersion">
+        v0.1.0
+      </h2>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+        <small class="app-vsn">Compiler v0.1.0</small>
+Optimizer      </h1>
+
+
+        <section id="moduledoc">
+<p>Este modulo recibe un árbol ast y devuelve un arbol ast optimizado o codigo ensamblador.</p>
+        </section>
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#getCode/4">getCode(atom, value, code, code_r)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#o_posorder/1">o_posorder(nodo)</a>
+  </div>
+    <div class="summary-synopsis"><p>Función que recorre el arbol y dependiendo de éste se optimizará o no.
+##Parámetros
+  -nodo : Nodo del ast que se va a optimizar</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#optimizer_1/1">optimizer_1(root)</a>
+  </div>
+    <div class="summary-synopsis"><p>Función que manda a llamar a la funcion correspondiente para realizar la optimizacion.
+##Parámetros
+  -nodo : Nodo del ast que se va a optimizar</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#optimizer_2/1">optimizer_2(root)</a>
+  </div>
+    <div class="summary-synopsis"><p>Función que manda a llamar a las funciones de optimizacion
+##Parámetros
+  -nodo : Nodo del ast que se va a optimizar</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#optimizer_bitwiseN/3">optimizer_bitwiseN(ast_nodo, left, right)</a>
+  </div>
+    <div class="summary-synopsis"><p>Optimiza el bitwise negation en dado caso que sea posible.
+Reeplaza el nodo dado la siguiente regla:
+Si hay una expresion ~~5 regresará 5 y asi de manera ascendente en el árbol.
+##Parámetros
+  -ast_nodo : Se refiere al nodo actual
+  -left     : Hijo izquierdo del nodo actual optimizado o no.
+  -right    : Hijo derecho del nodo actual optimizado o no.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#optimizer_log_neg/3">optimizer_log_neg(ast_nodo, left, right)</a>
+  </div>
+    <div class="summary-synopsis"><p>Optimiza la negacion lógica de tal manera que si encuentra tres negaciones seguidas
+se reducirá a una. Por ejemplo !!!5, esto primero dará 0, luego 1 y finalmente 0 por lo que
+es mas optimo solo utilizar una vez el !. Asimismo con numeros paresde negacion como:
+!!!!5 lo cual dara como resultado !!5.
+Si se cumple la condicion regresará el la expresion antes mencionada.
+Si no, entonces regresará un nodo con sus hijos left y right optimizados si asi sea.
+##Parámetros
+  -ast_nodo : Se refiere al nodo actual
+  -left     : Hijo izquierdo del nodo actual optimizado o no.
+  -right    : Hijo derecho del nodo actual optimizado o no.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#optimizer_neg/3">optimizer_neg(ast_nodo, left, right)</a>
+  </div>
+    <div class="summary-synopsis"><p>Optimiza la negacion en dado caso que sea posible.
+Reeplaza el nodo dado la siguiente regla:
+Si hay una expresion --5 regresará 5 y asi de manera ascendente en el árbol.
+##Parámetros
+  -ast_nodo : Se refiere al nodo actual
+  -left     : Hijo izquierdo del nodo actual optimizado o no.
+  -right    : Hijo derecho del nodo actual optimizado o no.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#posorder/1">posorder(nodo)</a>
+  </div>
+    <div class="summary-synopsis"><p>Función que recorre el arbol y realizará todas las operaciones para regresar un único valor.
+##Parámetros
+  -nodo : Nodo del ast que se va a optimizar</p></div>
+</div>
+  </div>
+        </section>
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions          </h1>
+          <div class="functions-list">
+<section class="detail" id="getCode/4">
+  <div class="detail-header">
+    <a href="#getCode/4" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">getCode(atom, value, code, code_r)</h1>
+  </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="o_posorder/1">
+  <div class="detail-header">
+    <a href="#o_posorder/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">o_posorder(nodo)</h1>
+  </div>
+  <section class="docstring">
+<p>Función que recorre el arbol y dependiendo de éste se optimizará o no.
+##Parámetros
+  -nodo : Nodo del ast que se va a optimizar</p>
+  </section>
+</section>
+<section class="detail" id="optimizer_1/1">
+  <div class="detail-header">
+    <a href="#optimizer_1/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">optimizer_1(root)</h1>
+  </div>
+  <section class="docstring">
+<p>Función que manda a llamar a la funcion correspondiente para realizar la optimizacion.
+##Parámetros
+  -nodo : Nodo del ast que se va a optimizar</p>
+  </section>
+</section>
+<section class="detail" id="optimizer_2/1">
+  <div class="detail-header">
+    <a href="#optimizer_2/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">optimizer_2(root)</h1>
+  </div>
+  <section class="docstring">
+<p>Función que manda a llamar a las funciones de optimizacion
+##Parámetros
+  -nodo : Nodo del ast que se va a optimizar</p>
+  </section>
+</section>
+<section class="detail" id="optimizer_bitwiseN/3">
+  <div class="detail-header">
+    <a href="#optimizer_bitwiseN/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">optimizer_bitwiseN(ast_nodo, left, right)</h1>
+  </div>
+  <section class="docstring">
+<p>Optimiza el bitwise negation en dado caso que sea posible.
+Reeplaza el nodo dado la siguiente regla:
+Si hay una expresion ~~5 regresará 5 y asi de manera ascendente en el árbol.
+##Parámetros
+  -ast_nodo : Se refiere al nodo actual
+  -left     : Hijo izquierdo del nodo actual optimizado o no.
+  -right    : Hijo derecho del nodo actual optimizado o no.</p>
+  </section>
+</section>
+<section class="detail" id="optimizer_log_neg/3">
+  <div class="detail-header">
+    <a href="#optimizer_log_neg/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">optimizer_log_neg(ast_nodo, left, right)</h1>
+  </div>
+  <section class="docstring">
+<p>Optimiza la negacion lógica de tal manera que si encuentra tres negaciones seguidas
+se reducirá a una. Por ejemplo !!!5, esto primero dará 0, luego 1 y finalmente 0 por lo que
+es mas optimo solo utilizar una vez el !. Asimismo con numeros paresde negacion como:
+!!!!5 lo cual dara como resultado !!5.
+Si se cumple la condicion regresará el la expresion antes mencionada.
+Si no, entonces regresará un nodo con sus hijos left y right optimizados si asi sea.
+##Parámetros
+  -ast_nodo : Se refiere al nodo actual
+  -left     : Hijo izquierdo del nodo actual optimizado o no.
+  -right    : Hijo derecho del nodo actual optimizado o no.</p>
+  </section>
+</section>
+<section class="detail" id="optimizer_neg/3">
+  <div class="detail-header">
+    <a href="#optimizer_neg/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">optimizer_neg(ast_nodo, left, right)</h1>
+  </div>
+  <section class="docstring">
+<p>Optimiza la negacion en dado caso que sea posible.
+Reeplaza el nodo dado la siguiente regla:
+Si hay una expresion --5 regresará 5 y asi de manera ascendente en el árbol.
+##Parámetros
+  -ast_nodo : Se refiere al nodo actual
+  -left     : Hijo izquierdo del nodo actual optimizado o no.
+  -right    : Hijo derecho del nodo actual optimizado o no.</p>
+  </section>
+</section>
+<section class="detail" id="posorder/1">
+  <div class="detail-header">
+    <a href="#posorder/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">posorder(nodo)</h1>
+  </div>
+  <section class="docstring">
+<p>Función que recorre el arbol y realizará todas las operaciones para regresar un único valor.
+##Parámetros
+  -nodo : Nodo del ast que se va a optimizar</p>
+  </section>
+</section>
+          </div>
+        </section>
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.21.2),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>

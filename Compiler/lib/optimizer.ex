@@ -1,4 +1,14 @@
 defmodule Optimizer do
+  @moduledoc """
+  Este modulo recibe un árbol ast y devuelve un arbol ast optimizado o codigo ensamblador.
+  """
+  @moduledoc since: "1.5.0"
+
+  @doc """
+  Función que recorre el arbol y dependiendo de éste se optimizará o no.
+  ##Parámetros
+    -nodo : Nodo del ast que se va a optimizar
+  """
   def o_posorder(nodo) do
     case nodo do
         nil ->
@@ -18,7 +28,18 @@ defmodule Optimizer do
             end
     end
   end
-
+  @doc """
+  Optimiza la negacion lógica de tal manera que si encuentra tres negaciones seguidas
+  se reducirá a una. Por ejemplo !!!5, esto primero dará 0, luego 1 y finalmente 0 por lo que
+  es mas optimo solo utilizar una vez el !. Asimismo con numeros paresde negacion como:
+  !!!!5 lo cual dara como resultado !!5.
+  Si se cumple la condicion regresará el la expresion antes mencionada.
+  Si no, entonces regresará un nodo con sus hijos left y right optimizados si asi sea.
+  ##Parámetros
+    -ast_nodo : Se refiere al nodo actual
+    -left     : Hijo izquierdo del nodo actual optimizado o no.
+    -right    : Hijo derecho del nodo actual optimizado o no.
+  """
   def optimizer_log_neg(ast_nodo,left,right) do
     if ast_nodo.name == :logicalN do
       if left != nil and left.name == :logicalN do
@@ -39,6 +60,16 @@ defmodule Optimizer do
       %{ast_nodo | right: right}
     end
   end
+
+  @doc """
+  Optimiza la negacion en dado caso que sea posible.
+  Reeplaza el nodo dado la siguiente regla:
+  Si hay una expresion --5 regresará 5 y asi de manera ascendente en el árbol.
+  ##Parámetros
+    -ast_nodo : Se refiere al nodo actual
+    -left     : Hijo izquierdo del nodo actual optimizado o no.
+    -right    : Hijo derecho del nodo actual optimizado o no.
+  """
   def optimizer_neg(ast_nodo,left,right) do
     if ast_nodo.name == :negation_minus do
       if left.name == :negation_minus do
@@ -52,7 +83,15 @@ defmodule Optimizer do
       %{ast_nodo | right: right}
     end
   end
-
+  @doc """
+  Optimiza el bitwise negation en dado caso que sea posible.
+  Reeplaza el nodo dado la siguiente regla:
+  Si hay una expresion ~~5 regresará 5 y asi de manera ascendente en el árbol.
+  ##Parámetros
+    -ast_nodo : Se refiere al nodo actual
+    -left     : Hijo izquierdo del nodo actual optimizado o no.
+    -right    : Hijo derecho del nodo actual optimizado o no.
+  """
   def optimizer_bitwiseN(ast_nodo,left,right) do
     if ast_nodo.name == :bitwiseN do
       if left.name == :bitwiseN do
@@ -68,18 +107,23 @@ defmodule Optimizer do
   end
 
 # Optimizador agresivo :v
-def posorder(nodo) do
-  #IO.inspect nodo.name
-  case nodo do
-      nil ->
-          nil
-      ast_nodo ->
-        # IO.inspect(ast_nodo)
-          code = posorder(ast_nodo.left)
-          code_r = posorder(ast_nodo.right)
-          getCode(ast_nodo.name,ast_nodo.value,code,code_r)
+  @doc """
+  Función que recorre el arbol y realizará todas las operaciones para regresar un único valor.
+  ##Parámetros
+    -nodo : Nodo del ast que se va a optimizar
+  """
+  def posorder(nodo) do
+    #IO.inspect nodo.name
+    case nodo do
+        nil ->
+            nil
+        ast_nodo ->
+          # IO.inspect(ast_nodo)
+            code = posorder(ast_nodo.left)
+            code_r = posorder(ast_nodo.right)
+            getCode(ast_nodo.name,ast_nodo.value,code,code_r)
+    end
   end
-end
 
 def getCode(:constant,value,_,_) do
   elem(value,1)
@@ -199,15 +243,19 @@ def getCode(:program,_,code,_) do
 end
 
 
-
+  @doc """
+  Función que manda a llamar a la funcion correspondiente para realizar la optimizacion.
+  ##Parámetros
+    -nodo : Nodo del ast que se va a optimizar
+  """
   def optimizer_1(root) do
-    #IO.puts("=========Optimizer===========")
     o_posorder(root)
-    #IO.inspect(result)
-    #return = o_negation(lista)
-    #IO.inspect(return)
   end
-
+  @doc """
+  Función que manda a llamar a las funciones de optimizacion
+  ##Parámetros
+    -nodo : Nodo del ast que se va a optimizar
+  """
   def optimizer_2(root) do
     ast_opt = optimizer_1(root)
     code = posorder(ast_opt)

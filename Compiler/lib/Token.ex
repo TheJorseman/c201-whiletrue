@@ -1,23 +1,35 @@
 defmodule Token do
+  @moduledoc """
+  Este módulo es para definir los tokens que se van a utilizar en todo
+  el proceso.
+  """
+  @moduledoc since: "1.5.0"
+  @doc """
+  Define los tokens que se van a utilizar dando un entero que se refiere a
+  la linea donde se encuentra dicha expresion para ser utilizada posteriormente}
+  en el manejo de errores.
+
+  """
+
   @type token :: {atom, any(),integer}
 
   @spec openParen(integer) :: token
-  def openParen(line), do: {:openParen, "",line}
+  def openParen(line), do: {:openParen, "(",line}
 
   @spec closeParen(integer) :: token
-  def closeParen(line), do: {:closeParen, "",line}
+  def closeParen(line), do: {:closeParen, ")",line}
 
   @spec openBrace(integer) :: token
-  def openBrace(line), do: {:openBrace, "",line}
+  def openBrace(line), do: {:openBrace, "{",line}
 
   @spec closeBrace(integer) :: token
-  def closeBrace(line), do: {:closeBrace, "",line}
+  def closeBrace(line), do: {:closeBrace, "}",line}
 
   @spec semicolon(integer) :: token
-  def semicolon(line), do: {:semicolon, "",line}
+  def semicolon(line), do: {:semicolon, ";",line}
 
   @spec returnKeyword(integer) :: token
-  def returnKeyword(line), do: {:returnKeyword,"",line}
+  def returnKeyword(line), do: {:returnKeyword,"return",line}
 
   @spec identifier(String.t,integer) :: token
   def identifier(value,line), do: {:identifier,value,line}
