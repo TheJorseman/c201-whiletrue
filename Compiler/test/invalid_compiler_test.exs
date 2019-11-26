@@ -172,6 +172,51 @@ defmodule INVALIDCOMPILERTest do
     assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Semicolon keyword expected at line 2"}
   end
 
+  # Additional tests
+
+  test "19. Wrong operator" do
+    source_code = """
+                    int main() {
+                      return 1 & 2;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == {:error, "Unexpected Token & 2; at line 2"}
+  end
+
+  test "20. Wrong operator" do
+    source_code = """
+                    int main() {
+                      return 1+;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == {:error, "Syntax Error before ';' Unary operator or constant keyword expected at line 2"}
+  end
+
+  test "21. Wrong operator" do
+    source_code = """
+                    int main() {
+                      return 1!+9;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == {:error, "Syntax Error before ';' Unary operator or constant keyword expected at line 2"}
+  end
+
+  test "22. Wrong operator" do
+    source_code = """
+                    int main() {
+                      return 1!9;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == {:error, "Syntax Error before ';' Unary operator or constant keyword expected at line 2"}
+  end
+
+  test "23. Wrong operator" do
+    source_code = """
+                    int main() {
+                      return 1!;
+                    }
+                  """
+    assert Compiler.compiler_test(source_code) == {:error, "Syntax Error before ';' Unary operator or constant keyword expected at line 2"}
+  end
+
 end
-
-

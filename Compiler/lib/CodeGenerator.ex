@@ -301,9 +301,10 @@ defmodule CodeGenerator do
     def generateCode (root) do
         @andC.start_link(0)
         @orC.start_link(0)
-        IO.puts("\nAST Tree:")
-        pretty_printing(root,"")
+        #IO.puts("\nAST Tree:")
+        #pretty_printing(root,"")
         assembly_code = posorder(root)
+        IO.puts(assembly_code)
         assembly_code
     end
     @doc """
@@ -314,6 +315,15 @@ defmodule CodeGenerator do
         @orC.start_link(0)
         assembly_code = posorder(root)
         assembly_code
+    end
+
+    @doc """
+    Funcion que regresa el pretty printing del arbol ast, conveniente para el uso desde el
+    modulo Compiler.
+    """
+    def just_ast(root) do
+        IO.puts("\nAST Tree: \n")
+        pretty_printing(root, "")
     end
 end
 

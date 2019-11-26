@@ -29,7 +29,7 @@ defmodule Compiler do
   end
 
   def compile_optimization_l2(file_path) do
-    IO.puts("Compiling file: " <> file_path)
+    IO.puts("\nCompiling file: " <> file_path)
     assembly = String.replace_trailing(file_path, ".c", ".s")
     try do
       File.read!(file_path)
@@ -47,7 +47,7 @@ defmodule Compiler do
   end
 
   def compile_optimization_l1(file_path) do
-    IO.puts("Compiling file: " <> file_path)
+    IO.puts("\nCompiling file: " <> file_path)
     assembly = String.replace_trailing(file_path, ".c", ".s")
     try do
       File.read!(file_path)
@@ -66,7 +66,7 @@ defmodule Compiler do
   end
 #Función que genera todo el proceso de compilación
   def compile_file(file_path) do
-    IO.puts("Compiling file: " <> file_path)
+    IO.puts("\nCompiling file: " <> file_path)
     assembly = String.replace_trailing(file_path, ".c", ".s")
 
     try do
@@ -89,7 +89,7 @@ defmodule Compiler do
 
 #Función que imprime la lista de tokens
   def print_token_list(file_path) do
-    IO.puts("Compiling file: " <> file_path)
+    IO.puts("\nCompiling file: " <> file_path)
    try do
     File.read!(file_path)
     |> Lexer.lexer()
@@ -104,12 +104,12 @@ defmodule Compiler do
 
 #Función que imprime el árbol AST
   defp print_ast(file_path) do
-    IO.puts("Compiling file: " <> file_path)
+    IO.puts("\nCompiling file: " <> file_path)
    try do
     File.read!(file_path)
     |> Lexer.lexer()
     |> Parser.parseProgram()
-    |> IO.inspect(label: "\nParser output")
+    |> CodeGenerator.just_ast()
    IO.puts("\n")
   :successfulComp
     rescue
@@ -120,7 +120,7 @@ defmodule Compiler do
 
 #Función que imprime el ensamblador y genera el archivo
   defp print_assembler(file_path) do
-    IO.puts("Compiling file: " <> file_path)
+    IO.puts("\nCompiling file: " <> file_path)
     assembly = String.replace_trailing(file_path, ".c", ".s")
 
      try do
@@ -141,7 +141,6 @@ defmodule Compiler do
 #Función que muestra ayuda
 
   defp print_help_message do
-    IO.puts("\nCompilator help file_name \n")
     IO.puts("\nThe compiler supports following options:\n")
     @commands
     |> Enum.map(fn {comman, description} -> IO.puts("  #{comman} - #{description}") end)
@@ -150,7 +149,6 @@ defmodule Compiler do
 #Función que muestra apoyo
 
   defp print_tutorial_message do
-    IO.puts("\nError")
     IO.puts("\nPara utilizar este compilador agrega el archivo .c que deseas compilar con algunas de las siguientes opciones:\n")
     @commands
     |> Enum.map(fn {comman, description} -> IO.puts("  #{comman} - #{description}") end)
