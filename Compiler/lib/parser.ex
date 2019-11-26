@@ -80,10 +80,14 @@ defmodule Parser do
     {tokens,exp} = parseExp(tokens)
     statement = %{statement | left: exp}
     {nexTok,tokens} = List.pop_at(tokens,0)
-    # IO.inspect(nexTok)
-    #   IO.inspect(tokens)
-    if elem(nexTok,0) != :semicolon do
-      raise "Syntax Error Semicolon" <> " keyword expected at line " <> Integer.to_string(elem(statement.left.value,2))
+    #IO.inspect(nexTok)
+    #IO.inspect(tokens)
+    if nexTok != nil and elem(nexTok,0) != :semicolon do
+      if elem(nexTok,0) == :closeBrace do
+        raise "Syntax Error Semicolon" <> " keyword expected at line " <> Integer.to_string(elem(statement.left.value,2))
+      else
+        raise "Syntax Error Semicolon" <> " keyword expected before '" <> elem(nexTok,1) <> "' token at line " <> Integer.to_string(elem(statement.left.value,2))
+      end
     end
     if tokens != [] do
       {tokens,statement}
@@ -95,6 +99,9 @@ defmodule Parser do
   Corresponde a la funcion que hace el parse de expression
   """
   def parseExp(tokens) do
+    if tokens == [] do
+      raise "Syntax error: expected expression at end of input"
+    end
     #IO.puts("ParseExp")
     # <parseLogicalAndExp> { || <parseLogicalAndExp>}
     {tokens,term} = parseLogicalAndExp(tokens);
@@ -144,9 +151,13 @@ defmodule Parser do
     -list     : Corresponde a la lista de tokens en la que debe de estar el siguiente token a ser evaluado.
     -function : Corresponde a la funcion que se va a evaluar recursivamente.
   """
-  def while_parse(tokens,term,list,function) when tokens != [] do
+  def while_parse(tokens,term,list,function) do
+    if tokens == [] do
+      raise "Syntax Error: expected ‘;’ at end of input"
+    end
     [head | tail ] = tokens
     nextToken = elem(head,0)
+
     if nextToken in list do
       tokens = tail
       cond do
