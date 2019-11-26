@@ -11,8 +11,8 @@ Guia para terminar la documentacion del Compilador
 	Unir el Road Map y el WorkPlan ✓
 	Poner graficas del rendimiento del equipo
 
-3. Arquitecura del compilador
-	ya se tiene algo pero tenemos que afinarlo.
+3. Arquitecura del compilador ✓
+	ya se tiene algo pero tenemos que afinarlo. ✓
 
 4. Pruebas y el Plan de pruebas
 	Poner graficas del rendimiento
