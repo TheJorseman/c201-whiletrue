@@ -10,6 +10,8 @@ defmodule Compiler do
     "\t-tutorial\t" => "Tutorial",
     "\t-O1\t" => "Optimizador Nivel 1",
     "\t-O2\t" => "Optimizador Nivel 2",
+    "\t-O1C\t" => "Optimizador Nivel 1",
+    "\t-O2C\t" => "Optimizador Nivel 2",
     "\t-s\t" => "Generate Assembler",
     "\t-t\t" => "Print Token List\n\n\n"
   }
@@ -22,6 +24,8 @@ defmodule Compiler do
   ["-s",file_name] ->    print_assembler(file_name)
   ["-O1",file_name] ->    compile_optimization_l1(file_name)
   ["-O2",file_name] ->    compile_optimization_l2(file_name)
+  ["-O1C",file_name] ->    compile_optimization_l1C(file_name)
+  ["-O2C",file_name] ->    compile_optimization_l2C(file_name)
   ["-t",file_name] ->    print_token_list(file_name)
   [file_name]      ->     compile_file(file_name)
 
@@ -56,6 +60,43 @@ defmodule Compiler do
       |> Parser.parseProgram()
       |> Optimizer.optimizer_1()
       |> CodeGenerator.generateCode())
+      |> Linker.final(assembly)
+    IO.puts("Compiled file\n\n")
+    :successfulComp
+    rescue
+      e in RuntimeError -> IO.puts(IO.ANSI.red() <> "Error: " <> e.message)
+      {:error, e.message}
+    end
+  end
+
+  def compile_optimization_l2C(file_path) do
+    IO.puts("\nCompiling file: " <> file_path)
+    assembly = String.replace_trailing(file_path, ".c", ".s")
+    try do
+      File.read!(file_path)
+      File.write!(assembly,File.read!(file_path)
+      |> Lexer.lexer()
+      |> Parser.parseProgram()
+      |> Optimizer.optimizer_2C())
+      |> Linker.final(assembly)
+    IO.puts("Compiled file\n\n")
+    :successfulComp
+    rescue
+      e in RuntimeError -> IO.puts(IO.ANSI.red() <> "Error: " <> e.message)
+      {:error, e.message}
+    end
+  end
+
+  def compile_optimization_l1C(file_path) do
+    IO.puts("\nCompiling file: " <> file_path)
+    assembly = String.replace_trailing(file_path, ".c", ".s")
+    try do
+      File.read!(file_path)
+      File.write!(assembly,File.read!(file_path)
+      |> Lexer.lexer()
+      |> Parser.parseProgram()
+      |> Optimizer.optimizer_1()
+      |> CodeGenerator.generateCodee())
       |> Linker.final(assembly)
     IO.puts("Compiled file\n\n")
     :successfulComp
@@ -128,7 +169,7 @@ defmodule Compiler do
       File.write!(assembly,File.read!(file_path)
       |> Lexer.lexer()
       |> Parser.parseProgram()
-      |> CodeGenerator.generateCode())
+      |> CodeGenerator.generateCodee())
         IO.puts ("Generated file\n\n")
      IO.puts("\n")
     :successfulComp
