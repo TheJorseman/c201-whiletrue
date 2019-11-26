@@ -177,6 +177,7 @@ def optimizer_test(string) do
   try do
     Lexer.lexer(string)
     |> Parser.parseProgram()
+    |> Optimizer.optimizer_1()
     |> CodeGenerator.generateCodeNoP()
   rescue
     e in RuntimeError -> IO.puts("Error: " <> e.message )
