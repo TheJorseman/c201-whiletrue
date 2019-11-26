@@ -33,10 +33,10 @@ defmodule OPTIMIZERTest do
     assert Compiler.optimizer_test(source_code) == asm
   end
 
-  test "4. Logical negation (2)" do
+  test "4. Logical negation (6)" do
     source_code = """
                   int main() {
-                    return !!2;
+                    return !!!!!!2;
                   }
                   """
     asm = "\n        .globl main\n            main:\n                \n\t\tmov $2, %rax\n                cmp $0, %rax\n                xor $0, %rax\n                sete %al\n\n                cmp $0, %rax\n                xor $0, %rax\n                sete %al\n\n            ret\n         \n        "

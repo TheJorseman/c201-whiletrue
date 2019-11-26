@@ -9,9 +9,11 @@ defmodule Linker do
     bin_name = Path.basename(path, ".s")
     # Directorio destino
     destination = Path.dirname(path)
-    path = "#{destination} / #{asm_name}"
+    path = "#{destination}/#{asm_name}"
     File.write(path,asm_code)
     System.cmd("gcc",[asm_name,"-o#{bin_name}"],cd: destination)
     IO.puts("Assembly path: #{destination}\nSuccessful Compilation.\n\n")
+    # Se elimina el archivo .s
+    File.rm!(path)
   end
 end
