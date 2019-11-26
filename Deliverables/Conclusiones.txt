@@ -1,0 +1,18 @@
+Conclusiones
+
+Miguel
+Se alcanzaron los objetivos deseados, el compilador funciona de manera adecuadas y gracias a las experiencias de primera mano que tuvimos al realizar uno, se consolidaron todos los conocimientos y habilidades necesarios que se esperaba adquirir en la materia.
+
+Leonardo
+Fue una actividad desafiante pero que probo ser muy satisfactoria una vez se iban rebasando los obstáculos, aprendí mucho no solo de la teoría de compiladores sino también de técnicas y principios fundamentales para cualquier programador, mi mayor logro fue dominar el pensamiento recursivo.
+
+Enrique
+Lo que me llevo de este proyecto además del aprendizaje tanto practico como teórico es una mejor habilidad para verbalizar mis ideas y coordinarme con miembros de equipo. Esto ultimo es algo a lo que no estoy muy acostumbrado así que encontrar y luego practicar maneras de tener una armonía de grupo es lo que mas valoro de esta experiencia.
+
+Jose 
+Gracias a la experiencia y espíritu de mis compañeros logré aprender no solo conceptos teóricos, sino que también adquirí habilidades practicas de relaciones interpersonales. Con respecto al alcance y dificultad del proyecto considero que tuvo el nivel adecuado de dificultad para el tiempo disponible como para conseguir un aprendizaje significativo de los tópicos de la materia.
+
+
+Guillermo
+Al inicio el desarrollo del proyecto fue muy complicado porque tuve que aprender desde 0 el paradigma de la programación funcional, aunado a eso tuve que hacerlo con un lenguaje de programación con el que no tenia experiencia alguna, sin embargo gracias al apoyo de mis compañeros y profesor logre salir adelante y adquirí una nueva forma de pensar y solucionar problemas.
+
