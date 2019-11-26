@@ -104,7 +104,7 @@ defmodule INVALIDCOMPILERTest do
                       return 2 (- 3);
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error,"Syntax Error Semicolon keyword expected at line 2"}
+    assert Compiler.compiler_test(source_code) == {:error, "Syntax Error Semicolon keyword expected before '(' token at line 2"}
   end
 
   test "12. Missing first op" do
@@ -198,7 +198,7 @@ defmodule INVALIDCOMPILERTest do
                       return 1!+9;
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error, "Syntax Error before ';' Unary operator or constant keyword expected at line 2"}
+    assert Compiler.compiler_test(source_code) == {:error, "Syntax Error Semicolon keyword expected before '!' token at line 2"}
   end
 
   test "22. Wrong operator" do
@@ -207,7 +207,7 @@ defmodule INVALIDCOMPILERTest do
                       return 1!9;
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error, "Syntax Error before ';' Unary operator or constant keyword expected at line 2"}
+    assert Compiler.compiler_test(source_code) == {:error, "Syntax Error Semicolon keyword expected before '!' token at line 2"}
   end
 
   test "23. Wrong operator" do
@@ -216,7 +216,7 @@ defmodule INVALIDCOMPILERTest do
                       return 1!;
                     }
                   """
-    assert Compiler.compiler_test(source_code) == {:error, "Syntax Error before ';' Unary operator or constant keyword expected at line 2"}
+    assert Compiler.compiler_test(source_code) == {:error, "Syntax Error Semicolon keyword expected before '!' token at line 2"}
   end
 
 end
