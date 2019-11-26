@@ -259,6 +259,7 @@ end
   def optimizer_2(root) do
     ast_opt = optimizer_1(root)
     code = posorder(ast_opt)
-    IO.inspect(code)
+    IO.puts(code)
+    code
   end
 end
