@@ -304,9 +304,23 @@ defmodule CodeGenerator do
         #IO.puts("\nAST Tree:")
         #pretty_printing(root,"")
         assembly_code = posorder(root)
+        #IO.puts(assembly_code)
+        assembly_code
+    end
+    
+        @doc """
+    Funcion que genera el código ensamblador solo para la etiqueta.
+    """
+    def generateCodee (root) do
+        @andC.start_link(0)
+        @orC.start_link(0)
+        #IO.puts("\nAST Tree:")
+        #pretty_printing(root,"")
+        assembly_code = posorder(root)
         IO.puts(assembly_code)
         assembly_code
     end
+
     @doc """
     Funcion que regresa el codigo ensamblador sin imprimir el arbol.
     """

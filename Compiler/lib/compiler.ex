@@ -128,7 +128,7 @@ defmodule Compiler do
       File.write!(assembly,File.read!(file_path)
       |> Lexer.lexer()
       |> Parser.parseProgram()
-      |> CodeGenerator.generateCode())
+      |> CodeGenerator.generateCodee())
         IO.puts ("Generated file\n\n")
      IO.puts("\n")
     :successfulComp
