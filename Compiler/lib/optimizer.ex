@@ -194,7 +194,16 @@ def getCode(:orT,_,code,code_r) do
 end
 
 def getCode(:andT,_,code,code_r) do
-  code and code_r
+  if code == 0 do
+    0
+  else
+    if code_r == 0 do
+      0
+    else
+      1
+    end
+  end
+  #code and code_r
 end
 
 def getCode(:division,_,code,code_r) do
